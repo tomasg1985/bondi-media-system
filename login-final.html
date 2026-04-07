@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bondi Media · Iniciar Sesión</title>
+    
+    <!-- Font Awesome (CDN - siempre funciona) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* ==================================================
+           ESTILOS DIRECTAMENTE EN EL HTML
+           ================================================== */
+        
+        :root {
+            --deep-navy: #0f172a;
+            --coral: #ff4d4d;
+            --sky-blue: #2563eb;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --gradient-primary: linear-gradient(135deg, #ff4d4d, #2563eb);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gray-100);
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 440px;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            background: var(--deep-navy);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-header::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 77, 77, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .login-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -20%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 24px;
+            border-radius: 60px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .logo span {
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .login-header h1 {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-body {
+            padding: 40px 30px;
+            background: white;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            font-size: 16px;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            border: 2px solid var(--gray-200);
+            border-radius: 16px;
+            font-size: 15px;
+            background: var(--gray-50);
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--sky-blue);
+            background: white;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray-400);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0 30px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .remember-me input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--sky-blue);
+        }
+
+        .remember-me span {
+            font-size: 14px;
+            color: var(--gray-600);
+        }
+
+        .forgot-link {
+            color: var(--sky-blue);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 30px -10px rgba(255, 77, 77, 0.3);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--gray-200);
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 16px;
+            color: var(--gray-500);
+            font-size: 13px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .google-btn {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 16px;
+            background: white;
+            color: var(--gray-700);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .google-btn i {
+            color: #DB4437;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--gray-600);
+        }
+
+        .signup-link a {
+            color: var(--sky-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            color: #dc2626;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            display: none;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .login-header {
+                padding: 30px 20px;
+            }
+            .login-body {
+                padding: 30px 20px;
+            }
+            .form-options {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-header">
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-bolt"></i></div>
+                <span>Bondi Media</span>
+            </div>
+            <h1>¡Bienvenido!</h1>
+            <p>Ingresa tus credenciales para continuar</p>
+        </div>
+
+        <div class="login-body">
+            <div id="errorMessage" class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>Email o contraseña incorrectos</span>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="ej: usuario@bondi.com" value="demo@bondi.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="••••••••" value="bondi2026" required>
+                        <button type="button" class="toggle-password" id="togglePasswordBtn">
+                            <i class="fas fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember" checked>
+                        <span>Recordarme</span>
+                    </label>
+                    <a href="#" id="forgotLink">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn">Iniciar sesión</button>
+
+                <div class="divider">
+                    <span>o continúa con</span>
+                </div>
+
+                <button type="button" class="google-btn" id="googleBtn">
+                    <i class="fab fa-google"></i>
+                    Google
+                </button>
+
+                <div class="signup-link">
+                    ¿No tienes una cuenta?
+                    <a href="#" id="signupLink">Regístrate</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ==================================================
+        // SCRIPT DE LOGIN - TODO EN UN SOLO ARCHIVO
+        // ==================================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Login page loaded');
+            
+            const loginForm = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const loginBtn = document.getElementById('loginBtn');
+            const errorMessage = document.getElementById('errorMessage');
+            const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+            const forgotLink = document.getElementById('forgotLink');
+            const googleBtn = document.getElementById('googleBtn');
+            const signupLink = document.getElementById('signupLink');
+            const rememberCheck = document.getElementById('remember');
+
+            // Verificar si ya hay sesión
+            const currentUser = sessionStorage.getItem('bondi-current-user');
+            if (currentUser) {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // Cargar email guardado
+            const savedEmail = localStorage.getItem('bondi-email');
+            const savedRemember = localStorage.getItem('bondi-remember');
+            
+            if (savedEmail && savedRemember === 'true') {
+                emailInput.value = savedEmail;
+                rememberCheck.checked = true;
+            }
+
+            // Toggle password
+            if (togglePasswordBtn) {
+                togglePasswordBtn.addEventListener('click', function() {
+                    const type = passwordInput.type === 'password' ? 'text' : 'password';
+                    passwordInput.type = type;
+                    
+                    const icon = document.getElementById('toggleIcon');
+                    if (icon) {
+                        if (type === 'password') {
+                            icon.classList.remove('fa-eye-slash');
+                            icon.classList.add('fa-eye');
+                        } else {
+                            icon.classList.remove('fa-eye');
+                            icon.classList.add('fa-eye-slash');
+                        }
+                    }
+                });
+            }
+
+            // Login submit
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const email = emailInput.value.trim();
+                    const password = passwordInput.value.trim();
+                    const remember = rememberCheck.checked;
+                    
+                    if (!email || !password) {
+                        showError('Por favor completa todos los campos');
+                        return;
+                    }
+                    
+                    loginBtn.classList.add('loading');
+                    loginBtn.textContent = 'Iniciando sesión...';
+                    
+                    setTimeout(() => {
+                        loginBtn.classList.remove('loading');
+                        
+                        if (email === 'demo@bondi.com' && password === 'bondi2026') {
+                            
+                            if (remember) {
+                                localStorage.setItem('bondi-remember', 'true');
+                                localStorage.setItem('bondi-email', email);
+                            } else {
+                                localStorage.removeItem('bondi-remember');
+                                localStorage.removeItem('bondi-email');
+                            }
+                            
+                            sessionStorage.setItem('bondi-current-user', JSON.stringify({
+                                email: email,
+                                name: 'Usuario Demo',
+                                loggedInAt: new Date().toISOString()
+                            }));
+                            
+                            loginBtn.textContent = '✓ Bienvenido!';
+                            loginBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                            
+                            setTimeout(() => {
+                                window.location.href = 'dashboard.html';
+                            }, 1000);
+                            
+                        } else {
+                            loginBtn.textContent = 'Iniciar sesión';
+                            showError('Email o contraseña incorrectos');
+                            
+                            emailInput.style.borderColor = '#ef4444';
+                            passwordInput.style.borderColor = '#ef4444';
+                            
+                            setTimeout(() => {
+                                emailInput.style.borderColor = '';
+                                passwordInput.style.borderColor = '';
+                            }, 500);
+                        }
+                    }, 1500);
+                });
+            }
+
+            function showError(message) {
+                if (errorMessage) {
+                    const span = errorMessage.querySelector('span');
+                    if (span) span.textContent = message;
+                    errorMessage.style.display = 'flex';
+                    
+                    setTimeout(() => {
+                        errorMessage.style.display = 'none';
+                    }, 5000);
+                }
+            }
+
+            if (forgotLink) {
+                forgotLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('Demo: Funcionalidad de recuperación');
+                });
+            }
+
+            if (googleBtn) {
+                googleBtn.addEventListener('click', function() {
+                    alert('Demo: Google Sign In');
+                });
+            }
+
+            if (signupLink) {
+                signupLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('Demo: Página de registro');
+                });
+            }
+
+            emailInput.focus();
+        });
+    </script>
+</body>
+</html>

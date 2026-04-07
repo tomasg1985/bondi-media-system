@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Cliente — Bondi Media</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --client-primary:    #F97316;
+            --client-primary-bg: rgba(249,115,22,.08);
+            --navy:   #0C1220;
+            --navy-2: #151E2E;
+            --bg:     #F0F2F5;
+            --card:   #FFFFFF;
+            --text-1: #0D1117;
+            --text-2: #4B5563;
+            --text-3: #9CA3AF;
+            --border: #E5E7EB;
+            --green:  #10B981; --green-bg: #ECFDF5;
+            --blue:   #3B82F6; --blue-bg:  #EFF6FF;
+            --amber:  #F59E0B; --amber-bg: #FFFBEB;
+            --sh-sm: 0 2px 8px rgba(0,0,0,.07);
+            --sh-md: 0 4px 16px rgba(0,0,0,.09);
+            --r-md: 10px; --r-lg: 14px; --r-xl: 20px; --r-pill: 999px;
+            --t: .16s; --ease: cubic-bezier(.4,0,.2,1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text-1);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* ── LOGIN ── */
+        #login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--navy);
+            padding: 20px;
+        }
+        .login-card {
+            background: #fff;
+            border-radius: var(--r-xl);
+            padding: 40px 36px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 24px 64px rgba(0,0,0,.3);
+        }
+        .login-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .login-logo-mark {
+            width: 40px; height: 40px;
+            background: var(--client-primary);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: 800; color: #fff;
+            box-shadow: 0 4px 12px rgba(249,115,22,.35);
+        }
+        .login-logo-text { display: flex; flex-direction: column; gap: 2px; }
+        .login-logo-name { font-size: 15px; font-weight: 700; color: var(--text-1); }
+        .login-logo-sub  { font-size: 11px; color: var(--text-3); }
+        .login-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+        .login-sub   { font-size: 13px; color: var(--text-2); margin-bottom: 28px; }
+        .login-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text-2); display: block; margin-bottom: 5px; }
+        .login-input {
+            width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
+            border-radius: var(--r-md); font-size: 13px; font-family: inherit;
+            margin-bottom: 14px; transition: border-color var(--t) var(--ease);
+        }
+        .login-input:focus { outline: none; border-color: var(--client-primary); box-shadow: 0 0 0 3px rgba(249,115,22,.1); }
+        .login-btn {
+            width: 100%; padding: 11px; background: var(--client-primary); color: #fff;
+            border: none; border-radius: var(--r-md); font-size: 14px; font-weight: 600;
+            cursor: pointer; font-family: inherit; transition: all var(--t) var(--ease);
+        }
+        .login-btn:hover { background: #EA6C0A; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(249,115,22,.4); }
+        .login-error { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; border-radius: var(--r-md); padding: 10px 14px; font-size: 13px; margin-top: 12px; display: none; }
+
+        /* ── PORTAL ── */
+        #portal-screen { display: none; }
+
+        /* Header */
+        .portal-header {
+            background: var(--navy);
+            padding: 0 24px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+            overflow: visible;
+        }
+        .portal-header-left { display: flex; align-items: center; gap: 14px; }
+        .portal-header-logo {
+            width: 34px; height: 34px; background: var(--client-primary);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 800; color: #fff;
+        }
+        .portal-header-brand { font-size: 14px; font-weight: 700; color: #fff; }
+        .portal-header-badge {
+            font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: var(--r-pill);
+            background: rgba(249,115,22,.2); color: rgba(249,115,22,.9);
+            text-transform: uppercase; letter-spacing: .4px;
+        }
+        .portal-header-right { display: flex; align-items: center; gap: 12px; }
+        .portal-client-name { font-size: 13px; font-weight: 600; color: rgba(255,255,255,.7); }
+        .portal-logout {
+            font-size: 12px; font-weight: 500; color: rgba(255,255,255,.5);
+            background: none; border: 1px solid rgba(255,255,255,.15); border-radius: var(--r-md);
+            padding: 5px 12px; cursor: pointer; font-family: inherit;
+            transition: all var(--t) var(--ease);
+        }
+        .portal-logout:hover { color: #fff; border-color: rgba(255,255,255,.35); }
+
+        /* Content */
+        .portal-content { padding: 24px; max-width: 1200px; margin: 0 auto; }
+
+        /* Section title */
+        .section-title {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: .8px; color: var(--text-3); margin-bottom: 12px;
+        }
+
+        /* Stat cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px; margin-bottom: 20px;
+        }
+        .stat-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: var(--r-lg); padding: 16px 18px; box-shadow: var(--sh-sm);
+            position: relative; overflow: hidden;
+            transition: all var(--t) var(--ease);
+        }
+        .stat-card::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, var(--client-primary), transparent);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform .25s var(--ease);
+        }
+        .stat-card:hover::after { transform: scaleX(1); }
+        .stat-card:hover { box-shadow: var(--sh-md); transform: translateY(-2px); }
+        .stat-icon {
+            width: 30px; height: 30px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 12px;
+        }
+        .stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--text-3); }
+        .stat-val   { font-size: 28px; font-weight: 700; color: var(--text-1); letter-spacing: -.5px; line-height: 1.1; margin-top: 2px; }
+        .stat-sub   { font-size: 11px; font-weight: 500; margin-top: 4px; }
+
+        /* Cards */
+        .card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: var(--r-lg); box-shadow: var(--sh-sm);
+            overflow: hidden; margin-bottom: 16px;
+        }
+        .card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 18px; border-bottom: 1px solid #F3F4F6;
+            background: #FAFAFA;
+        }
+        .card-title { font-size: 13px; font-weight: 700; color: var(--text-1); display: flex; align-items: center; gap: 8px; }
+        .card-body  { padding: 16px 18px; }
+
+        /* Content items */
+        .content-item {
+            display: flex; align-items: flex-start; gap: 14px;
+            padding: 12px 0; border-bottom: 1px solid #F3F4F6;
+        }
+        .content-item:last-child { border-bottom: none; }
+        .content-status-dot {
+            width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+        }
+        .dot-published { background: var(--green); }
+        .dot-scheduled { background: var(--blue); }
+        .dot-design    { background: var(--amber); }
+        .dot-pending   { background: var(--text-3); }
+        .content-info  { flex: 1; }
+        .content-title { font-size: 13px; font-weight: 600; color: var(--text-1); margin-bottom: 3px; }
+        .content-meta  { font-size: 11px; color: var(--text-3); display: flex; gap: 10px; flex-wrap: wrap; }
+        .content-badge {
+            font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: var(--r-pill);
+        }
+
+        /* Insight card */
+        .insight-item {
+            display: flex; gap: 12px; align-items: flex-start;
+            padding: 12px; background: var(--bg); border-radius: var(--r-md);
+            margin-bottom: 8px; border: 1px solid var(--border);
+        }
+        .insight-icon {
+            width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .insight-text { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+        .insight-text strong { color: var(--text-1); font-weight: 600; }
+
+        /* Chart wrapper */
+        .chart-wrap { padding: 16px 18px; height: 260px; position: relative; }
+
+        /* Empty state */
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-3); }
+        .empty-state svg { margin-bottom: 12px; opacity: .4; }
+        .empty-state p { font-size: 13px; }
+
+        /* Paused screen */
+        #paused-screen {
+            display: none; min-height: 100vh;
+            background: var(--navy); align-items: center; justify-content: center;
+        }
+        .paused-card {
+            background: #fff; border-radius: var(--r-xl); padding: 40px;
+            max-width: 440px; text-align: center; box-shadow: 0 24px 64px rgba(0,0,0,.3);
+        }
+
+        /* Clickable stat cards */
+        .stat-card.clickable {
+            cursor: pointer;
+        }
+        .stat-card.clickable:hover {
+            border-color: var(--client-primary) !important;
+        }
+        .stat-card.clickable .stat-label::after {
+            content: ' →';
+            opacity: 0;
+            transition: opacity .14s;
+            font-size: 10px;
+        }
+        .stat-card.clickable:hover .stat-label::after { opacity: 1; }
+
+        /* Drawer lateral */
+        #stat-drawer {
+            position: fixed;
+            top: 0; right: -420px;
+            width: 400px; max-width: 95vw;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -8px 0 32px rgba(0,0,0,.12);
+            z-index: 500;
+            transition: right .28s cubic-bezier(.4,0,.2,1);
+            display: flex;
+            flex-direction: column;
+        }
+        #stat-drawer.open { right: 0; }
+        #stat-drawer-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,.3);
+            z-index: 499;
+            display: none;
+            backdrop-filter: blur(2px);
+        }
+        #stat-drawer-overlay.open { display: block; }
+
+        .drawer-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #F3F4F6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            background: #FAFAFA;
+        }
+        .drawer-title {
+            font-size: 14px; font-weight: 700; color: var(--text-1);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .drawer-close {
+            width: 28px; height: 28px; border-radius: 50%;
+            border: 1.5px solid #E5E7EB; background: #fff;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 14px; color: #9CA3AF;
+            transition: all .14s;
+        }
+        .drawer-close:hover { background: #FEF2F2; border-color: #EF4444; color: #EF4444; }
+
+        .drawer-body {
+            flex: 1; overflow-y: auto; padding: 16px;
+        }
+
+        .drawer-item {
+            display: flex; align-items: flex-start; gap: 12px;
+            padding: 12px 14px;
+            background: #fff;
+            border: 1px solid #E5E7EB;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            transition: box-shadow .14s;
+        }
+        .drawer-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,.07); border-color: #D1D5DB; }
+
+        .drawer-item-num {
+            width: 24px; height: 24px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 700; flex-shrink: 0;
+        }
+        .drawer-item-title { font-size: 13px; font-weight: 600; color: var(--text-1); line-height: 1.3; margin-bottom: 5px; }
+        .drawer-item-meta  { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+        .drawer-item-badge {
+            font-size: 10px; font-weight: 700; padding: 2px 7px;
+            border-radius: 999px;
+        }
+        .drawer-empty {
+            text-align: center; padding: 40px 20px; color: var(--text-3);
+        }
+
+        /* Notifications */
+
+        .notif-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid #F3F4F6;
+            transition: background .14s;
+            cursor: default;
+        }
+        .notif-item:last-child { border-bottom: none; }
+        .notif-item.unread { background: #FAFBFF; }
+        .notif-item:hover { background: #F7F9FC; }
+        .notif-icon {
+            width: 32px; height: 32px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .notif-msg { font-size: 13px; font-weight: 600; color: var(--text-1); line-height: 1.3; }
+        .notif-detail { font-size: 12px; color: var(--text-2); line-height: 1.4; margin-top: 2px; }
+        .notif-time { font-size: 10px; color: var(--text-3); margin-top: 4px; }
+        .notif-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 6px; }
+
+        /* ── Estado del servicio ── */
+        .service-banner {
+            display: flex; align-items: center; justify-content: space-between;
+            background: var(--navy); border-radius: var(--r-lg);
+            padding: 16px 20px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+        }
+        .service-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 11px; font-weight: 700; padding: 4px 10px;
+            border-radius: var(--r-pill); text-transform: uppercase; letter-spacing: .4px;
+        }
+        .service-badge.active  { background: rgba(16,185,129,.2); color: #6EE7B7; }
+        .service-badge.paused  { background: rgba(245,158,11,.2); color: #FCD34D; }
+        .service-meta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .service-meta-item { font-size: 12px; color: rgba(255,255,255,.55); display: flex; align-items: center; gap: 5px; }
+        .service-meta-item strong { color: rgba(255,255,255,.85); }
+
+        /* ── Objetivo del mes ── */
+        .objetivo-banner {
+            background: linear-gradient(135deg, var(--client-primary) 0%, #EA6C0A 100%);
+            border-radius: var(--r-lg); padding: 16px 20px; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .objetivo-icon {
+            width: 40px; height: 40px; background: rgba(255,255,255,.15);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .objetivo-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: rgba(255,255,255,.7); }
+        .objetivo-text  { font-size: 14px; font-weight: 600; color: #fff; margin-top: 2px; line-height: 1.3; }
+
+        /* ── Próximas publicaciones ── */
+        .upcoming-item {
+            display: flex; align-items: flex-start; gap: 14px;
+            padding: 12px 0; border-bottom: 1px solid #F3F4F6;
+        }
+        .upcoming-item:last-child { border-bottom: none; }
+        .upcoming-date-box {
+            width: 46px; flex-shrink: 0; text-align: center;
+            background: var(--bg); border-radius: var(--r-md); padding: 6px 4px;
+            border: 1px solid var(--border);
+        }
+        .upcoming-date-day   { font-size: 18px; font-weight: 700; color: var(--text-1); line-height: 1; }
+        .upcoming-date-month { font-size: 10px; font-weight: 600; color: var(--text-3); text-transform: uppercase; margin-top: 1px; }
+        .upcoming-info { flex: 1; }
+        .upcoming-title  { font-size: 13px; font-weight: 600; color: var(--text-1); margin-bottom: 4px; }
+        .upcoming-time   { font-size: 11px; color: var(--text-3); }
+
+        /* ── Tarjeta de contacto ── */
+        .contact-card {
+            display: flex; align-items: center; gap: 14px;
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: var(--r-lg); padding: 16px 18px;
+            box-shadow: var(--sh-sm);
+        }
+        .contact-avatar {
+            width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+            background: var(--client-primary); display: flex; align-items: center;
+            justify-content: center; font-size: 16px; font-weight: 700; color: #fff;
+            overflow: hidden;
+        }
+        .contact-name    { font-size: 14px; font-weight: 700; color: var(--text-1); }
+        .contact-role    { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+        .contact-actions { display: flex; gap: 8px; margin-top: 8px; }
+        .contact-btn {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 5px 12px; border-radius: var(--r-md); font-size: 12px;
+            font-weight: 600; font-family: inherit; cursor: pointer;
+            text-decoration: none; transition: all var(--t) var(--ease); border: none;
+        }
+        .contact-btn-primary   { background: var(--client-primary); color: #fff; }
+        .contact-btn-secondary { background: var(--bg); border: 1px solid var(--border); color: var(--text-2); }
+        .contact-btn:hover { transform: translateY(-1px); opacity: .9; }
+
+        /* ── Feed de actividad ── */
+        .activity-item {
+            display: flex; align-items: flex-start; gap: 12px;
+            padding: 10px 0; border-bottom: 1px solid #F3F4F6;
+        }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-icon {
+            width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .activity-text { font-size: 12px; color: var(--text-2); line-height: 1.4; }
+        .activity-text strong { color: var(--text-1); font-weight: 600; }
+        .activity-time { font-size: 10px; color: var(--text-3); margin-top: 2px; }
+
+        /* ── Tips del mes ── */
+        .tip-item {
+            display: flex; align-items: flex-start; gap: 12px;
+            padding: 12px; background: var(--bg); border-radius: var(--r-md);
+            margin-bottom: 8px; border: 1px solid var(--border);
+        }
+        .tip-item:last-child { margin-bottom: 0; }
+        .tip-num {
+            width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+            background: var(--client-primary); color: #fff; font-size: 11px;
+            font-weight: 700; display: flex; align-items: center; justify-content: center;
+        }
+        .tip-text { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+        .tip-text strong { color: var(--text-1); }
+
+        /* ── Mejores publicaciones ── */
+        .best-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 0; border-bottom: 1px solid #F3F4F6;
+        }
+        .best-item:last-child { border-bottom: none; }
+        .best-rank {
+            width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;
+            font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+        }
+        .best-metric {
+            font-size: 13px; font-weight: 700; color: var(--client-primary);
+            margin-left: auto; flex-shrink: 0; white-space: nowrap;
+        }
+
+        /* ── Acciones del cliente ── */
+        .action-btn {
+            display: flex; align-items: center; gap: 10px;
+            width: 100%; padding: 13px 16px; border-radius: var(--r-md);
+            border: 1.5px solid var(--border); background: var(--card);
+            cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600;
+            color: var(--text-1); transition: all var(--t) var(--ease); margin-bottom: 8px;
+            text-align: left;
+        }
+        .action-btn:hover { border-color: var(--client-primary); background: var(--client-primary-bg); color: var(--client-primary); }
+        .action-btn:last-child { margin-bottom: 0; }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .portal-content { padding: 16px; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* ══ TOUR GUIADO ════════════════════════════════ */
+        #tour-overlay { display: none; }
+
+        #tour-spotlight {
+            position: fixed;
+            border-radius: 12px;
+            /* El box-shadow crea el fondo oscuro alrededor
+               sin tocar el área del spotlight — el elemento
+               queda 100% iluminado y visible */
+            box-shadow: 0 0 0 9999px rgba(0,0,0,.68);
+            z-index: 8001;
+            pointer-events: none;
+            transition: top .32s cubic-bezier(.4,0,.2,1),
+                        left .32s cubic-bezier(.4,0,.2,1),
+                        width .32s cubic-bezier(.4,0,.2,1),
+                        height .32s cubic-bezier(.4,0,.2,1);
+            /* Borde naranja brillante para enmarcar el elemento */
+            outline: 3px solid #F97316;
+            outline-offset: 0px;
+            background: transparent;
+        }
+        #tour-tooltip {
+            position: fixed;
+            z-index: 8002;
+            width: 330px;
+            max-width: calc(100vw - 28px);
+            max-height: calc(100vh - 28px);
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.25), 0 0 0 1px rgba(249,115,22,.2);
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        @keyframes tourIn {
+            from { opacity:0; transform: scale(.94) translateY(6px); }
+            to   { opacity:1; transform: scale(1)   translateY(0); }
+        }
+        .tour-tooltip-header {
+            background: #0C1220;
+            padding: 14px 18px 12px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .tour-step-indicator {
+            display: flex; gap: 5px; align-items: center;
+        }
+        .tour-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: rgba(255,255,255,.25);
+            transition: background .2s, width .2s;
+        }
+        .tour-dot.active { background: #F97316; width: 16px; border-radius: 3px; }
+        .tour-close-btn {
+            width: 24px; height: 24px; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,.2);
+            background: none; color: rgba(255,255,255,.6);
+            cursor: pointer; font-size: 14px; line-height: 1;
+            display: flex; align-items: center; justify-content: center;
+            transition: all .14s;
+        }
+        .tour-close-btn:hover { background: rgba(255,255,255,.1); color: #fff; }
+        .tour-tooltip-body { padding: 16px 18px 14px; overflow-y: auto; flex: 1; }
+        .tour-icon-row {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+        }
+        .tour-icon {
+            width: 36px; height: 36px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .tour-step-num {
+            font-size: 10px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: .6px; color: #9CA3AF;
+        }
+        .tour-title {
+            font-size: 15px; font-weight: 700; color: #0D1117;
+            margin-bottom: 8px; line-height: 1.3;
+        }
+        .tour-desc {
+            font-size: 13px; color: #4B5563; line-height: 1.65;
+        }
+        .tour-desc strong { color: #0D1117; font-weight: 600; }
+        .tour-tooltip-footer {
+            padding: 12px 18px 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            border-top: 1px solid #F3F4F6;
+        }
+        .tour-btn-prev {
+            font-size: 12px; font-weight: 600; padding: 7px 14px;
+            border-radius: 8px; border: 1.5px solid #E5E7EB;
+            background: #fff; color: #6B7280; cursor: pointer;
+            font-family: 'Inter', sans-serif; transition: all .14s;
+        }
+        .tour-btn-prev:hover { border-color: #D1D5DB; color: #374151; }
+        .tour-btn-prev:disabled { opacity: .35; cursor: default; }
+        .tour-btn-next {
+            font-size: 12px; font-weight: 700; padding: 7px 18px;
+            border-radius: 8px; border: none;
+            background: #F97316; color: #fff; cursor: pointer;
+            font-family: 'Inter', sans-serif; transition: all .14s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .tour-btn-next:hover { background: #EA6C0A; }
+        .tour-skip {
+            font-size: 11px; color: #9CA3AF; cursor: pointer;
+            background: none; border: none; font-family: 'Inter', sans-serif;
+            transition: color .14s;
+        }
+        .tour-skip:hover { color: #6B7280; }
+
+        /* Botón tour en el header */
+        #tour-toggle-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 5px 13px;
+            border-radius: 999px;
+            border: 1.5px solid rgba(255,255,255,.18);
+            background: rgba(255,255,255,.07);
+            color: rgba(255,255,255,.75);
+            font-size: 11px; font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all .16s;
+            white-space: nowrap;
+        }
+        #tour-toggle-btn:hover {
+            background: rgba(249,115,22,.25);
+            border-color: rgba(249,115,22,.6);
+            color: #fff;
+        }
+        #tour-toggle-btn.active {
+            background: rgba(249,115,22,.3);
+            border-color: #F97316;
+            color: #fff;
+        }
+        #tour-toggle-btn .tour-btn-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: currentColor; flex-shrink: 0;
+            transition: background .16s;
+        }
+        #tour-toggle-btn.active .tour-btn-dot {
+            background: #F97316;
+            box-shadow: 0 0 0 2px rgba(249,115,22,.35);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══════════════════════════════════════ -->
+<div id="login-screen">
+    <div class="login-card">
+        <div class="login-logo">
+            <div class="login-logo-mark">BM</div>
+            <div class="login-logo-text">
+                <span class="login-logo-name">Bondi Media</span>
+                <span class="login-logo-sub">Portal de Clientes</span>
+            </div>
+        </div>
+        <h1 class="login-title">Bienvenido</h1>
+        <p class="login-sub">Ingresá tus credenciales para acceder al portal</p>
+        <form onsubmit="handleLogin(event)">
+            <label class="login-label" for="l-user">Usuario</label>
+            <input class="login-input" id="l-user" type="text" placeholder="tu-usuario" autocomplete="username" required>
+            <label class="login-label" for="l-pass">Contraseña</label>
+            <input class="login-input" id="l-pass" type="password" placeholder="••••••••" autocomplete="current-password" required>
+            <button class="login-btn" type="submit">Ingresar al Portal</button>
+            <div class="login-error" id="login-error">Usuario o contraseña incorrectos</div>
+        </form>
+    </div>
+</div>
+
+<!-- ══ ACCESO PAUSADO ══════════════════════════════ -->
+<div id="paused-screen" style="display:none;min-height:100vh;background:var(--navy);display:none;align-items:center;justify-content:center;">
+    <div class="paused-card">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 16px;display:block;">
+            <circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/>
+        </svg>
+        <h2 style="font-size:20px;font-weight:700;margin-bottom:8px;">Acceso temporalmente pausado</h2>
+        <p style="font-size:14px;color:#6B7280;line-height:1.5;">Tu acceso al portal está momentáneamente pausado. Contactá a Bondi Media para más información.</p>
+    </div>
+</div>
+
+<!-- ══ PORTAL ══════════════════════════════════════ -->
+<div id="portal-screen">
+    <header class="portal-header">
+        <div class="portal-header-left">
+            <div class="portal-header-logo" id="ph-logo">BM</div>
+            <div>
+                <div class="portal-header-brand" id="ph-brand">Bondi Media</div>
+            </div>
+            <span class="portal-header-badge">Portal Cliente</span>
+        </div>
+        <div class="portal-header-right">
+            <span class="portal-client-name" id="ph-client-name"></span>
+            <!-- Campana de notificaciones -->
+            <button id="tour-toggle-btn" onclick="toggleTour()" title="Activar / desactivar tour del portal">
+                <span class="tour-btn-dot"></span>
+                <span id="tour-toggle-label">Tour del portal</span>
+            </button>
+            <button id="portal-notif-btn" onclick="togglePortalNotifications()" style="position:relative;background:none;border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:6px 8px;cursor:pointer;color:rgba(255,255,255,.6);transition:all .16s;display:flex;align-items:center;justify-content:center;" title="Notificaciones">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span id="portal-notif-dot" style="display:none;position:absolute;top:5px;right:5px;width:7px;height:7px;background:#EF4444;border-radius:50%;border:1.5px solid var(--navy);"></span>
+            </button>
+            <!-- Dropdown notificaciones -->
+            <div id="portal-notif-dropdown" style="display:none;position:absolute;top:56px;right:16px;width:340px;background:#fff;border:1px solid #E5E7EB;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.12);z-index:200;overflow:hidden;">
+                <div style="padding:12px 16px;border-bottom:1px solid #F3F4F6;background:#FAFAFA;display:flex;align-items:center;justify-content:space-between;">
+                    <span style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.5px;">Notificaciones</span>
+                    <button onclick="markAllNotificationsRead()" style="font-size:11px;color:#F97316;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;font-weight:500;">Marcar leídas</button>
+                </div>
+                <div id="portal-notif-list" style="max-height:320px;overflow-y:auto;"></div>
+            </div>
+            <button class="portal-logout" onclick="handleLogout()">Cerrar sesión</button>
+        </div>
+    </header>
+
+    <div class="portal-content">
+
+        <!-- Bienvenida -->
+        <div style="margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <div>
+                <h1 style="font-size:20px;font-weight:700;color:var(--text-1);" id="welcome-title">¡Hola!</h1>
+                <p style="font-size:13px;color:var(--text-3);margin-top:3px;" id="welcome-date"></p>
+            </div>
+        </div>
+
+        <!-- Estado del servicio -->
+        <div id="service-banner-wrap"></div>
+
+        <!-- Objetivo del mes -->
+        <div id="objetivo-wrap"></div>
+
+        <!-- Stats -->
+        <div class="section-title" id="tour-stats-title">Resumen del mes</div>
+        <div class="stats-row" id="portal-stats"></div>
+
+        <!-- Grid principal — fila 1 -->
+        <div id="tour-grid1" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+
+            <!-- Gráfico de performance -->
+            <div class="card" style="grid-column:1/-1;" id="tour-chart">
+                <div class="card-header">
+                    <span class="card-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                        Performance del mes
+                    </span>
+                    <span style="font-size:11px;color:var(--text-3);" id="chart-period"></span>
+                </div>
+                <div class="chart-wrap">
+                    <canvas id="portal-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Próximas publicaciones -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Próximas publicaciones
+                    </span>
+                </div>
+                <div class="card-body" id="portal-upcoming"></div>
+            </div>
+
+            <!-- Contenido del mes -->
+            <div class="card" id="tour-content">
+                <div class="card-header">
+                    <span class="card-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        Contenido del mes
+                    </span>
+                    <span class="content-badge" style="background:var(--blue-bg);color:#1E40AF;border:1px solid #BFDBFE;" id="content-count-badge">0</span>
+                </div>
+                <div class="card-body" id="portal-content-list">
+                    <div class="empty-state">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/></svg>
+                        <p>Sin contenido planificado para este mes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid fila 2 -->
+        <div id="tour-grid2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+
+            <!-- Insights IA -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="20" y1="9" x2="22" y2="9"/></svg>
+                        Insights del contenido
+                    </span>
+                </div>
+                <div class="card-body" id="portal-insights">
+                    <div class="empty-state">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+                        <p>Agregá métricas para ver insights personalizados</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips del mes -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        Tips del mes
+                    </span>
+                </div>
+                <div class="card-body" id="portal-tips"></div>
+            </div>
+        </div>
+
+        <!-- Grid fila 3 -->
+        <div id="tour-grid3" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+
+            <!-- Mejores publicaciones -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        Mejores publicaciones
+                    </span>
+                </div>
+                <div class="card-body" id="portal-best"></div>
+            </div>
+
+            <!-- Actividad reciente + Acciones + Contacto -->
+            <div style="display:flex;flex-direction:column;gap:14px;">
+
+                <!-- Actividad -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            Actividad reciente
+                        </span>
+                    </div>
+                    <div class="card-body" id="portal-activity"></div>
+                </div>
+
+                <!-- Acciones -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                            Acciones
+                        </span>
+                    </div>
+                    <div class="card-body" id="portal-actions"></div>
+                </div>
+
+                <!-- Contacto -->
+                <div id="portal-contact"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align:center;padding:20px 0;font-size:11px;color:var(--text-3);">
+            Portal generado por <strong style="color:var(--text-2);">Bondi Media</strong> · Sistema de Gestión Pro
+        </div>
+    </div>
+</div>
+
+<script>
+// ==================================================
+// PORTAL CLIENTE — BONDI MEDIA
+// Versión: 1.0 | Solo lectura, rol viewer
+// ==================================================
+
+const STORAGE_PREFIX = 'bondi-';
+var portalClient = null;
+var portalChartInstance = null;
+
+// ── STORAGE ────────────────────────────────────────
+function getData(key) {
+    try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + key) || 'null'); }
+    catch(e) { return null; }
+}
+
+// ── LOGIN ──────────────────────────────────────────
+function handleLogin(e) {
+    e.preventDefault();
+    var user = document.getElementById('l-user').value.trim().toLowerCase();
+    var pass = document.getElementById('l-pass').value.trim();
+    var errorEl = document.getElementById('login-error');
+
+    var accounts = getData('accounts') || [{ id: 'bondi-media', name: 'Bondi Media' }];
+    var matched = accounts.find(function(a) {
+        return a.portalUsername && a.portalUsername.toLowerCase() === user
+            && a.portalPassword === pass;
+    });
+
+    if (!matched) {
+        errorEl.style.display = 'block';
+        return;
+    }
+    errorEl.style.display = 'none';
+
+    if (matched.portalAccess === 'paused') {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('paused-screen').style.display = 'flex';
+        return;
+    }
+    if (matched.portalAccess !== 'active') {
+        errorEl.textContent = 'Tu acceso al portal no está habilitado. Contactá a Bondi Media.';
+        errorEl.style.display = 'block';
+        return;
+    }
+
+    portalClient = matched;
+    sessionStorage.setItem('portal-session', JSON.stringify({ id: matched.id, name: matched.name, ts: Date.now() }));
+    showPortal(matched);
+}
+
+function handleLogout() {
+    sessionStorage.removeItem('portal-session');
+    location.reload();
+}
+
+// ── MOSTRAR PORTAL ─────────────────────────────────
+function showPortal(client) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('portal-screen').style.display = 'block';
+
+    // Header
+    var initials = client.name.split(' ').map(function(w){ return w[0]; }).slice(0,2).join('').toUpperCase();
+    document.getElementById('ph-logo').textContent = initials;
+    document.getElementById('ph-brand').textContent = client.name;
+    document.getElementById('ph-client-name').textContent = client.name;
+
+    // Si tiene color primario personalizado
+    if (client.primaryColor) {
+        document.documentElement.style.setProperty('--client-primary', client.primaryColor);
+    }
+
+    // Bienvenida
+    var now = new Date();
+    var days = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+    var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    document.getElementById('welcome-title').textContent = '¡Hola, ' + client.name + '!';
+    document.getElementById('welcome-date').textContent =
+        days[now.getDay()] + ' ' + now.getDate() + ' de ' + months[now.getMonth()] + ' ' + now.getFullYear();
+
+    var calendar = getData('calendar-' + client.id) || [];
+
+    // ── MODO DEMO: si no hay datos, inyectar contenido de ejemplo ─────────
+    if (!calendar.length && client.demoMode !== false) {
+        calendar = generateDemoCalendar();
+    }
+
+    renderStats(calendar);
+    renderContent(calendar);
+    renderChart(calendar);
+    renderInsights(calendar, client);
+
+    document.getElementById('chart-period').textContent =
+        months[now.getMonth()].charAt(0).toUpperCase() + months[now.getMonth()].slice(1) + ' ' + now.getFullYear();
+
+    // Nuevas secciones
+    renderServiceBanner(client);
+    renderObjetivo(client);
+    renderUpcoming(calendar);
+    renderBest(calendar);
+    renderActivity(client, calendar);
+    renderTips(calendar, client);
+    renderActions(client);
+    renderContact(client);
+
+    // Cargar notificaciones
+    loadPortalNotifications(client.id);
+
+    // Tour automático en primer ingreso
+    if (typeof window._checkAutoTour === 'function') {
+        window._checkAutoTour();
+    }
+}
+
+// ── STATS ──────────────────────────────────────────
+// Guardar calendario globalmente para el drawer
+var _portalCalendar = [];
+
+function renderStats(calendar) {
+    _portalCalendar = calendar;
+    var now = new Date();
+    var thisMonth = calendar.filter(function(c) {
+        return c.date && c.date.startsWith(now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0'));
+    });
+    var published  = thisMonth.filter(function(c){ return c.status === 'published'; });
+    var scheduled  = thisMonth.filter(function(c){ return c.status === 'scheduled'; });
+    var inProgress = thisMonth.filter(function(c){ return ['design','correction'].includes(c.status); });
+
+    var withMetrics = calendar.filter(function(c){ return c.metrics; });
+    var totalReach = withMetrics.reduce(function(s,c){
+        return s + ((c.metrics.instagram ? c.metrics.instagram.reach||0 : 0)
+                  + (c.metrics.facebook  ? c.metrics.facebook.reach||0  : 0));
+    }, 0);
+
+    // stat() — usa data-drawer para evitar comillas anidadas en onclick
+    function stat(icon, color, bg, label, val, sub, drawerKey) {
+        var drawerAttr = drawerKey ? ' data-drawer="' + drawerKey + '"' : '';
+        var clickableClass = drawerKey ? ' clickable' : '';
+        var arrowHint = drawerKey
+            ? '<div style="position:absolute;top:12px;right:12px;opacity:0;transition:opacity .14s;" class="stat-arrow">'
+              + '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>'
+              + '</div>'
+            : '';
+        return '<div class="stat-card' + clickableClass + '" style="position:relative;overflow:hidden;"' + drawerAttr + '>'
+            + arrowHint
+            + '<div class="stat-icon" style="background:' + bg + ';">'
+            + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + icon + '</svg>'
+            + '</div>'
+            + '<div class="stat-label">' + label + '</div>'
+            + '<div class="stat-val">' + val + '</div>'
+            + (sub ? '<div class="stat-sub" style="color:' + color + ';">' + sub + '</div>' : '')
+            + '</div>';
+    }
+
+    document.getElementById('portal-stats').innerHTML =
+        stat('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>',
+            '#F97316','#FFF7ED','Contenido del mes', thisMonth.length, '', 'all')
+        + stat('<polyline points="20 6 9 17 4 12"/>', '#10B981','#ECFDF5','Publicados', published.length, '✓ este mes', 'published')
+        + stat('<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+            '#3B82F6','#EFF6FF','Programados', scheduled.length, 'próximas piezas', 'scheduled')
+        + stat('<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+            '#8B5CF6','#F5F3FF','Alcance acumulado', totalReach > 999 ? (totalReach/1000).toFixed(1)+'K' : totalReach, 'personas alcanzadas', null);
+
+    // Hover arrow effect
+    var style = document.createElement('style');
+    style.textContent = '.stat-card.clickable:hover .stat-arrow { opacity: 1 !important; }';
+    if (!document.getElementById('stat-hover-style')) {
+        style.id = 'stat-hover-style';
+        document.head.appendChild(style);
+    }
+
+    // Delegated click handler para las tarjetas con data-drawer
+    var statsRow = document.getElementById('portal-stats');
+    if (statsRow && !statsRow._drawerBound) {
+        statsRow._drawerBound = true;
+        statsRow.addEventListener('click', function(e) {
+            var card = e.target.closest('[data-drawer]');
+            if (card) openStatDrawer(card.getAttribute('data-drawer'));
+        });
+    }
+}
+
+// ── DRAWER ──────────────────────────────────────────
+var _drawerConfigs = {
+    all: {
+        title: 'Todo el contenido del mes',
+        color: '#F97316', bg: '#FFF7ED',
+        icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>',
+        filter: function(c) { return true; }
+    },
+    published: {
+        title: 'Publicaciones del mes',
+        color: '#10B981', bg: '#ECFDF5',
+        icon: '<polyline points="20 6 9 17 4 12"/>',
+        filter: function(c) { return c.status === 'published'; }
+    },
+    scheduled: {
+        title: 'Contenido programado',
+        color: '#3B82F6', bg: '#EFF6FF',
+        icon: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+        filter: function(c) { return c.status === 'scheduled'; }
+    }
+};
+
+function openStatDrawer(key) {
+    var cfg = _drawerConfigs[key];
+    if (!cfg) return;
+
+    var now = new Date();
+    var monthKey = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+    var items = _portalCalendar.filter(function(c){
+        return c.date && c.date.startsWith(monthKey) && cfg.filter(c);
+    }).sort(function(a,b){ return new Date(a.date) - new Date(b.date); });
+
+    // Header
+    var iconEl = document.getElementById('drawer-icon');
+    var titleEl = document.getElementById('drawer-title-text');
+    if (iconEl) {
+        iconEl.style.background = cfg.bg;
+        iconEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + cfg.color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + cfg.icon + '</svg>';
+    }
+    if (titleEl) titleEl.textContent = cfg.title + ' (' + items.length + ')';
+
+    // Body
+    var body = document.getElementById('drawer-body');
+    if (!body) return;
+
+    if (!items.length) {
+        body.innerHTML = '<div class="drawer-empty">'
+            + '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto 10px;opacity:.3;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'
+            + '<p style="font-size:13px;">No hay publicaciones en esta categoría</p>'
+            + '</div>';
+    } else {
+        var typeMap = {
+            'reel':     { label:'Reel',     color:'#92400E', bg:'#FEF3C7', border:'#FDE68A' },
+            'carousel': { label:'Carrusel', color:'#1E40AF', bg:'#DBEAFE', border:'#BFDBFE' },
+            'stories':  { label:'Stories',  color:'#5B21B6', bg:'#EDE9FE', border:'#DDD6FE' },
+        };
+        var statusMap = {
+            'published':  { label:'Publicado',  color:'#065F46', bg:'#D1FAE5', border:'#A7F3D0' },
+            'scheduled':  { label:'Programado', color:'#1E40AF', bg:'#DBEAFE', border:'#BFDBFE' },
+            'design':     { label:'En diseño',  color:'#92400E', bg:'#FEF3C7', border:'#FDE68A' },
+            'correction': { label:'Corrección', color:'#92400E', bg:'#FEF3C7', border:'#FDE68A' },
+            'not-started':{ label:'Pendiente',  color:'#374151', bg:'#F3F4F6', border:'#E5E7EB' },
+        };
+
+        body.innerHTML = items.map(function(c, i) {
+            var tp = typeMap[c.type]   || { label: c.type || '—', color:'#374151', bg:'#F3F4F6', border:'#E5E7EB' };
+            var st = statusMap[c.status] || statusMap['not-started'];
+            var dateStr = c.date
+                ? new Date(c.date + 'T00:00:00').toLocaleDateString('es-AR', { weekday:'short', day:'2-digit', month:'short' })
+                : '';
+            var timeStr = c.time ? c.time.substring(0,5) : '';
+
+            // Métricas si tiene
+            var metricsHtml = '';
+            if (c.metrics && c.metrics.instagram) {
+                var ig = c.metrics.instagram;
+                var items2 = [];
+                if (ig.reach)  items2.push('<span style="font-size:11px;color:#6B7280;">Alcance <strong style="color:#0D1117;">' + ig.reach.toLocaleString() + '</strong></span>');
+                if (ig.likes)  items2.push('<span style="font-size:11px;color:#6B7280;">Likes <strong style="color:#0D1117;">' + ig.likes.toLocaleString() + '</strong></span>');
+                if (ig.saves)  items2.push('<span style="font-size:11px;color:#6B7280;">Guardados <strong style="color:#0D1117;">' + ig.saves.toLocaleString() + '</strong></span>');
+                if (items2.length) {
+                    metricsHtml = '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;padding-top:6px;border-top:1px solid #F3F4F6;">'
+                        + items2.join('') + '</div>';
+                }
+            }
+
+            return '<div class="drawer-item">'
+                + '<div class="drawer-item-num" style="background:' + cfg.bg + ';color:' + cfg.color + ';">' + (i+1) + '</div>'
+                + '<div style="flex:1;min-width:0;">'
+                + '<div class="drawer-item-title">' + (c.title || 'Sin título') + '</div>'
+                + '<div class="drawer-item-meta">'
+                + '<span style="font-size:11px;color:#9CA3AF;">' + dateStr + (timeStr ? ' · ' + timeStr : '') + '</span>'
+                + '<span class="drawer-item-badge" style="color:' + tp.color + ';background:' + tp.bg + ';border:1px solid ' + tp.border + ';">' + tp.label + '</span>'
+                + '<span class="drawer-item-badge" style="color:' + st.color + ';background:' + st.bg + ';border:1px solid ' + st.border + ';">' + st.label + '</span>'
+                + '</div>'
+                + metricsHtml
+                + '</div></div>';
+        }).join('');
+    }
+
+    document.getElementById('stat-drawer').classList.add('open');
+    document.getElementById('stat-drawer-overlay').classList.add('open');
+}
+
+function closeStatDrawer() {
+    document.getElementById('stat-drawer').classList.remove('open');
+    document.getElementById('stat-drawer-overlay').classList.remove('open');
+}
+
+// ── CONTENIDO ──────────────────────────────────────
+function renderContent(calendar) {
+    var now = new Date();
+    var thisMonth = calendar.filter(function(c) {
+        return c.date && c.date.startsWith(now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0'));
+    }).sort(function(a,b){ return new Date(a.date) - new Date(b.date); });
+
+    document.getElementById('content-count-badge').textContent = thisMonth.length;
+
+    if (!thisMonth.length) return;
+
+    var statusMap = {
+        'published': { dot: 'dot-published', label: 'Publicado', color: '#065F46', bg: '#D1FAE5', border: '#A7F3D0' },
+        'scheduled': { dot: 'dot-scheduled', label: 'Programado', color: '#1E40AF', bg: '#DBEAFE', border: '#BFDBFE' },
+        'design':    { dot: 'dot-design',    label: 'En diseño', color: '#92400E', bg: '#FEF3C7', border: '#FDE68A' },
+        'correction':{ dot: 'dot-design',    label: 'Corrección', color: '#92400E', bg: '#FEF3C7', border: '#FDE68A' },
+        'not-started':{ dot: 'dot-pending',  label: 'Pendiente', color: '#374151', bg: '#F3F4F6', border: '#E5E7EB' },
+    };
+    var typeMap = {
+        'reel':     { label: 'Reel',     color: '#92400E', bg: '#FEF3C7', border: '#FDE68A' },
+        'carousel': { label: 'Carrusel', color: '#1E40AF', bg: '#DBEAFE', border: '#BFDBFE' },
+        'stories':  { label: 'Stories',  color: '#5B21B6', bg: '#EDE9FE', border: '#DDD6FE' },
+    };
+
+    var html = thisMonth.slice(0, 12).map(function(c) {
+        var st = statusMap[c.status] || statusMap['not-started'];
+        var tp = typeMap[c.type]   || { label: c.type, color: '#374151', bg: '#F3F4F6', border: '#E5E7EB' };
+        var dateStr = c.date ? new Date(c.date + 'T00:00:00').toLocaleDateString('es-AR', { day:'2-digit', month:'short' }) : '';
+        return '<div class="content-item">'
+            + '<div class="content-status-dot ' + st.dot + '" style="margin-top:5px;"></div>'
+            + '<div class="content-info">'
+            + '<div class="content-title">' + (c.title || 'Sin título') + '</div>'
+            + '<div class="content-meta">'
+            + '<span>' + dateStr + (c.time ? ' ' + c.time.substring(0,5) : '') + '</span>'
+            + '<span class="content-badge" style="color:' + tp.color + ';background:' + tp.bg + ';border:1px solid ' + tp.border + ';">' + tp.label + '</span>'
+            + '<span class="content-badge" style="color:' + st.color + ';background:' + st.bg + ';border:1px solid ' + st.border + ';">' + st.label + '</span>'
+            + '</div></div></div>';
+    }).join('');
+
+    document.getElementById('portal-content-list').innerHTML = html;
+}
+
+// ── GRÁFICO ────────────────────────────────────────
+function renderChart(calendar) {
+    var withMetrics = calendar.filter(function(c){ return c.metrics; });
+    if (!withMetrics.length) {
+        document.querySelector('.chart-wrap').innerHTML =
+            '<div class="empty-state"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><p>Métricas disponibles cuando se publique contenido</p></div>';
+        return;
+    }
+
+    var last8 = withMetrics.slice(-8);
+    var labels = last8.map(function(c){ return c.date ? c.date.substring(5) : ''; });
+    var igReach = last8.map(function(c){ return (c.metrics.instagram ? c.metrics.instagram.reach||0 : 0); });
+    var fbReach = last8.map(function(c){ return (c.metrics.facebook  ? c.metrics.facebook.reach||0  : 0); });
+
+    var ctx = document.getElementById('portal-chart').getContext('2d');
+    if (portalChartInstance) portalChartInstance.destroy();
+    portalChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Instagram', data: igReach,
+                    borderColor: '#F97316', backgroundColor: 'rgba(249,115,22,.08)',
+                    borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#F97316',
+                    fill: true, tension: .4
+                },
+                {
+                    label: 'Facebook', data: fbReach,
+                    borderColor: '#3B82F6', backgroundColor: 'rgba(59,130,246,.06)',
+                    borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#3B82F6',
+                    fill: true, tension: .4
+                }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { labels: { font: { family: 'Inter', size: 11 }, boxWidth: 12, padding: 16 } }
+            },
+            scales: {
+                x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 11 }, color: '#9CA3AF' } },
+                y: { grid: { color: '#F3F4F6' }, ticks: { font: { family: 'Inter', size: 11 }, color: '#9CA3AF' }, beginAtZero: true }
+            }
+        }
+    });
+}
+
+// ── INSIGHTS ───────────────────────────────────────
+function renderInsights(calendar, client) {
+    var insights = [];
+    var withMetrics = calendar.filter(function(c){ return c.metrics; });
+
+    if (!withMetrics.length) {
+        insights.push({
+            icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+            color: '#3B82F6', bg: '#EFF6FF',
+            title: 'Métricas en camino',
+            text: 'A medida que se publique y mida el contenido, acá vas a ver análisis de qué funciona mejor para tu cuenta.'
+        });
+    } else {
+        var reels = withMetrics.filter(function(c){ return c.type === 'reel'; });
+        var carousels = withMetrics.filter(function(c){ return c.type === 'carousel'; });
+
+        var avgReelReach = reels.length ? Math.round(reels.reduce(function(s,c){
+            return s + (c.metrics.instagram ? c.metrics.instagram.reach||0 : 0);
+        }, 0) / reels.length) : 0;
+
+        var avgCarReach = carousels.length ? Math.round(carousels.reduce(function(s,c){
+            return s + (c.metrics.instagram ? c.metrics.instagram.reach||0 : 0);
+        }, 0) / carousels.length) : 0;
+
+        if (avgReelReach > avgCarReach && reels.length) {
+            insights.push({ icon: '<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>',
+                color: '#F97316', bg: '#FFF7ED', title: 'Los Reels generan más alcance',
+                text: 'Tus Reels tienen un alcance promedio de <strong>' + avgReelReach.toLocaleString() + ' personas</strong> vs ' + avgCarReach.toLocaleString() + ' en carruseles. Seguimos priorizando ese formato.' });
+        } else if (carousels.length) {
+            insights.push({ icon: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>',
+                color: '#3B82F6', bg: '#EFF6FF', title: 'Los Carruseles funcionan mejor',
+                text: 'Los carruseles están generando más alcance que los Reels en este período. Esto es buena señal de engagement de calidad.' });
+        }
+
+        var topContent = withMetrics.sort(function(a,b){
+            return ((b.metrics.instagram ? b.metrics.instagram.reach||0 : 0)) - ((a.metrics.instagram ? a.metrics.instagram.reach||0 : 0));
+        })[0];
+        if (topContent) {
+            insights.push({ icon: '<polyline points="20 6 9 17 4 12"/>',
+                color: '#10B981', bg: '#ECFDF5', title: 'Tu mejor publicación del mes',
+                text: '<strong>"' + topContent.title + '"</strong> alcanzó ' + (topContent.metrics.instagram ? (topContent.metrics.instagram.reach||0).toLocaleString() : 0) + ' personas. Analizamos su estructura para replicar el éxito.' });
+        }
+
+        var saves = withMetrics.reduce(function(s,c){ return s + (c.metrics.instagram ? c.metrics.instagram.saves||0 : 0); }, 0);
+        if (saves > 0) {
+            insights.push({ icon: '<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>',
+                color: '#8B5CF6', bg: '#F5F3FF', title: 'Tu contenido se está guardando',
+                text: '<strong>' + saves + ' guardados totales</strong> en el período. Cuando alguien guarda una publicación significa que el contenido tiene valor real para esa persona.' });
+        }
+    }
+
+    if (!insights.length) return;
+
+    document.getElementById('portal-insights').innerHTML = insights.map(function(i) {
+        return '<div class="insight-item">'
+            + '<div class="insight-icon" style="background:' + i.bg + ';">'
+            + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="' + i.color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + i.icon + '</svg>'
+            + '</div>'
+            + '<div><div style="font-size:12px;font-weight:700;color:var(--text-1);margin-bottom:3px;">' + i.title + '</div>'
+            + '<div class="insight-text">' + i.text + '</div></div>'
+            + '</div>';
+    }).join('');
+}
+
+// ── NOTIFICACIONES DEL CLIENTE ────────────────────
+function loadPortalNotifications(clientId) {
+    var key = 'bondi-client-notifications-' + clientId;
+    var notifs = [];
+    try { notifs = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
+
+    var dot    = document.getElementById('portal-notif-dot');
+    var list   = document.getElementById('portal-notif-list');
+    var unread = notifs.filter(function(n){ return !n.read; }).length;
+
+    if (dot) dot.style.display = unread > 0 ? 'block' : 'none';
+
+    if (!list) return;
+
+    if (!notifs.length) {
+        list.innerHTML = '<div style="text-align:center;padding:28px 16px;color:#9CA3AF;">'
+            + '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto 8px;opacity:.4;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>'
+            + '<p style="font-size:12px;">Sin notificaciones</p></div>';
+        return;
+    }
+
+    var typeConfig = {
+        success: { bg: '#ECFDF5', color: '#10B981', icon: '<polyline points="20 6 9 17 4 12"/>' },
+        warning: { bg: '#FFFBEB', color: '#F59E0B', icon: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' },
+        info:    { bg: '#EFF6FF', color: '#3B82F6', icon: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>' },
+        danger:  { bg: '#FEF2F2', color: '#EF4444', icon: '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>' },
+    };
+
+    list.innerHTML = notifs.map(function(n) {
+        var tc = typeConfig[n.type] || typeConfig.info;
+        var date = new Date(n.createdAt);
+        var timeStr = date.toLocaleDateString('es-AR', { day:'2-digit', month:'short' })
+            + ' ' + date.toLocaleTimeString('es-AR', { hour:'2-digit', minute:'2-digit' });
+        return '<div class="notif-item' + (n.read ? '' : ' unread') + '">'
+            + (n.read ? '' : '<div class="notif-dot"></div>')
+            + '<div class="notif-icon" style="background:' + tc.bg + ';">'
+            + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + tc.color + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' + tc.icon + '</svg>'
+            + '</div>'
+            + '<div style="flex:1;min-width:0;">'
+            + '<div class="notif-msg">' + (n.message || '') + '</div>'
+            + (n.detail ? '<div class="notif-detail">' + n.detail + '</div>' : '')
+            + '<div class="notif-time">' + timeStr + '</div>'
+            + '</div></div>';
+    }).join('');
+}
+
+function togglePortalNotifications() {
+    var dd = document.getElementById('portal-notif-dropdown');
+    if (!dd) return;
+    var isOpen = dd.style.display !== 'none';
+    dd.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen && portalClient) {
+        loadPortalNotifications(portalClient.id);
+    }
+}
+
+function markAllNotificationsRead() {
+    if (!portalClient) return;
+    var key = 'bondi-client-notifications-' + portalClient.id;
+    var notifs = [];
+    try { notifs = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
+    notifs = notifs.map(function(n){ return Object.assign({}, n, { read: true }); });
+    localStorage.setItem(key, JSON.stringify(notifs));
+    loadPortalNotifications(portalClient.id);
+    var dd = document.getElementById('portal-notif-dropdown');
+    if (dd) loadPortalNotifications(portalClient.id);
+}
+
+// Cerrar dropdown al clickear afuera
+document.addEventListener('click', function(e) {
+    var dd  = document.getElementById('portal-notif-dropdown');
+    var btn = document.getElementById('portal-notif-btn');
+    if (dd && btn && !dd.contains(e.target) && !btn.contains(e.target)) {
+        dd.style.display = 'none';
+    }
+});
+
+// ── ESTADO DEL SERVICIO ────────────────────────────
+function renderServiceBanner(client) {
+    var wrap = document.getElementById('service-banner-wrap');
+    if (!wrap) return;
+    
+    // ── OBTENER LICENCIA DE SASC ──
+    var data = { licenses: {} };
+    try { data = JSON.parse(localStorage.getItem('bondi-licensing-data') || '{"licenses":{}}'); } catch(e){}
+    var lic = data.licenses && data.licenses[client.id] ? data.licenses[client.id] : null;
+    
+    var active = client.portalAccess === 'active';
+    var since = client.createdAt ? new Date(client.createdAt).toLocaleDateString('es-AR',{month:'long',year:'numeric'}) : '';
+    var plats = client.platforms || ['Instagram','Facebook'];
+    
+    // Priorizar nombre de plan de la licencia
+    var planName = (lic && lic.planName) ? lic.planName : (client.planName || 'Plan Estratégico');
+    
+    // SaaS Plus: Detalle de inversión para planes de pago
+    var investmentDetail = '';
+    if (lic && lic.status !== 'demo' && !lic.isDemo && lic.price) {
+        var subType = lic.subscriptionType === 'annual' ? 'Anual' : 'Mensual';
+        investmentDetail = '<span style="font-size:12px;color:rgba(255,255,255,0.7);margin-left:12px;background:rgba(255,255,255,0.1);padding:3px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.15); font-weight:600;">$' + lic.price + ' / ' + subType + '</span>';
+    }
+
+    // Calcular días restantes
+    var expiryLabel = '';
+    if (lic && lic.expiryDate) {
+        var today = new Date(); today.setHours(0,0,0,0);
+        var expiryDate = new Date(lic.expiryDate); expiryDate.setHours(0,0,0,0);
+        var diff = expiryDate.getTime() - today.getTime();
+        var days = Math.max(0, Math.round(diff / (1000 * 60 * 60 * 24)));
+        if (days > 0) {
+            expiryLabel = '<span style="font-size:11px;color:rgba(255,255,255,0.6);margin-left:8px;font-weight:500;">(Vence en ' + days + ' días)</span>';
+        } else {
+            expiryLabel = '<span style="font-size:11px;color:#FCA5A5;margin-left:8px;font-weight:700;">(Expirado)</span>';
+        }
+    }
+
+    wrap.innerHTML = '<div class="service-banner">'
+        + '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'
+        + '<span class="service-badge ' + (active?'active':'paused') + '">'
+        + '<svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>'
+        + (active ? 'Servicio activo' : 'Servicio pausado')
+        + '</span>'
+        + '<span style="font-size:14px;font-weight:700;color:#fff;">' + planName + '</span>'
+        + investmentDetail
+        + expiryLabel
+        + '</div>'
+        + '<div class="service-meta">'
+        + (since ? '<div class="service-meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Desde <strong>' + since + '</strong></div>' : '')
+        + '<div class="service-meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg><strong>' + plats.join(' · ') + '</strong></div>'
+        + '</div>'
+        + '</div>';
+}
+
+// ── OBJETIVO DEL MES ────────────────────────────────
+function renderObjetivo(client) {
+    var wrap = document.getElementById('objetivo-wrap');
+    if (!wrap) return;
+    var objetivo = client.objetivoMes;
+    if (!objetivo) { wrap.innerHTML = ''; return; }
+    var icons = {
+        alcance:   '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+        consultas: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+        posicion:  '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+        marca:     '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+    };
+    var icon = icons[objetivo.tipo] || icons.alcance;
+    wrap.innerHTML = '<div class="objetivo-banner">'
+        + '<div class="objetivo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + icon + '</svg></div>'
+        + '<div><div class="objetivo-label">Objetivo del mes</div><div class="objetivo-text">' + objetivo.texto + '</div></div>'
+        + '</div>';
+}
+
+// ── PRÓXIMAS PUBLICACIONES ──────────────────────────
+function renderUpcoming(calendar) {
+    var el = document.getElementById('portal-upcoming');
+    if (!el) return;
+    var now = new Date();
+    var upcoming = calendar.filter(function(c) {
+        if (!c.date) return false;
+        var d = new Date(c.date + 'T00:00:00');
+        var diff = Math.floor((d - now) / 86400000);
+        return diff >= 0 && diff <= 14 && c.status !== 'published';
+    }).sort(function(a,b){ return new Date(a.date) - new Date(b.date); }).slice(0,4);
+
+    if (!upcoming.length) {
+        el.innerHTML = '<div class="empty-state"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Sin publicaciones en los próximos 14 días</p></div>';
+        return;
+    }
+
+    var typeColors = { reel:'#92400E,#FEF3C7', carousel:'#1E40AF,#DBEAFE', stories:'#5B21B6,#EDE9FE' };
+    var months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+
+    el.innerHTML = upcoming.map(function(c) {
+        var d = new Date(c.date + 'T00:00:00');
+        var tc = (typeColors[c.type] || '').split(',');
+        var typeLabel = c.type === 'reel' ? 'Reel' : c.type === 'carousel' ? 'Carrusel' : 'Stories';
+        return '<div class="upcoming-item">'
+            + '<div class="upcoming-date-box">'
+            + '<div class="upcoming-date-day">' + d.getDate() + '</div>'
+            + '<div class="upcoming-date-month">' + months[d.getMonth()] + '</div>'
+            + '</div>'
+            + '<div class="upcoming-info">'
+            + '<div class="upcoming-title">' + (c.title||'Sin título') + '</div>'
+            + '<div style="display:flex;align-items:center;gap:6px;margin-top:3px;">'
+            + (tc[0] ? '<span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;color:' + tc[0] + ';background:' + tc[1] + ';">' + typeLabel + '</span>' : '')
+            + '<span class="upcoming-time">' + (c.time ? c.time.substring(0,5) : '') + '</span>'
+            + '</div></div></div>';
+    }).join('');
+}
+
+// ── MEJORES PUBLICACIONES ───────────────────────────
+function renderBest(calendar) {
+    var el = document.getElementById('portal-best');
+    if (!el) return;
+    var withMetrics = calendar.filter(function(c){ return c.metrics && c.metrics.instagram; });
+    if (!withMetrics.length) {
+        el.innerHTML = '<div class="empty-state"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><p>Se mostrará cuando haya métricas cargadas</p></div>';
+        return;
+    }
+    var top = withMetrics.sort(function(a,b){
+        return ((b.metrics.instagram.reach||0) + (b.metrics.instagram.saves||0)*2)
+             - ((a.metrics.instagram.reach||0) + (a.metrics.instagram.saves||0)*2);
+    }).slice(0,3);
+    var medals = ['#F59E0B','#9CA3AF','#CD7C3C'];
+    var medalBg = ['#FFFBEB','#F3F4F6','#FFF7ED'];
+    el.innerHTML = top.map(function(c,i) {
+        var reach = c.metrics.instagram.reach || 0;
+        var saves = c.metrics.instagram.saves || 0;
+        return '<div class="best-item">'
+            + '<div class="best-rank" style="background:' + medalBg[i] + ';color:' + medals[i] + ';">' + (i+1) + '</div>'
+            + '<div style="flex:1;min-width:0;">'
+            + '<div style="font-size:12px;font-weight:600;color:var(--text-1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + (c.title||'Sin título') + '</div>'
+            + '<div style="font-size:10px;color:var(--text-3);margin-top:1px;">' + (c.date||'') + '</div>'
+            + '</div>'
+            + '<div class="best-metric">' + (reach > 999 ? (reach/1000).toFixed(1)+'K' : reach) + ' alcance</div>'
+            + '</div>';
+    }).join('');
+}
+
+// ── FEED DE ACTIVIDAD ───────────────────────────────
+function renderActivity(client, calendar) {
+    var el = document.getElementById('portal-activity');
+    if (!el) return;
+
+    var actKey = 'bondi-portal-activity-' + client.id;
+    var stored = [];
+    try { stored = JSON.parse(localStorage.getItem(actKey) || '[]'); } catch(e) {}
+
+    // Auto-generar actividad desde el calendario si no hay registros
+    if (!stored.length) {
+        var recent = calendar.filter(function(c){ return c.status === 'published' || c.metrics; })
+            .sort(function(a,b){ return new Date(b.date||0) - new Date(a.date||0); }).slice(0,4);
+        stored = recent.map(function(c) {
+            return {
+                type: c.metrics ? 'metrics' : 'content',
+                text: c.metrics ? 'Se cargaron métricas para <strong>"' + (c.title||'publicación') + '"</strong>' : '<strong>"' + (c.title||'Publicación') + '"</strong> fue publicada',
+                date: c.date || new Date().toISOString().split('T')[0]
+            };
+        });
+        if (!stored.length) {
+            stored = [{ type:'start', text:'El equipo de <strong>Bondi Media</strong> comenzó a trabajar en tu cuenta', date: client.createdAt ? client.createdAt.split('T')[0] : new Date().toISOString().split('T')[0] }];
+        }
+    }
+
+    var typeIcons = {
+        content: { bg:'#EFF6FF', color:'#3B82F6', svg:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>' },
+        metrics: { bg:'#ECFDF5', color:'#10B981', svg:'<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>' },
+        start:   { bg:'#FFF7ED', color:'#F97316', svg:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>' },
+        strategy:{ bg:'#F5F3FF', color:'#8B5CF6', svg:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>' },
+    };
+
+    el.innerHTML = stored.slice(0,5).map(function(a) {
+        var ic = typeIcons[a.type] || typeIcons.content;
+        var dateStr = a.date ? new Date(a.date + 'T00:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'short'}) : '';
+        return '<div class="activity-item">'
+            + '<div class="activity-icon" style="background:' + ic.bg + ';">'
+            + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + ic.color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ic.svg + '</svg>'
+            + '</div>'
+            + '<div style="flex:1;">'
+            + '<div class="activity-text">' + a.text + '</div>'
+            + '<div class="activity-time">' + dateStr + '</div>'
+            + '</div></div>';
+    }).join('');
+}
+
+// ── TIPS DEL MES ────────────────────────────────────
+function renderTips(calendar, client) {
+    var el = document.getElementById('portal-tips');
+    if (!el) return;
+
+    // Tips personalizados si están definidos en el cliente
+    var customTips = client.tipsDelMes || [];
+
+    // Tips automáticos según métricas
+    var autoTips = [];
+    var withM = calendar.filter(function(c){ return c.metrics && c.metrics.instagram; });
+    if (withM.length) {
+        var avgSaves = withM.reduce(function(s,c){ return s + (c.metrics.instagram.saves||0); }, 0) / withM.length;
+        if (avgSaves < 10) autoTips.push('Terminá tus Reels con una pregunta directa o una instrucción clara — "guardalo para cuando lo necesites". Los posts con CTA de guardado tienen hasta 3x más saves.');
+        var avgComments = withM.reduce(function(s,c){ return s + (c.metrics.instagram.comments||0); }, 0) / withM.length;
+        if (avgComments < 5) autoTips.push('Respondé cada comentario en las primeras 2 horas de publicado. Instagram interpreta esa actividad como señal de contenido relevante y le da más alcance orgánico.');
+    }
+
+    // Tips genéricos por defecto
+    var defaultTips = [
+        'Publicá tus Stories entre semana entre las 19 y 21hs — es cuando tu audiencia está más activa y predispuesta a interactuar.',
+        'Activá el link de WhatsApp en tu bio si no lo tenés. Es el paso más corto entre un seguidor y un nuevo paciente o cliente.',
+        'Cuando alguien te envíe un DM, respondé dentro de la primera hora. Las respuestas rápidas tienen hasta 5x más chances de convertir en consulta.'
+    ];
+
+    var tips = (customTips.length ? customTips : autoTips.concat(defaultTips)).slice(0,3);
+
+    el.innerHTML = tips.map(function(tip, i) {
+        return '<div class="tip-item">'
+            + '<div class="tip-num">' + (i+1) + '</div>'
+            + '<div class="tip-text">' + tip + '</div>'
+            + '</div>';
+    }).join('');
+}
+
+// ── ACCIONES DEL CLIENTE ────────────────────────────
+function renderActions(client) {
+    var el = document.getElementById('portal-actions');
+    if (!el) return;
+    var wa = client.whatsapp || '';
+    var email = client.contactEmail || '';
+
+    el.innerHTML = '';
+
+    function makeBtn(icon, label, clickFn) {
+        var btn = document.createElement('button');
+        btn.className = 'action-btn';
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--client-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + icon + '</svg>' + label;
+        btn.addEventListener('click', clickFn);
+        el.appendChild(btn);
+    }
+
+    if (wa) {
+        makeBtn('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>','Consultar al equipo', function() {
+            var num = wa.replace(/[^0-9]/g,'');
+            window.open('https://wa.me/' + num + '?text=Hola!%20Tengo%20una%20consulta%20sobre%20mi%20cuenta.', '_blank');
+        });
+    }
+    if (email) {
+        makeBtn('<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>','Enviar email', function() {
+            window.open('mailto:' + email + '?subject=Consulta%20portal', '_blank');
+        });
+    }
+    makeBtn('<polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>','Imprimir / PDF', function() {
+        window.print();
+    });
+}
+
+// ── TARJETA DE CONTACTO ─────────────────────────────
+function renderContact(client) {
+    var el = document.getElementById('portal-contact');
+    if (!el) return;
+    var ref = client.referente || {};
+    if (!ref.nombre && !client.contactName) { el.innerHTML = ''; return; }
+
+    var nombre  = ref.nombre  || client.contactName || 'Bondi Media';
+    var rol     = ref.rol     || 'Tu referente en Bondi Media';
+    var foto    = ref.foto    || null;
+    var initials = nombre.split(' ').map(function(w){ return w[0]; }).slice(0,2).join('').toUpperCase();
+    var wa      = ref.whatsapp || client.whatsapp || '';
+    var horario = ref.horario  || 'Lun–Vie 9 a 18hs';
+
+    el.innerHTML = '<div class="contact-card">'
+        + '<div class="contact-avatar">'
+        + (foto ? '<img src="' + foto + '" style="width:100%;height:100%;object-fit:cover;">' : initials)
+        + '</div>'
+        + '<div style="flex:1;">'
+        + '<div class="contact-name">' + nombre + '</div>'
+        + '<div class="contact-role">' + rol + '</div>'
+        + '<div style="font-size:11px;color:var(--text-3);margin-top:2px;">' + horario + '</div>'
+        + '<div class="contact-actions">'
+        + (wa ? '<a href="https://wa.me/' + wa.replace(/[^0-9]/g,'') + '" target="_blank" class="contact-btn contact-btn-primary">WhatsApp</a>' : '')
+        + '</div>'
+        + '</div>'
+        + '</div>';
+}
+
+// ── MODO DEMO — datos de ejemplo ─────────────────
+function generateDemoCalendar() {
+    var now  = new Date();
+    var y    = now.getFullYear();
+    var m    = String(now.getMonth() + 1).padStart(2, '0');
+    var mp   = String(now.getMonth()).padStart(2, '0') || '12';
+    var yp   = now.getMonth() === 0 ? y - 1 : y;
+
+    function d(day, past) {
+        var month = past ? (now.getMonth() === 0 ? '12' : String(now.getMonth()).padStart(2,'0')) : m;
+        var year  = past ? (now.getMonth() === 0 ? y-1 : y) : y;
+        return year + '-' + month + '-' + String(day).padStart(2,'0');
+    }
+
+    return [
+        // Publicados este mes con métricas
+        { id:'demo1', title:'Guía completa para empezar', type:'carousel', status:'published', date:d(3), time:'10:00',
+          metrics:{ instagram:{ reach:2840, likes:187, comments:24, saves:98, views:2840, interactions:309 },
+                    facebook:{  reach:1200, reactions:45, comments:8, shares:12 } } },
+        { id:'demo2', title:'El error más común que veo', type:'reel', status:'published', date:d(7), time:'19:00',
+          metrics:{ instagram:{ reach:5120, likes:412, comments:56, saves:203, views:8900, interactions:671,
+                                video:{ avgWatchTime:18, retention:72, first3s:85 } },
+                    facebook:{  reach:2100, reactions:89, comments:19, shares:34 } } },
+        { id:'demo3', title:'Historias de la semana', type:'stories', status:'published', date:d(10), time:'11:00',
+          metrics:{ instagram:{ reach:1650, interactions:89 }, facebook:{ reach:720, reactions:23 } } },
+        { id:'demo4', title:'Tips rápidos para esta semana', type:'reel', status:'published', date:d(14), time:'19:30',
+          metrics:{ instagram:{ reach:3780, likes:298, comments:41, saves:156, views:6200, interactions:495,
+                                video:{ avgWatchTime:22, retention:68, first3s:79 } },
+                    facebook:{  reach:1560, reactions:67, comments:14, shares:21 } } },
+        // En producción
+        { id:'demo5', title:'Preguntas frecuentes respondidas', type:'carousel', status:'design', date:d(18), time:'10:00' },
+        { id:'demo6', title:'Detrás de escenas', type:'reel', status:'correction', date:d(21), time:'19:00' },
+        // Programados
+        { id:'demo7', title:'Caso de éxito del mes', type:'reel', status:'scheduled', date:d(now.getDate()+2 > 28 ? 25 : now.getDate()+2), time:'19:00' },
+        { id:'demo8', title:'Tips para la semana', type:'carousel', status:'scheduled', date:d(now.getDate()+5 > 28 ? 27 : now.getDate()+5), time:'10:00' },
+        { id:'demo9', title:'Historias interactivas', type:'stories', status:'scheduled', date:d(now.getDate()+7 > 28 ? 28 : now.getDate()+7), time:'12:00' },
+    ];
+}
+
+
+// ══════════════════════════════════════════════════════
+// TOUR GUIADO — Portal del cliente Bondi Media
+// ══════════════════════════════════════════════════════
+var _tourStep = 0;
+var _tourActive = false;
+
+var TOUR_STEPS = [
+    {
+        target: 'service-banner-wrap',
+        icon: '#0C1220',
+        iconSvg: '<polyline points="20 6 9 17 4 12"/>',
+        iconColor: '#6EE7B7',
+        title: 'Estado de tu servicio',
+        desc: 'Este banner muestra el <strong>estado actual de tu contrato</strong> con Bondi Media: el plan que tenés activo, desde qué fecha trabajamos juntos y en qué plataformas estamos publicando. Si ves el punto verde, tu servicio está activo y en marcha.'
+    },
+    {
+        target: 'objetivo-wrap',
+        icon: '#FFF7ED',
+        iconSvg: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+        iconColor: '#F97316',
+        title: 'Objetivo del mes',
+        desc: 'Cada mes el equipo de Bondi Media define <strong>un foco estratégico</strong> para tu contenido. Puede ser aumentar el alcance, generar más consultas o fortalecer tu marca. Todo el contenido del mes está alineado con ese objetivo.'
+    },
+    {
+        target: 'tour-stats-title',
+        icon: '#EFF6FF',
+        iconSvg: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+        iconColor: '#3B82F6',
+        title: 'Resumen del mes',
+        desc: 'Cuatro números clave del mes en curso: <strong>total de piezas planificadas</strong>, cuántas ya fueron publicadas, cuántas están programadas para los próximos días, y el <strong>alcance acumulado</strong> (personas únicas que vieron tu contenido en todas las plataformas). Hacé clic en cualquier card para ver el detalle de las publicaciones de esa categoría.'
+    },
+    {
+        target: 'tour-chart',
+        icon: '#FFF7ED',
+        iconSvg: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+        iconColor: '#F97316',
+        title: 'Gráfico de performance',
+        desc: 'Muestra la evolución del <strong>alcance en Instagram y Facebook</strong> de las últimas publicaciones con métricas cargadas. La línea naranja es Instagram, la azul es Facebook. Te permite ver de un vistazo si el contenido está creciendo, estable o bajó.'
+    },
+    {
+        target: 'portal-upcoming',
+        icon: '#EFF6FF',
+        iconSvg: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+        iconColor: '#3B82F6',
+        title: 'Próximas publicaciones',
+        desc: 'Las piezas de contenido que se publicarán en los <strong>próximos 14 días</strong>. Cada card muestra la fecha exacta, el título y el tipo de publicación (Reel, Carrusel o Stories). Así sabés con anticipación qué viene y podés prepararte si el contenido requiere tu participación.'
+    },
+    {
+        target: 'tour-content',
+        icon: '#EFF6FF',
+        iconSvg: '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+        iconColor: '#3B82F6',
+        title: 'Contenido del mes',
+        desc: 'La lista completa del contenido planificado para el mes. Cada pieza muestra su <strong>estado de producción</strong>: Publicado (ya está en tus redes), Programado (listo y agendado), En diseño (en producción) o Pendiente. Los badges de color te ayudan a identificarlos de un vistazo.'
+    },
+    {
+        target: 'portal-insights',
+        icon: '#F5F3FF',
+        iconSvg: '<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/>',
+        iconColor: '#8B5CF6',
+        title: 'Insights del contenido',
+        desc: 'Análisis automático basado en tus métricas: cuál fue tu <strong>formato más efectivo</strong> del mes, qué publicación generó más guardados, y cuántas personas guardaron tu contenido en total. Estos datos guían las decisiones del equipo para el mes siguiente.'
+    },
+    {
+        target: 'portal-tips',
+        icon: '#FFFBEB',
+        iconSvg: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+        iconColor: '#F59E0B',
+        title: 'Tips del mes',
+        desc: 'Tres recomendaciones concretas que el equipo seleccionó para vos este mes. Son acciones que <strong>podés hacer vos mismo</strong> — fuera del contenido que maneja Bondi Media — para potenciar los resultados: horarios de publicación, respuesta a comentarios, optimización de bio, etc.'
+    },
+    {
+        target: 'portal-best',
+        icon: '#FFF7ED',
+        iconSvg: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+        iconColor: '#F97316',
+        title: 'Mejores publicaciones',
+        desc: 'El <strong>top 3 histórico</strong> de tu cuenta: las publicaciones que más alcance y guardados generaron de todos los meses trabajados juntos. Esto te permite ver de un vistazo qué tipo de contenido conecta mejor con tu audiencia y por qué seguimos apostando a esos formatos.'
+    },
+    {
+        target: 'portal-activity',
+        icon: '#ECFDF5',
+        iconSvg: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+        iconColor: '#10B981',
+        title: 'Actividad reciente',
+        desc: 'Un <strong>registro cronológico</strong> de todo lo que el equipo hizo en tu cuenta: publicaciones lanzadas, métricas cargadas, estrategias actualizadas. Si en algún momento querés saber "¿qué hicieron esta semana?", acá lo encontrás.'
+    },
+    {
+        target: 'portal-actions',
+        icon: '#EFF6FF',
+        iconSvg: '<polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+        iconColor: '#3B82F6',
+        title: 'Acciones rápidas',
+        desc: 'Botones para <strong>comunicarte directamente</strong> con el equipo de Bondi Media: abrir WhatsApp con un mensaje pre-cargado, enviar un email, o guardar este portal como PDF para tener una copia en papel del reporte del mes. También podés imprimir el reporte completo desde acá.'
+    },
+    {
+        target: 'portal-contact',
+        icon: '#FFF7ED',
+        iconSvg: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+        iconColor: '#F97316',
+        title: 'Tu referente en Bondi Media',
+        desc: 'La persona <strong>a cargo de tu cuenta</strong>: nombre, rol y horario de atención. El botón de WhatsApp te conecta directamente con ella para cualquier consulta sobre el contenido, cambios de estrategia o novedades. Esta es tu línea directa con el equipo.'
+    },
+    {
+        target: 'portal-notif-btn',
+        icon: '#0C1220',
+        iconSvg: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+        iconColor: '#F97316',
+        title: 'Notificaciones',
+        desc: 'La <strong>campana en el header</strong> muestra un punto rojo cuando el equipo realizó cambios importantes en tu cuenta: activaciones de servicio, actualizaciones de estado o novedades del equipo. Hacé clic para ver el historial completo de notificaciones.'
+    }
+];
+
+function updateTourBtn() {
+    var btn   = document.getElementById('tour-toggle-btn');
+    var label = document.getElementById('tour-toggle-label');
+    if (!btn) return;
+    if (_tourActive) {
+        btn.classList.add('active');
+        if (label) label.textContent = 'Cerrar tour';
+    } else {
+        btn.classList.remove('active');
+        if (label) label.textContent = 'Tour del portal';
+    }
+}
+
+function toggleTour() {
+    if (_tourActive) {
+        closeTour();
+    } else {
+        startPortalTour();
+    }
+}
+
+function startPortalTour() {
+    _tourStep  = 0;
+    _tourActive = true;
+    document.getElementById('tour-spotlight').style.display = 'block';
+    document.getElementById('tour-tooltip').style.display  = 'block';
+    document.body.style.overflow = 'hidden';
+    updateTourBtn();
+    renderTourStep();
+    sessionStorage.setItem('portal-tour-seen', '1');
+}
+
+function closeTour() {
+    _tourActive = false;
+    document.getElementById('tour-spotlight').style.display = 'none';
+    document.getElementById('tour-tooltip').style.display   = 'none';
+    document.body.style.overflow = '';
+    updateTourBtn();
+}
+
+function tourStep(dir) {
+    var next = _tourStep + dir;
+    if (next < 0) return;
+    if (next >= TOUR_STEPS.length) { closeTour(); return; }
+    _tourStep = next;
+    renderTourStep();
+}
+
+function renderTourStep() {
+    var step   = TOUR_STEPS[_tourStep];
+    var total  = TOUR_STEPS.length;
+    var isLast = _tourStep === total - 1;
+
+    var target = document.getElementById(step.target);
+    var spot   = document.getElementById('tour-spotlight');
+    var tip    = document.getElementById('tour-tooltip');
+    if (!target || !spot || !tip) return;
+
+    // ── 1. Actualizar contenido del tooltip primero ────────────────────────
+    document.getElementById('tour-dots').innerHTML = TOUR_STEPS.map(function(s, i) {
+        return '<div class="tour-dot' + (i === _tourStep ? ' active' : '') + '"></div>';
+    }).join('');
+
+    var iconEl = document.getElementById('tour-icon');
+    iconEl.style.background = step.icon;
+    iconEl.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="'
+        + step.iconColor + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        + step.iconSvg + '</svg>';
+
+    document.getElementById('tour-step-num').textContent   = 'Paso ' + (_tourStep+1) + ' de ' + total;
+    document.getElementById('tour-title').textContent      = step.title;
+    document.getElementById('tour-desc').innerHTML         = step.desc;
+    document.getElementById('tour-prev').disabled          = _tourStep === 0;
+    document.getElementById('tour-next-label').textContent = isLast ? 'Finalizar tour' : 'Siguiente';
+    document.getElementById('tour-next-icon').innerHTML    = isLast
+        ? '<polyline points="20 6 9 17 4 12"/>'
+        : '<polyline points="9 18 15 12 9 6"/>';
+
+    // ── 2. Detectar si el elemento está en el header fijo ─────────────────
+    var isFixed = (function(el) {
+        while (el && el !== document.body) {
+            if (window.getComputedStyle(el).position === 'fixed') return true;
+            el = el.parentElement;
+        }
+        return false;
+    })(target);
+
+    // ── 3. Scroll solo si no es elemento fijo ─────────────────────────────
+    if (!isFixed) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // ── 4. Posicionar spotlight y tooltip tras el scroll ──────────────────
+    function position() {
+        var r      = target.getBoundingClientRect();
+        var pad    = 10;
+        var tipW   = 330;
+        var margin = 14;
+        var vw     = window.innerWidth;
+        var vh     = window.innerHeight;
+
+        // Spotlight
+        spot.style.top    = Math.max(0, r.top    - pad) + 'px';
+        spot.style.left   = Math.max(0, r.left   - pad) + 'px';
+        spot.style.width  = (r.width  + pad * 2) + 'px';
+        spot.style.height = (r.height + pad * 2) + 'px';
+
+        // Medir altura real del tooltip (es visible, flex column)
+        var tipH = Math.min(tip.scrollHeight, vh - margin * 2);
+
+        // ── Horizontal: centrado al elemento, siempre dentro del viewport ──
+        var tLeft = r.left + r.width / 2 - tipW / 2;
+        tLeft = Math.max(margin, Math.min(tLeft, vw - tipW - margin));
+
+        // ── Vertical: 4 intentos en orden de preferencia ──────────────────
+        var gap = 14; // espacio entre spotlight y tooltip
+        var sTop    = Math.max(0, r.top    - pad);
+        var sBottom = r.bottom + pad;
+
+        var tTop;
+        // a) Abajo
+        if (sBottom + gap + tipH <= vh - margin) {
+            tTop = sBottom + gap;
+        }
+        // b) Arriba
+        else if (sTop - gap - tipH >= margin) {
+            tTop = sTop - gap - tipH;
+        }
+        // c) Derecha (si hay espacio horizontal)
+        else if (r.right + pad + gap + tipW <= vw - margin) {
+            tLeft = r.right + pad + gap;
+            tTop  = Math.max(margin, Math.min(r.top - pad, vh - tipH - margin));
+        }
+        // d) Izquierda
+        else if (r.left - pad - gap - tipW >= margin) {
+            tLeft = r.left - pad - gap - tipW;
+            tTop  = Math.max(margin, Math.min(r.top - pad, vh - tipH - margin));
+        }
+        // e) Centrado en pantalla (último recurso)
+        else {
+            tTop  = Math.max(margin, (vh - tipH) / 2);
+            tLeft = Math.max(margin, (vw - tipW) / 2);
+        }
+
+        // Garantía final: nunca fuera del viewport
+        tTop  = Math.max(margin, Math.min(tTop,  vh - tipH - margin));
+        tLeft = Math.max(margin, Math.min(tLeft, vw - tipW - margin));
+
+        tip.style.top  = tTop  + 'px';
+        tip.style.left = tLeft + 'px';
+        tip.style.maxHeight = (vh - margin * 2) + 'px';
+    }
+
+    // Para elementos fijos (header): posicionar inmediatamente
+    // Para el resto: esperar a que el scroll suave termine
+    if (isFixed) {
+        position();
+    } else {
+        // Posición inicial rápida, luego corregir tras el scroll
+        setTimeout(position, 60);    // posición preliminar
+        setTimeout(position, 480);   // corrección post-scroll
+    }
+}
+
+// Cerrar con Escape
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && _tourActive) closeTour();
+    if (e.key === 'ArrowRight' && _tourActive) tourStep(1);
+    if (e.key === 'ArrowLeft'  && _tourActive) tourStep(-1);
+});
+
+// Recalcular spotlight en resize
+window.addEventListener('resize', function() {
+    if (_tourActive) renderTourStep();
+});
+
+// Auto-iniciar en primer login (solo una vez por sesión)
+function checkAutoTour() {
+    if (!sessionStorage.getItem('portal-tour-seen')) {
+        setTimeout(startPortalTour, 800);
+    }
+}
+window._checkAutoTour = checkAutoTour;
+
+// ── AUTO-LOGIN si hay sesión activa ────────────────
+(function() {
+    var session = sessionStorage.getItem('portal-session');
+    if (!session) return;
+    try {
+        var s = JSON.parse(session);
+        if (Date.now() - s.ts > 8 * 60 * 60 * 1000) { sessionStorage.removeItem('portal-session'); return; }
+        var accounts = getData('accounts') || [];
+        var client = accounts.find(function(a){ return a.id === s.id; });
+        if (client && client.portalAccess === 'active') {
+            portalClient = client;
+            showPortal(client);
+        }
+    } catch(e) { sessionStorage.removeItem('portal-session'); }
+})();
+</script>
+<!-- ══ DRAWER LATERAL ══════════════════════════════ -->
+<div id="stat-drawer-overlay" onclick="closeStatDrawer()"></div>
+<div id="stat-drawer">
+    <div class="drawer-header">
+        <div class="drawer-title" id="drawer-title">
+            <div id="drawer-icon" style="width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"></div>
+            <span id="drawer-title-text">Publicaciones</span>
+        </div>
+        <button class="drawer-close" onclick="closeStatDrawer()">×</button>
+    </div>
+    <div class="drawer-body" id="drawer-body"></div>
+</div>
+
+<!-- ══ TOUR GUIADO ════════════════════════════════════ -->
+<div id="tour-spotlight" style="display:none;"></div>
+<div id="tour-tooltip"  style="display:none;">
+    <div class="tour-tooltip-header">
+        <div class="tour-step-indicator" id="tour-dots"></div>
+        <button class="tour-close-btn" onclick="closeTour()">×</button>
+    </div>
+    <div class="tour-tooltip-body">
+        <div class="tour-icon-row">
+            <div class="tour-icon" id="tour-icon"></div>
+            <div class="tour-step-num" id="tour-step-num"></div>
+        </div>
+        <div class="tour-title" id="tour-title"></div>
+        <div class="tour-desc"  id="tour-desc"></div>
+    </div>
+    <div class="tour-tooltip-footer">
+        <button class="tour-skip" onclick="closeTour()">Saltar tour</button>
+        <div style="display:flex;gap:8px;">
+            <button class="tour-btn-prev" id="tour-prev" onclick="tourStep(-1)">← Anterior</button>
+            <button class="tour-btn-next" id="tour-next" onclick="tourStep(1)">
+                <span id="tour-next-label">Siguiente</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="tour-next-icon"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

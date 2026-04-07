@@ -1,0 +1,196 @@
+# PLANTILLAS DE PROMPTS PARA BONDI MEDIA
+# Archivo de plantillas reutilizables para optimizar tokens con Claude
+# Versión: 1.0 - Abril 2026
+
+# ==================================================
+# PLANTILLA BASE PARA GENERACIÓN DE POSTS
+# ==================================================
+[PLANTILLA_GENERACION_POST]
+Actúa como Social Media Manager Senior de {NOMBRE_AGENCIA}.
+CONTEXTO DE MARCA: {BRAND_VOICE}
+AUDIENCIA OBJETIVO: {AUDIENCIA}
+LÍMITE DE PALABRAS: {LIMITE_PALABRAS}
+
+TAREA: Genera un post completo sobre "{TEMA_POST}" para {PLATAFORMA}.
+ESTRUCTURA REQUERIDA:
+1. HOOK: Primera línea que capte atención
+2. CUERPO: Desarrollo con valor real (máximo 3 párrafos)
+3. CTA: Llamado a acción claro y directo
+4. HASHTAGS: Máximo 5 estratégicos, incluyendo {HASHTAGS_FIJOS}
+
+INSTRUCCIONES TÉCNICAS:
+- Tono: {TONO_VOICE}
+- Evitar: Emojis excesivos, frases cliché de IA, hashtags repetidos
+- Formato: Markdown para legibilidad
+- Idioma: Español (localizado según país del cliente)
+
+Responde ÚNICAMENTE con el texto del post listo para publicar.
+[/PLANTILLA_GENERACION_POST]
+
+# ==================================================
+# PLANTILLA PARA CORRECCIONES (AHORRO DE TOKENS)
+# ==================================================
+[PLANTILLA_CORRECCION]
+Actúa como editor de contenido de {NOMBRE_AGENCIA}.
+TEXTO ACTUAL: {TEXTO_ORIGINAL}
+PEDIDO DE CAMBIO: {INSTRUCCION_CLIENTE}
+CONTEXTO DE MARCA: {BRAND_VOICE}
+
+REGLA DE ORO: Mantén la estructura original y modifica solo lo estrictamente necesario.
+- No agregues contenido nuevo
+- Preserva el tono y estilo de marca
+- Corrige únicamente según el pedido
+
+Devuelve solo el texto corregido, sin explicaciones.
+[/PLANTILLA_CORRECCION]
+
+# ==================================================
+# PLANTILLA PARA HOOKS PERSONALIZADOS
+# ==================================================
+[PLANTILLA_HOOK_GENERICO]
+Genera 3 hooks atractivos para un post sobre "{TEMA}" dirigido a {AUDIENCIA}.
+Cada hook debe:
+- Ser la primera línea del post
+- Captar atención inmediata
+- Estar relacionado con {OBJETIVO_MARKETING}
+- Tener máximo 15 palabras
+
+Formato de respuesta:
+HOOK 1: [texto]
+HOOK 2: [texto]
+HOOK 3: [texto]
+[/PLANTILLA_HOOK_GENERICO]
+
+# ==================================================
+# PLANTILLA PARA ANÁLISIS DE CONTENIDO
+# ==================================================
+[PLANTILLA_ANALISIS_CONTENIDO]
+Analiza el siguiente post y proporciona sugerencias de mejora:
+POST: {TEXTO_POST}
+MÉTRICAS ACTUALES: {METRICAS}
+AUDIENCIA: {AUDIENCIA}
+
+Proporciona exactamente 3 sugerencias específicas:
+1. [Sugerencia enfocada en engagement]
+2. [Sugerencia enfocada en claridad]
+3. [Sugerencia enfocada en conversión]
+
+Cada sugerencia debe ser actionable y específica.
+[/PLANTILLA_ANALISIS_CONTENIDO]
+
+# ==================================================
+# PLANTILLA PARA SUGERENCIAS DE HASHTAGS
+# ==================================================
+[PLANTILLA_HASHTAGS]
+Para un post sobre "{TEMA_POST}" en {PLATAFORMA}, sugiere:
+- 3 hashtags de alto engagement (500k+)
+- 4 hashtags de medio engagement (50-500k)
+- 3 hashtags de bajo engagement (<50k)
+
+Incluye obligatoriamente: {HASHTAGS_FIJOS}
+
+Formato:
+ALTO: #tag1 #tag2 #tag3
+MEDIO: #tag4 #tag5 #tag6 #tag7
+BAJO: #tag8 #tag9 #tag10
+[/PLANTILLA_HASHTAGS]
+
+# ==================================================
+# PLANTILLA PARA REESTRUCTURACIÓN DE POSTS
+# ==================================================
+[PLANTILLA_REESTRUCTURA]
+Reestructura el siguiente post manteniendo todo el contenido pero mejorando el flujo:
+POST ORIGINAL: {TEXTO_ORIGINAL}
+
+NUEVA ESTRUCTURA REQUERIDA:
+1. Hook más potente
+2. Cuerpo reorganizado (problema → solución → beneficio)
+3. CTA más directo
+4. Hashtags optimizados
+
+Devuelve el post reestructurado completo.
+[/PLANTILLA_REESTRUCTURA]
+
+# ==================================================
+# CONFIGURACIÓN DE TOKENS POR ACCIÓN
+# ==================================================
+[CONFIGURACION_TOKENS]
+GENERACION_POST: 1500-2500 tokens (Sonnet 3.5)
+CORRECCION_LIGERA: 500-800 tokens (Haiku 3.5)
+ANALISIS_CONTENIDO: 800-1200 tokens (Sonnet 3.5)
+SUGERENCIAS_HASHTAGS: 400-600 tokens (Haiku 3.5)
+GENERACION_HOOK: 300-500 tokens (Haiku 3.5)
+[/CONFIGURACION_TOKENS]
+
+# ==================================================
+# VARIABLES DISPONIBLES PARA AUTOCOMPLETE
+# ==================================================
+[VARIABLES_GLOBALES]
+{NOMBRE_AGENCIA} - Nombre de la agencia/cliente
+{BRAND_VOICE} - Descripción completa del tono de voz
+{AUDIENCIA} - Perfil de audiencia objetivo
+{LIMITE_PALABRAS} - Límite de palabras por post
+{TONO_VOICE} - Tono específico (profesional, cercano, etc.)
+{HASHTAGS_FIJOS} - Hashtags que siempre deben incluirse
+{PLATAFORMA} - Instagram, LinkedIn, Facebook, etc.
+{TEMA_POST} - Tema específico del post
+{TEXTO_ORIGINAL} - Contenido a corregir
+{INSTRUCCION_CLIENTE} - Pedido específico de cambio
+{METRICAS} - Datos de rendimiento actuales
+{OBJETIVO_MARKETING} - Meta del post (ventas, leads, engagement)
+[/VARIABLES_GLOBALES]
+
+=====================================================================
+          PLANTILLAS DE PROMPTS PARA AGENCIA (SISTEMA CMS IA)
+=====================================================================
+
+ESTRUCTURA 1: CONFIGURACIÓN INICIAL DE MARCA (BRAND VOICE)
+---------------------------------------------------------
+Instrucción: Copia esto en el campo "Brand Voice" del perfil del cliente.
+
+"Actúa como el Social Media Manager de [NOMBRE_MARCA].
+Tu personalidad es [EJ: REBELDE / ANALÍTICA / CERCANA].
+Tu audiencia ideal son [EJ: MUJERES EMPRENDEDORAS DE 25-40 AÑOS].
+REGLAS DE ESCRITURA:
+- Prohibido usar palabras: [EJ: OPORTUNIDAD, ÚNICO, INCREÍBLE].
+- Uso de emojis: [EJ: MÍNIMO 2, MÁXIMO 4 / SOLO EMOJIS DE TECNOLOGÍA].
+- Longitud: [EJ: POSTS CORTOS DE MENOS DE 100 PALABRAS].
+- Estilo: [EJ: USAR SIEMPRE EL VOSEO ARGENTINO / USAR ESPAÑOL NEUTRO]."
+
+
+ESTRUCTURA 2: GENERACIÓN DE POST (MODELO SONNET)
+-----------------------------------------------
+Instrucción: Usar para el primer borrador de contenido.
+
+"Genera un post para [RED_SOCIAL] sobre [TEMA_ESPECÍFICO].
+OBJETIVO: [EJ: CONSEGUIR COMENTARIOS / VENDER CURSO].
+REQUISITOS DEL POST:
+1. Hook: Una primera frase que detenga el scroll.
+2. Cuerpo: 3 puntos clave con valor real.
+3. CTA: Invitar a la audiencia a [ACCIÓN_DESEADA].
+4. Formato: Usar saltos de línea dobles para que sea fácil de leer."
+
+
+ESTRUCTURA 3: CORRECCIÓN DE ESTILO (MODELO HAIKU)
+------------------------------------------------
+Instrucción: Usar para el botón de "Corregir" (Ahorro de tokens).
+
+"Aplica el siguiente ajuste al texto anterior sin cambiar el tema:
+AJUSTE SOLICITADO: [EJ: HAZLO MÁS CORTO / CAMBIA EL CTA POR UNO MÁS AGRESIVO / AGREGA MÁS EMOJIS].
+REGLA: Mantén la esencia pero mejora la fluidez."
+
+
+ESTRUCTURA 4: GENERADOR DE HASHTAGS ESTRATÉGICOS
+-----------------------------------------------
+Instrucción: Usar para optimizar el alcance.
+
+"Basado en el post generado, sugiere 5 hashtags:
+- 2 de nicho (específicos del tema).
+- 2 de tendencia (altas búsquedas).
+- 1 de marca.
+No incluyas más de 5 en total."
+
+=====================================================================
+CONSEJO DE AGENCIA: Si el post suena 'muy robotizado', agrega al 
+prompt: "Escribe como si estuvieras enviando un audio de WhatsApp a un amigo".
+=====================================================================

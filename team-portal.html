@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bondi Media — Portal del Equipo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --navy:        #0C1220;
+    --navy-mid:    #1E293B;
+    --orange:      #F97316;
+    --orange-soft: rgba(249,115,22,.08);
+    --bg:          #F0F2F5;
+    --bg-card:     #fff;
+    --bg-subtle:   #F8FAFC;
+    --border:      #E5E7EB;
+    --text-1:      #0D1117;
+    --text-2:      #374151;
+    --text-3:      #9CA3AF;
+    --green:       #10B981;
+    --blue:        #3B82F6;
+    --purple:      #8B5CF6;
+    --red:         #EF4444;
+    --r-sm:        6px;
+    --r-md:        10px;
+    --r-lg:        14px;
+    --r-xl:        18px;
+    --r-pill:      999px;
+    --sh-sm:       0 1px 4px rgba(0,0,0,.06);
+    --sh-md:       0 4px 16px rgba(0,0,0,.10);
+    --t:           .15s;
+    --ease:        cubic-bezier(.4,0,.2,1);
+}
+
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-1); min-height: 100vh; }
+
+/* ── Login ────────────────────────────────────── */
+#login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--navy) 0%, #1a2744 100%);
+    padding: 20px;
+}
+.login-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 36px 32px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 24px 64px rgba(0,0,0,.25);
+}
+.login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+.login-logo-mark {
+    width: 42px; height: 42px; border-radius: 11px;
+    background: var(--navy); color: var(--orange);
+    font-size: 14px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+}
+.login-logo-name { font-size: 16px; font-weight: 800; color: var(--text-1); }
+.login-logo-sub  { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+.login-title { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+.login-sub   { font-size: 13px; color: var(--text-3); margin-bottom: 24px; }
+.login-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text-2); display: block; margin-bottom: 6px; }
+.login-input {
+    width: 100%; padding: 10px 14px; border-radius: var(--r-md);
+    border: 1.5px solid var(--border); font-family: 'Inter', sans-serif;
+    font-size: 13px; margin-bottom: 14px; outline: none; transition: border-color var(--t);
+}
+.login-input:focus { border-color: var(--orange); }
+.login-btn {
+    width: 100%; padding: 11px; border-radius: var(--r-md);
+    background: var(--navy); color: #fff; border: none;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+    cursor: pointer; margin-top: 4px; transition: background var(--t);
+}
+.login-btn:hover { background: #1a2744; }
+.login-error { font-size: 12px; color: var(--red); margin-top: 10px; display: none; }
+.login-team-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10px; font-weight: 700; padding: 3px 10px;
+    border-radius: var(--r-pill); background: rgba(249,115,22,.12);
+    color: var(--orange); margin-bottom: 20px;
+}
+
+/* ── Portal layout ─────────────────────────────── */
+#portal-screen { display: none; min-height: 100vh; }
+
+.portal-header {
+    background: var(--navy);
+    height: 58px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+    position: sticky; top: 0; z-index: 100;
+    overflow: visible;
+}
+.portal-header-left  { display: flex; align-items: center; gap: 12px; }
+.portal-header-right { display: flex; align-items: center; gap: 10px; }
+.ph-logo { width: 30px; height: 30px; border-radius: 8px; background: var(--orange); color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.ph-brand { font-size: 13px; font-weight: 700; color: #fff; }
+.ph-badge { font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: var(--r-pill); background: rgba(249,115,22,.2); color: #FED7AA; }
+.ph-role-pill { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: var(--r-pill); }
+.ph-member-name { font-size: 12px; color: rgba(255,255,255,.6); }
+.ph-logout {
+    font-size: 11px; color: rgba(255,255,255,.5); padding: 5px 12px;
+    border: 1px solid rgba(255,255,255,.12); border-radius: var(--r-md);
+    background: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all var(--t);
+}
+.ph-logout:hover { background: rgba(255,255,255,.08); color: rgba(255,255,255,.8); }
+
+/* ── Sidebar ────────────────────────────────────── */
+.portal-layout { display: flex; min-height: calc(100vh - 58px); }
+.portal-sidebar {
+    width: 220px;
+    background: var(--navy-mid);
+    flex-shrink: 0;
+    padding: 16px 0;
+    position: sticky;
+    top: 58px;
+    height: calc(100vh - 58px);
+    overflow-y: auto;
+}
+.sidebar-section-title {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .8px; color: rgba(255,255,255,.3);
+    padding: 12px 16px 6px;
+}
+.sidebar-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 16px; cursor: pointer;
+    font-size: 12px; font-weight: 500;
+    color: rgba(255,255,255,.55);
+    transition: all var(--t); border-left: 3px solid transparent;
+}
+.sidebar-item:hover { background: rgba(255,255,255,.06); color: rgba(255,255,255,.85); }
+.sidebar-item.active { background: rgba(249,115,22,.12); color: #fff; border-left-color: var(--orange); font-weight: 600; }
+.sidebar-item svg { flex-shrink: 0; opacity: .7; }
+.sidebar-item.active svg { opacity: 1; }
+.sidebar-client-badge {
+    font-size: 9px; font-weight: 700; padding: 1px 6px;
+    border-radius: var(--r-pill); background: rgba(249,115,22,.25);
+    color: #FED7AA; margin-left: auto;
+}
+
+/* ── Main content ───────────────────────────────── */
+.portal-main { flex: 1; padding: 24px; overflow-x: hidden; }
+
+/* ── Cards ──────────────────────────────────────── */
+.card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--r-lg); box-shadow: var(--sh-sm); margin-bottom: 16px;
+    overflow: hidden;
+}
+.card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    background: var(--bg-subtle);
+}
+.card-title { font-size: 12px; font-weight: 700; color: var(--text-1); display: flex; align-items: center; gap: 7px; }
+.card-body  { padding: 14px 16px; }
+
+/* ── Section header ─────────────────────────────── */
+.section-hdr {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+}
+.section-hdr h2 { font-size: 18px; font-weight: 700; color: var(--text-1); }
+.section-hdr p  { font-size: 12px; color: var(--text-3); margin-top: 3px; }
+
+/* ── Stats row ──────────────────────────────────── */
+.stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 18px; }
+.stat-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: 14px 16px; box-shadow: var(--sh-sm);
+    transition: box-shadow var(--t), transform var(--t);
+}
+.stat-card:hover { box-shadow: var(--sh-md); transform: translateY(-2px); }
+.stat-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+.stat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text-3); }
+.stat-val   { font-size: 26px; font-weight: 700; color: var(--text-1); letter-spacing: -.5px; line-height: 1.1; margin-top: 2px; }
+.stat-sub   { font-size: 10px; color: var(--text-3); margin-top: 2px; }
+
+/* ── Client pill ─────────────────────────────────── */
+.client-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 12px; border-radius: var(--r-pill);
+    font-size: 11px; font-weight: 600; cursor: pointer;
+    transition: all var(--t); border: 1.5px solid var(--border);
+    background: var(--bg-card);
+}
+.client-pill.active { border-color: var(--orange); background: var(--orange-soft); color: var(--orange); }
+
+/* ── Content list ─────────────────────────────────── */
+.content-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.content-row:last-child { border-bottom: none; }
+.content-status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.dot-published { background: #10B981; }
+.dot-scheduled { background: #3B82F6; }
+.dot-design    { background: #F59E0B; }
+.dot-pending   { background: #D1D5DB; }
+.content-info  { flex: 1; min-width: 0; }
+.content-title { font-size: 13px; font-weight: 600; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.content-meta  { font-size: 11px; color: var(--text-3); margin-top: 2px; display: flex; gap: 8px; align-items: center; }
+.cbadge {
+    font-size: 10px; font-weight: 700; padding: 2px 7px;
+    border-radius: var(--r-pill); border: 1px solid;
+}
+
+/* ── Chart ─────────────────────────────────────── */
+.chart-wrap { padding: 14px 16px; height: 200px; }
+
+/* ── Empty state ────────────────────────────────── */
+.empty-state {
+    text-align: center; padding: 32px 16px; color: var(--text-3);
+}
+.empty-state svg { display: block; margin: 0 auto 10px; opacity: .4; }
+.empty-state p { font-size: 13px; }
+
+/* ── Perm badge ─────────────────────────────────── */
+.perm-badge {
+    font-size: 10px; font-weight: 600; padding: 3px 9px;
+    border-radius: var(--r-pill); display: inline-flex;
+    align-items: center; gap: 4px;
+}
+.perm-ok   { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
+.perm-no   { background: #F3F4F6; color: #9CA3AF; border: 1px solid #E5E7EB; }
+
+/* ── Tour ────────────────────────────────────────── */
+#tour-spotlight {
+    position: fixed; border-radius: 12px;
+    box-shadow: 0 0 0 9999px rgba(0,0,0,.68);
+    z-index: 8001; pointer-events: none; display: none;
+    outline: 3px solid var(--orange); outline-offset: 0;
+    transition: top .32s cubic-bezier(.4,0,.2,1),
+                left .32s cubic-bezier(.4,0,.2,1),
+                width .32s cubic-bezier(.4,0,.2,1),
+                height .32s cubic-bezier(.4,0,.2,1);
+}
+#tour-tooltip {
+    position: fixed; z-index: 8002; width: 330px;
+    max-width: calc(100vw - 28px);
+    max-height: calc(100vh - 28px);
+    background: #fff; border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25), 0 0 0 1px rgba(249,115,22,.2);
+    display: none; flex-direction: column; overflow: hidden;
+}
+.tour-header {
+    background: var(--navy); padding: 12px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+.tour-dots { display: flex; gap: 5px; align-items: center; }
+.tour-dot  { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.25); transition: all .2s; }
+.tour-dot.active { background: var(--orange); width: 16px; border-radius: 3px; }
+.tour-close {
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.2); background: none;
+    color: rgba(255,255,255,.6); cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all var(--t);
+}
+.tour-close:hover { background: rgba(255,255,255,.1); color: #fff; }
+.tour-body { padding: 16px 18px 14px; overflow-y: auto; flex: 1; }
+.tour-icon-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.tour-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.tour-step-num { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--text-3); }
+.tour-title { font-size: 15px; font-weight: 700; color: var(--text-1); margin-bottom: 8px; line-height: 1.3; }
+.tour-desc  { font-size: 13px; color: var(--text-2); line-height: 1.65; }
+.tour-desc strong { color: var(--text-1); font-weight: 600; }
+.tour-footer {
+    padding: 12px 18px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border);
+}
+.tour-skip { font-size: 11px; color: var(--text-3); cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; transition: color var(--t); }
+.tour-skip:hover { color: var(--text-2); }
+.tour-btn-prev {
+    font-size: 12px; font-weight: 600; padding: 7px 14px;
+    border-radius: var(--r-md); border: 1.5px solid var(--border);
+    background: #fff; color: var(--text-3); cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all var(--t);
+}
+.tour-btn-prev:hover { border-color: #D1D5DB; color: var(--text-2); }
+.tour-btn-prev:disabled { opacity: .35; cursor: default; }
+.tour-btn-next {
+    font-size: 12px; font-weight: 700; padding: 7px 18px;
+    border-radius: var(--r-md); border: none;
+    background: var(--orange); color: #fff; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: background var(--t);
+    display: flex; align-items: center; gap: 6px;
+}
+.tour-btn-next:hover { background: #EA6C0A; }
+#tour-toggle-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 13px; border-radius: var(--r-pill);
+    border: 1.5px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.07); color: rgba(255,255,255,.75);
+    font-size: 11px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all var(--t);
+}
+#tour-toggle-btn:hover { background: rgba(249,115,22,.25); border-color: rgba(249,115,22,.6); color: #fff; }
+#tour-toggle-btn.active { background: rgba(249,115,22,.3); border-color: var(--orange); color: #fff; }
+.tour-btn-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+#tour-toggle-btn.active .tour-btn-dot { background: var(--orange); box-shadow: 0 0 0 2px rgba(249,115,22,.35); }
+
+/* ── Notif dropdown ─────────────────────────────── */
+#tp-notif-dropdown {
+    position: absolute; top: 56px; right: 16px;
+    width: 320px; background: #fff; border: 1px solid var(--border);
+    border-radius: 14px; box-shadow: var(--sh-md); z-index: 200;
+    overflow: hidden; display: none;
+}
+
+/* ── Paused ──────────────────────────────────────── */
+#paused-screen {
+    min-height: 100vh; background: var(--navy);
+    display: none; align-items: center; justify-content: center;
+}
+.paused-card {
+    background: #1E293B; border: 1px solid rgba(255,255,255,.08);
+    border-radius: 20px; padding: 36px 32px; max-width: 380px; text-align: center; color: #fff;
+}
+
+@media(max-width:768px){
+    .portal-sidebar { display: none; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ───────────────────────────────────── -->
+<div id="login-screen">
+    <div class="login-card">
+        <div class="login-logo">
+            <div class="login-logo-mark">BM</div>
+            <div>
+                <div class="login-logo-name">Bondi Media</div>
+                <div class="login-logo-sub">Portal del Equipo</div>
+            </div>
+        </div>
+        <div class="login-team-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            Acceso colaboradores
+        </div>
+        <h1 class="login-title">Bienvenido</h1>
+        <p class="login-sub">Ingresá tus credenciales para acceder al panel del equipo</p>
+        <form onsubmit="handleLogin(event)">
+            <label class="login-label" for="l-user">Usuario</label>
+            <input class="login-input" id="l-user" type="text" placeholder="tu-usuario" autocomplete="username" required>
+            <label class="login-label" for="l-pass">Contraseña</label>
+            <input class="login-input" id="l-pass" type="password" placeholder="••••••••" autocomplete="current-password" required>
+            <button class="login-btn" type="submit">Ingresar al panel</button>
+            <div class="login-error" id="login-error">Usuario o contraseña incorrectos</div>
+        </form>
+    </div>
+</div>
+
+<!-- ── ACCESO PAUSADO ───────────────────────────── -->
+<div id="paused-screen">
+    <div class="paused-card">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.5" style="display:block;margin:0 auto 16px;">
+            <circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/>
+        </svg>
+        <h2 style="font-size:20px;font-weight:700;margin-bottom:8px;">Acceso pausado</h2>
+        <p style="font-size:14px;color:#6B7280;line-height:1.5;">Tu acceso al panel está momentáneamente pausado. Contactá al administrador de Bondi Media.</p>
+    </div>
+</div>
+
+<!-- ── PORTAL ───────────────────────────────────── -->
+<div id="portal-screen">
+    <header class="portal-header">
+        <div class="portal-header-left">
+            <div class="ph-logo" id="tp-logo">BM</div>
+            <div>
+                <div class="ph-brand">Bondi Media</div>
+            </div>
+            <span class="ph-badge">Panel del Equipo</span>
+        </div>
+        <div class="portal-header-right">
+            <span class="ph-role-pill" id="tp-role-pill"></span>
+            <span class="ph-member-name" id="tp-member-name"></span>
+
+            <!-- Tour toggle -->
+            <button id="tour-toggle-btn" onclick="toggleTour()" title="Tour del panel">
+                <span class="tour-btn-dot"></span>
+                <span id="tour-toggle-label">Tour del panel</span>
+            </button>
+
+            <!-- Notificaciones -->
+            <button id="tp-notif-btn" onclick="toggleNotifications()" style="position:relative;background:none;border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:6px 8px;cursor:pointer;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span id="tp-notif-dot" style="display:none;position:absolute;top:5px;right:5px;width:7px;height:7px;background:#EF4444;border-radius:50%;border:1.5px solid var(--navy);"></span>
+            </button>
+            <div id="tp-notif-dropdown" style="position:absolute;top:56px;right:16px;width:320px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:var(--sh-md);z-index:200;overflow:hidden;display:none;">
+                <div style="padding:12px 16px;background:#FAFAFA;border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--text-2);">Notificaciones</div>
+                <div id="tp-notif-list" style="max-height:280px;overflow-y:auto;padding:8px 0;"></div>
+            </div>
+
+            <button class="ph-logout" onclick="handleLogout()">Cerrar sesión</button>
+        </div>
+    </header>
+
+    <div class="portal-layout">
+        <!-- Sidebar -->
+        <nav class="portal-sidebar" id="tp-sidebar">
+            <div class="sidebar-section-title">Principal</div>
+            <div class="sidebar-item active" data-view="dashboard" onclick="switchView('dashboard')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                Dashboard
+            </div>
+            <div class="sidebar-item" data-view="clients" onclick="switchView('clients')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Mis clientes
+                <span class="sidebar-client-badge" id="sb-client-count">0</span>
+            </div>
+
+            <div class="sidebar-section-title" id="sb-content-section" style="display:none;">Contenido</div>
+            <div class="sidebar-item" data-view="calendar" id="sb-calendar" style="display:none;" onclick="switchView('calendar')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Calendario
+            </div>
+            <div class="sidebar-item" data-view="metrics" id="sb-metrics" style="display:none;" onclick="switchView('metrics')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                Métricas
+            </div>
+            <div class="sidebar-item" data-view="reports" id="sb-reports" style="display:none;" onclick="switchView('reports')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Reportes
+            </div>
+
+            <div class="sidebar-section-title">Mi cuenta</div>
+            <div class="sidebar-item" data-view="my-perms" onclick="switchView('my-perms')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Mis permisos
+            </div>
+        </nav>
+
+        <!-- Main -->
+        <main class="portal-main">
+            <div id="view-dashboard"></div>
+            <div id="view-clients"   style="display:none;"></div>
+            <div id="view-calendar"  style="display:none;"></div>
+            <div id="view-metrics"   style="display:none;"></div>
+            <div id="view-reports"   style="display:none;"></div>
+            <div id="view-my-perms" style="display:none;"></div>
+        </main>
+    </div>
+</div>
+
+<!-- ── TOUR ─────────────────────────────────────── -->
+<div id="tour-spotlight"></div>
+<div id="tour-tooltip" style="display:none;flex-direction:column;">
+    <div class="tour-header">
+        <div class="tour-dots" id="tour-dots"></div>
+        <button class="tour-close" onclick="closeTour()">×</button>
+    </div>
+    <div class="tour-body">
+        <div class="tour-icon-row">
+            <div class="tour-icon" id="tour-icon"></div>
+            <div class="tour-step-num" id="tour-step-num"></div>
+        </div>
+        <div class="tour-title" id="tour-title"></div>
+        <div class="tour-desc"  id="tour-desc"></div>
+    </div>
+    <div class="tour-footer">
+        <button class="tour-skip" onclick="closeTour()">Saltar tour</button>
+        <div style="display:flex;gap:8px;">
+            <button class="tour-btn-prev" id="tour-prev" onclick="tourStep(-1)">← Anterior</button>
+            <button class="tour-btn-next" id="tour-next" onclick="tourStep(1)">
+                <span id="tour-next-label">Siguiente</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" id="tour-next-icon"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// PORTAL DEL EQUIPO — Bondi Media
+// ══════════════════════════════════════════════
+var teamMember    = null;
+var activeClientId = null;
+var chartInstance  = null;
+
+var TEAM_STORAGE_KEY = 'bondi-team-members';
+
+function getTeamMembers() {
+    try { return JSON.parse(localStorage.getItem(TEAM_STORAGE_KEY) || '[]'); }
+    catch(e) { return []; }
+}
+function getData(key) {
+    try { return JSON.parse(localStorage.getItem('bondi-' + key) || 'null'); }
+    catch(e) { return null; }
+}
+function getClientPlan(cid) {
+    try {
+        var raw = localStorage.getItem('bondi-licensing-data');
+        if (!raw) return 'Sin Plan';
+        var data = JSON.parse(raw);
+        var lic = data.licenses && data.licenses[cid] ? data.licenses[cid] : null;
+        return lic ? lic.planName : 'Sin Plan';
+    } catch(e) { return 'Sin Plan'; }
+}
+function getMemberPerms(m) {
+    var ROLES = {
+        community_manager: { verCalendario:true,crearContenido:true,editarContenido:true,eliminarContenido:false,cargarMetricas:true,verMetricas:true,gestionarClientes:false,verTodosClientes:false,configuracion:false,reportes:true },
+        editor:  { verCalendario:true,crearContenido:true,editarContenido:true,eliminarContenido:false,cargarMetricas:false,verMetricas:false,gestionarClientes:false,verTodosClientes:false,configuracion:false,reportes:false },
+        analista:{ verCalendario:true,crearContenido:false,editarContenido:false,eliminarContenido:false,cargarMetricas:true,verMetricas:true,gestionarClientes:false,verTodosClientes:false,configuracion:false,reportes:true },
+        admin:   { verCalendario:true,crearContenido:true,editarContenido:true,eliminarContenido:true,cargarMetricas:true,verMetricas:true,gestionarClientes:true,verTodosClientes:true,configuracion:true,reportes:true }
+    };
+    var base = ROLES[m.role] || ROLES.community_manager;
+    return Object.assign({}, base, m.customPerms || {});
+}
+
+// ── LOGIN ──────────────────────────────────────
+function handleLogin(e) {
+    e.preventDefault();
+    var user = document.getElementById('l-user').value.trim().toLowerCase();
+    var pass = document.getElementById('l-pass').value.trim();
+    var errorEl = document.getElementById('login-error');
+    errorEl.style.display = 'none';
+
+    var members = getTeamMembers();
+    var matched = members.find(function(m) {
+        return m.portalUsername && m.portalUsername.toLowerCase() === user && m.portalPassword === pass;
+    });
+
+    if (!matched) { errorEl.style.display = 'block'; return; }
+    if (matched.portalAccess === 'paused' || matched.portalAccess === 'disabled') {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('paused-screen').style.display = 'flex';
+        return;
+    }
+    sessionStorage.setItem('team-portal-session', JSON.stringify({ id: matched.id, ts: Date.now() }));
+    showPortal(matched);
+}
+
+function handleLogout() {
+    sessionStorage.removeItem('team-portal-session');
+    location.reload();
+}
+
+// ── MOSTRAR PORTAL ─────────────────────────────
+function showPortal(m) {
+    teamMember = m;
+    var perms  = getMemberPerms(m);
+
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('portal-screen').style.display = 'block';
+
+    // Header
+    var initials = m.name.split(' ').map(function(w){ return w[0]; }).slice(0,2).join('').toUpperCase();
+    document.getElementById('tp-logo').textContent = initials;
+    document.getElementById('tp-member-name').textContent = m.name;
+
+    var ROLE_LABELS = { community_manager:'Community Manager', editor:'Editor', analista:'Analista', admin:'Administrador' };
+    var ROLE_COLORS = { community_manager:'#3B82F6', editor:'#8B5CF6', analista:'#10B981', admin:'#F97316' };
+    var rPill = document.getElementById('tp-role-pill');
+    rPill.textContent = ROLE_LABELS[m.role] || m.role;
+    rPill.style.cssText = 'font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;';
+
+    // Sidebar según permisos
+    if (perms.verCalendario) {
+        document.getElementById('sb-content-section').style.display = '';
+        document.getElementById('sb-calendar').style.display = '';
+    }
+    if (perms.verMetricas || perms.cargarMetricas) {
+        document.getElementById('sb-content-section').style.display = '';
+        document.getElementById('sb-metrics').style.display = '';
+    }
+    if (perms.reportes) {
+        document.getElementById('sb-content-section').style.display = '';
+        document.getElementById('sb-reports').style.display = '';
+    }
+
+    // Clientes asignados
+    var accounts = getData('accounts') || [];
+    var myClients = perms.verTodosClientes
+        ? accounts.filter(function(a){ return a.id !== 'bondi-media'; })
+        : accounts.filter(function(a){ return (m.assignedClients||[]).indexOf(a.id) >= 0; });
+
+    document.getElementById('sb-client-count').textContent = myClients.length;
+    if (myClients.length > 0) activeClientId = myClients[0].id;
+
+    renderDashboard(m, myClients, perms);
+    checkAutoTour();
+}
+
+// ── SWITCH VIEW ────────────────────────────────
+function switchView(view) {
+    document.querySelectorAll('.sidebar-item').forEach(function(el){
+        el.classList.toggle('active', el.getAttribute('data-view') === view);
+    });
+    ['dashboard','clients','calendar','metrics','reports','my-perms'].forEach(function(v){
+        var el = document.getElementById('view-' + v);
+        if (el) el.style.display = v === view ? 'block' : 'none';
+    });
+    if (view === 'clients')  renderClients();
+    if (view === 'calendar') renderCalendar();
+    if (view === 'metrics')  renderMetrics();
+    if (view === 'reports')  renderReports();
+    if (view === 'my-perms') renderMyPerms();
+}
+
+// ── DASHBOARD ──────────────────────────────────
+function renderDashboard(m, myClients, perms) {
+    var now = new Date();
+    var monthKey = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+    var allCal = [];
+    myClients.forEach(function(c) {
+        var cal = JSON.parse(localStorage.getItem('bondi-calendar-' + c.id) || '[]');
+        cal.forEach(function(item){ item._client = c; });
+        allCal = allCal.concat(cal);
+    });
+    var thisMonth = allCal.filter(function(c){ return c.date && c.date.startsWith(monthKey); });
+    var published = thisMonth.filter(function(c){ return c.status === 'published'; }).length;
+    var pending   = thisMonth.filter(function(c){ return ['design','correction','not-started'].includes(c.status); }).length;
+    var withM     = allCal.filter(function(c){ return c.metrics && c.metrics.instagram; });
+    var totalR    = withM.reduce(function(s,c){ return s + (c.metrics.instagram.reach||0); }, 0);
+
+    var ROLE_LABELS = { community_manager:'Community Manager', editor:'Editor', analista:'Analista', admin:'Administrador' };
+    var el = document.getElementById('view-dashboard');
+    el.innerHTML = '<div class="section-hdr"><div>'
+        + '<h2>Buen día, ' + m.name.split(' ')[0] + '</h2>'
+        + '<p>' + now.toLocaleDateString('es-AR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}) + '</p>'
+        + '</div>'
+        + '<span style="font-size:12px;color:var(--text-3);">' + ROLE_LABELS[m.role] + ' · ' + myClients.length + ' cliente' + (myClients.length!==1?'s':'') + ' asignado' + (myClients.length!==1?'s':'') + '</span>'
+        + '</div>'
+
+        // Stats
+        + '<div class="stats-row" id="dash-stats">'
+        + statCard('#F97316','#FFF7ED','<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>','Clientes asignados', myClients.length, '')
+        + statCard('#3B82F6','#EFF6FF','<rect x="3" y="4" width="18" height="18" rx="2"/>','Contenido del mes', thisMonth.length, '')
+        + statCard('#10B981','#ECFDF5','<polyline points="20 6 9 17 4 12"/>','Publicados', published, '✓ este mes')
+        + statCard('#F59E0B','#FFFBEB','<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>','Pendientes', pending, 'en producción')
+        + '</div>'
+
+        // Clientes activos
+        + '<div id="dash-clients-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">'
+        + myClients.map(function(c, i) {
+            var active = i === 0;
+            var plan = getClientPlan(c.id);
+            return '<div onclick="setActiveClient(\'' + c.id + '\')" class="client-pill' + (active?' active':'') + '" data-cid="' + c.id + '" style="flex-direction:column;align-items:flex-start;padding:8px 14px;height:auto;gap:2px;">'
+                + '<div style="display:flex;align-items:center;gap:8px;">'
+                + '<div style="width:10px;height:10px;border-radius:50%;background:' + (c.primaryColor||'#F97316') + ';flex-shrink:0;"></div>'
+                + '<span style="font-weight:700;">' + c.name + '</span>'
+                + '</div>'
+                + '<div style="font-size:9px;opacity:0.7;font-weight:600;margin-left:18px;">' + plan + '</div>'
+                + '</div>';
+        }).join('')
+        + '</div>'
+
+        // Gráfico + próximas publicaciones
+        + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">'
+        + '<div class="card" id="dash-chart-card"><div class="card-header"><span class="card-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Performance — cliente activo</span></div><div class="chart-wrap"><canvas id="dash-chart"></canvas></div></div>'
+        + '<div class="card" id="dash-upcoming-card"><div class="card-header"><span class="card-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Próximas publicaciones</span></div><div class="card-body" id="dash-upcoming"></div></div>'
+        + '</div>'
+
+        // Contenido reciente
+        + '<div class="card" id="dash-content-card"><div class="card-header"><span class="card-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Contenido del cliente activo</span><span style="font-size:11px;color:var(--text-3);" id="dash-content-month"></span></div><div class="card-body" id="dash-content-list"></div></div>';
+
+    renderDashChart();
+    renderDashUpcoming(myClients);
+    renderDashContent();
+}
+
+window.setActiveClient = function(cid) {
+    activeClientId = cid;
+    document.querySelectorAll('.client-pill').forEach(function(el){
+        el.classList.toggle('active', el.getAttribute('data-cid') === cid);
+    });
+    renderDashChart();
+    renderDashContent();
+};
+
+function renderDashChart() {
+    if (!activeClientId) return;
+    var cal = JSON.parse(localStorage.getItem('bondi-calendar-' + activeClientId) || '[]');
+    var withM = cal.filter(function(c){ return c.metrics && c.metrics.instagram; })
+        .sort(function(a,b){ return new Date(a.date) - new Date(b.date); }).slice(-8);
+    var labels = withM.map(function(c){ return c.date ? c.date.slice(5) : ''; });
+    var igData = withM.map(function(c){ return c.metrics.instagram.reach || 0; });
+    var fbData = withM.map(function(c){ return (c.metrics.facebook && c.metrics.facebook.reach) || 0; });
+    var ctx = document.getElementById('dash-chart');
+    if (!ctx) return;
+    if (chartInstance) { chartInstance.destroy(); }
+    chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                { label:'Instagram', data: igData, borderColor:'#F97316', backgroundColor:'rgba(249,115,22,.08)', tension:.4, fill:true, pointRadius:3 },
+                { label:'Facebook',  data: fbData, borderColor:'#3B82F6', backgroundColor:'rgba(59,130,246,.06)',  tension:.4, fill:true, pointRadius:3 }
+            ]
+        },
+        options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, font:{ size:11, family:'Inter' } } } }, scales:{ y:{ beginAtZero:true, grid:{ color:'rgba(0,0,0,.05)' }, ticks:{ font:{ size:10, family:'Inter' } } }, x:{ grid:{ display:false }, ticks:{ font:{ size:10, family:'Inter' } } } } }
+    });
+}
+
+function renderDashUpcoming(myClients) {
+    var el = document.getElementById('dash-upcoming');
+    if (!el) return;
+    var now = new Date();
+    var upcoming = [];
+    myClients.forEach(function(c) {
+        var cal = JSON.parse(localStorage.getItem('bondi-calendar-' + c.id) || '[]');
+        cal.filter(function(x) {
+            if (!x.date) return false;
+            var d = new Date(x.date + 'T00:00:00');
+            var diff = Math.floor((d - now) / 86400000);
+            return diff >= 0 && diff <= 14 && x.status !== 'published';
+        }).forEach(function(x){ x._cname = c.name; upcoming.push(x); });
+    });
+    upcoming.sort(function(a,b){ return new Date(a.date) - new Date(b.date); });
+    upcoming = upcoming.slice(0,5);
+    var months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    var TC = { reel:'#92400E,#FEF3C7', carousel:'#1E40AF,#DBEAFE', stories:'#5B21B6,#EDE9FE' };
+    el.innerHTML = upcoming.length === 0
+        ? '<div class="empty-state"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg><p>Sin publicaciones próximas</p></div>'
+        : upcoming.map(function(c) {
+            var d = new Date(c.date + 'T00:00:00');
+            var tc = (TC[c.type]||'').split(',');
+            var tl = c.type==='reel'?'Reel':c.type==='carousel'?'Carrusel':'Stories';
+            return '<div class="content-row">'
+                + '<div style="width:34px;text-align:center;background:var(--bg-subtle);border:1px solid var(--border);border-radius:7px;padding:4px 2px;flex-shrink:0;">'
+                + '<div style="font-size:15px;font-weight:700;color:var(--text-1);line-height:1;">' + d.getDate() + '</div>'
+                + '<div style="font-size:9px;color:var(--text-3);text-transform:uppercase;">' + months[d.getMonth()] + '</div>'
+                + '</div>'
+                + '<div style="flex:1;min-width:0;">'
+                + '<div class="content-title">' + (c.title||'Sin título') + '</div>'
+                + '<div class="content-meta">'
+                + (tc[0] ? '<span class="cbadge" style="color:' + tc[0] + ';background:' + tc[1] + ';border-color:' + tc[0] + '33;">' + tl + '</span>' : '')
+                + '<span>' + c._cname + '</span>'
+                + '</div></div></div>';
+        }).join('');
+}
+
+function renderDashContent() {
+    var el   = document.getElementById('dash-content-list');
+    var lbl  = document.getElementById('dash-content-month');
+    if (!el || !activeClientId) return;
+    var now = new Date();
+    var monthKey = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+    var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    if (lbl) lbl.textContent = months[now.getMonth()] + ' ' + now.getFullYear();
+    var cal = JSON.parse(localStorage.getItem('bondi-calendar-' + activeClientId) || '[]');
+    var thisMonth = cal.filter(function(c){ return c.date && c.date.startsWith(monthKey); })
+        .sort(function(a,b){ return new Date(a.date) - new Date(b.date); });
+    var ST = { published:{dot:'dot-published',label:'Publicado',color:'#065F46',bg:'#D1FAE5',border:'#A7F3D0'}, scheduled:{dot:'dot-scheduled',label:'Programado',color:'#1E40AF',bg:'#DBEAFE',border:'#BFDBFE'}, design:{dot:'dot-design',label:'En diseño',color:'#92400E',bg:'#FEF3C7',border:'#FDE68A'}, correction:{dot:'dot-design',label:'Corrección',color:'#92400E',bg:'#FEF3C7',border:'#FDE68A'}, 'not-started':{dot:'dot-pending',label:'Pendiente',color:'#374151',bg:'#F3F4F6',border:'#E5E7EB'} };
+    var TC = { reel:{label:'Reel',color:'#92400E',bg:'#FEF3C7',border:'#FDE68A'}, carousel:{label:'Carrusel',color:'#1E40AF',bg:'#DBEAFE',border:'#BFDBFE'}, stories:{label:'Stories',color:'#5B21B6',bg:'#EDE9FE',border:'#DDD6FE'} };
+    el.innerHTML = !thisMonth.length
+        ? '<div class="empty-state"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/></svg><p>Sin contenido este mes</p></div>'
+        : thisMonth.map(function(c) {
+            var st = ST[c.status] || ST['not-started'];
+            var tp = TC[c.type]   || { label:c.type||'—', color:'#374151', bg:'#F3F4F6', border:'#E5E7EB' };
+            var dateStr = c.date ? new Date(c.date + 'T00:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'short'}) : '';
+            return '<div class="content-row">'
+                + '<div class="content-status-dot ' + st.dot + '" style="margin-top:5px;flex-shrink:0;"></div>'
+                + '<div class="content-info">'
+                + '<div class="content-title">' + (c.title||'Sin título') + '</div>'
+                + '<div class="content-meta">'
+                + '<span>' + dateStr + (c.time ? ' · ' + c.time.substring(0,5) : '') + '</span>'
+                + '<span class="cbadge" style="color:' + tp.color + ';background:' + tp.bg + ';border-color:' + tp.border + ';">' + tp.label + '</span>'
+                + '<span class="cbadge" style="color:' + st.color + ';background:' + st.bg + ';border-color:' + st.border + ';">' + st.label + '</span>'
+                + '</div></div></div>';
+        }).join('');
+}
+
+// ── CLIENTES ───────────────────────────────────
+function renderClients() {
+    var perms = getMemberPerms(teamMember);
+    var accounts = getData('accounts') || [];
+    var myClients = perms.verTodosClientes
+        ? accounts.filter(function(a){ return a.id !== 'bondi-media'; })
+        : accounts.filter(function(a){ return (teamMember.assignedClients||[]).indexOf(a.id) >= 0; });
+    var el = document.getElementById('view-clients');
+    el.innerHTML = '<div class="section-hdr"><div><h2>Mis clientes</h2><p>' + myClients.length + ' cliente' + (myClients.length!==1?'s':'') + ' asignado' + (myClients.length!==1?'s':'') + '</p></div></div>'
+        + (myClients.length === 0
+            ? '<div class="empty-state" style="padding:60px 20px;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><p style="font-size:14px;margin-top:8px;">No tenés clientes asignados todavía</p></div>'
+            : '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;">'
+              + myClients.map(function(c) {
+                  var cal = JSON.parse(localStorage.getItem('bondi-calendar-' + c.id) || '[]');
+                  var now = new Date();
+                  var monthKey = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+                  var count = cal.filter(function(x){ return x.date && x.date.startsWith(monthKey); }).length;
+                  var initials = c.name.split(' ').map(function(w){ return w[0]; }).slice(0,2).join('').toUpperCase();
+                  var col = c.primaryColor || '#F97316';
+                  var plan = getClientPlan(c.id);
+                  var SC = { active:{l:'Activo',bg:'#D1FAE5',c:'#065F46',b:'#A7F3D0'}, paused:{l:'Pausado',bg:'#FEF3C7',c:'#92400E',b:'#FDE68A'}, pending:{l:'Pendiente',bg:'#DBEAFE',c:'#1E40AF',b:'#BFDBFE'}, new:{l:'Nuevo',bg:'#F3F4F6',c:'#374151',b:'#E5E7EB'} };
+                  var sc = SC[c.type] || SC.new;
+                  return '<div class="card" style="cursor:pointer;" onclick="setActiveClient(\'' + c.id + '\');switchView(\'dashboard\')">'
+                      + '<div class="card-body" style="display:flex;align-items:center;gap:14px;">'
+                      + '<div style="width:44px;height:44px;border-radius:50%;background:' + col + ';color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' + initials + '</div>'
+                      + '<div style="flex:1;min-width:0;">'
+                      + '<div style="font-size:14px;font-weight:700;color:var(--text-1);">' + c.name + '</div>'
+                      + '<div style="font-size:12px;color:var(--text-3);margin-bottom:6px;">' + (c.industry||'') + '</div>'
+                      + '<div style="display:flex;gap:6px;flex-wrap:wrap;">'
+                      + '<span class="cbadge" style="color:' + sc.c + ';background:' + sc.bg + ';border-color:' + sc.b + ';">' + sc.l + '</span>'
+                      + '<span class="cbadge" style="color:var(--primary-color);background:rgba(59,130,246,0.05);border-color:var(--primary-color);">' + plan + '</span>'
+                      + '<span style="font-size:10px;color:var(--text-3);padding:2px 0;">' + count + ' piezas</span>'
+                      + '</div></div></div></div>';
+              }).join('')
+              + '</div>'
+        );
+}
+
+// ── CALENDARIO ─────────────────────────────────
+function renderCalendar() {
+    var el = document.getElementById('view-calendar');
+    el.innerHTML = '<div class="section-hdr"><div><h2>Calendario</h2><p>Contenido planificado de tus clientes</p></div></div>'
+        + '<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:32px;text-align:center;color:var(--text-3);">'
+        + '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto 12px;opacity:.4;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'
+        + '<p style="font-size:14px;font-weight:600;color:var(--text-2);">Calendario completo</p>'
+        + '<p style="font-size:13px;margin-top:6px;">En la próxima versión podrás ver y gestionar el calendario directamente desde acá. Por ahora el dashboard muestra el contenido del mes.</p>'
+        + '</div>';
+}
+
+// ── MÉTRICAS ───────────────────────────────────
+function renderMetrics() {
+    var el = document.getElementById('view-metrics');
+    var perms = getMemberPerms(teamMember);
+    if (!perms.verMetricas && !perms.cargarMetricas) {
+        el.innerHTML = '<div class="empty-state" style="padding:60px;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><p style="font-size:14px;margin-top:8px;">No tenés permisos para ver métricas</p></div>';
+        return;
+    }
+    el.innerHTML = '<div class="section-hdr"><div><h2>Métricas</h2><p>Resumen de rendimiento de tus clientes</p></div></div>'
+        + '<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:32px;text-align:center;color:var(--text-3);">'
+        + '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto 12px;opacity:.4;"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>'
+        + '<p style="font-size:14px;font-weight:600;color:var(--text-2);">Métricas detalladas</p>'
+        + '<p style="font-size:13px;margin-top:6px;">En la próxima versión podrás cargar y analizar métricas directamente desde el portal del equipo.</p>'
+        + '</div>';
+}
+
+// ── REPORTES ───────────────────────────────────
+function renderReports() {
+    var el = document.getElementById('view-reports');
+    el.innerHTML = '<div class="section-hdr"><div><h2>Reportes</h2><p>Informes generados para tus clientes</p></div></div>'
+        + '<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:32px;text-align:center;color:var(--text-3);">'
+        + '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto 12px;opacity:.4;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>'
+        + '<p style="font-size:14px;font-weight:600;color:var(--text-2);">Generador de reportes</p>'
+        + '<p style="font-size:13px;margin-top:6px;">En la próxima versión podrás generar y exportar reportes mensuales para cada cliente asignado.</p>'
+        + '</div>';
+}
+
+// ── MIS PERMISOS ───────────────────────────────
+function renderMyPerms() {
+    var m     = teamMember;
+    var perms = getMemberPerms(m);
+    var ROLES_LABELS = { community_manager:'Community Manager', editor:'Editor de Contenido', analista:'Analista', admin:'Administrador' };
+    var ROLES_COLORS = { community_manager:'#3B82F6', editor:'#8B5CF6', analista:'#10B981', admin:'#F97316' };
+    var PERM_LABELS = { verCalendario:'Ver calendario', crearContenido:'Crear contenido', editarContenido:'Editar contenido', eliminarContenido:'Eliminar contenido', cargarMetricas:'Cargar métricas', verMetricas:'Ver métricas', gestionarClientes:'Gestionar clientes', verTodosClientes:'Ver todos los clientes', configuracion:'Configuración del sistema', reportes:'Ver reportes' };
+    var col = ROLES_COLORS[m.role] || '#F97316';
+    var el  = document.getElementById('view-my-perms');
+    el.innerHTML = '<div class="section-hdr"><div><h2>Mis permisos</h2><p>Tu rol y los permisos asignados por el administrador</p></div></div>'
+        + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">'
+
+        // Perfil
+        + '<div class="card"><div class="card-header"><span class="card-title">Mi perfil</span></div><div class="card-body">'
+        + '<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">'
+        + '<div style="width:50px;height:50px;border-radius:50%;background:' + col + ';color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;">'
+        + m.name.split(' ').map(function(w){ return w[0]; }).slice(0,2).join('').toUpperCase()
+        + '</div>'
+        + '<div><div style="font-size:15px;font-weight:700;color:var(--text-1);">' + m.name + '</div>'
+        + '<div style="font-size:12px;color:var(--text-3);">' + m.email + '</div>'
+        + '<span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;background:' + col + '20;color:' + col + ';border:1px solid ' + col + '44;margin-top:5px;display:inline-block;">' + (ROLES_LABELS[m.role]||m.role) + '</span>'
+        + '</div></div>'
+        + (m.notes ? '<div style="font-size:12px;color:var(--text-3);background:var(--bg-subtle);border-radius:var(--r-md);padding:10px 12px;">' + m.notes + '</div>' : '')
+        + '</div></div>'
+
+        // Permisos
+        + '<div class="card"><div class="card-header"><span class="card-title">Permisos activos</span></div><div class="card-body">'
+        + Object.keys(PERM_LABELS).map(function(k) {
+            return '<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">'
+                + '<span style="font-size:12px;color:var(--text-2);">' + PERM_LABELS[k] + '</span>'
+                + '<span class="perm-badge ' + (perms[k] ? 'perm-ok' : 'perm-no') + '">' + (perms[k] ? '✓ Sí' : '✕ No') + '</span>'
+                + '</div>';
+        }).join('')
+        + '</div></div>'
+        + '</div>';
+}
+
+// ── NOTIFICACIONES ─────────────────────────────
+function toggleNotifications() {
+    var dd = document.getElementById('tp-notif-dropdown');
+    if (!dd) return;
+    var open = dd.style.display !== 'none';
+    dd.style.display = open ? 'none' : 'block';
+}
+document.addEventListener('click', function(e) {
+    var dd  = document.getElementById('tp-notif-dropdown');
+    var btn = document.getElementById('tp-notif-btn');
+    if (dd && btn && !dd.contains(e.target) && !btn.contains(e.target)) {
+        dd.style.display = 'none';
+    }
+});
+
+// ── TOUR GUIADO ────────────────────────────────
+var _tourStep = 0;
+var _tourActive = false;
+
+var TOUR_STEPS = [
+    {
+        target: 'portal-screen',
+        icon: '#0C1220', iconColor: '#F97316',
+        iconSvg: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>',
+        title: 'Bienvenido al panel del equipo',
+        desc: 'Este es tu espacio de trabajo en Bondi Media. Desde acá podés ver el contenido de tus clientes asignados, seguir el rendimiento de las publicaciones y coordinar con el equipo. <strong>Todo lo que ves está limitado a lo que el administrador te asignó.</strong>'
+    },
+    {
+        target: 'tp-logo',
+        icon: '#0C1220', iconColor: '#F97316',
+        iconSvg: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+        title: 'Header del panel',
+        desc: 'En la parte superior ves el nombre de la agencia, tu nombre y tu <strong>rol asignado</strong>. El rol define qué podés ver y hacer dentro del sistema — Community Manager, Editor, Analista o Administrador.'
+    },
+    {
+        target: 'tp-sidebar',
+        icon: '#1E293B', iconColor: '#F97316',
+        iconSvg: '<line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>',
+        title: 'Menú de navegación',
+        desc: 'El menú lateral muestra <strong>solo las secciones a las que tenés acceso</strong> según tus permisos. Si no ves una sección (Métricas, Reportes), es porque el administrador no habilitó ese permiso para tu rol.'
+    },
+    {
+        target: 'view-dashboard',
+        icon: '#FFF7ED', iconColor: '#F97316',
+        iconSvg: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+        title: 'Dashboard principal',
+        desc: 'Tu vista central de trabajo. Muestra las <strong>estadísticas del mes</strong> (clientes asignados, contenido planificado, publicaciones y pendientes), el gráfico de performance del cliente activo, las próximas publicaciones y el contenido del mes.'
+    },
+    {
+        target: 'dash-stats',
+        icon: '#EFF6FF', iconColor: '#3B82F6',
+        iconSvg: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+        title: 'Stats del mes',
+        desc: 'Los cuatro números clave de tu trabajo: cuántos clientes tenés asignados, cuántas piezas hay planificadas este mes, cuántas ya se publicaron y cuántas están en producción. Se actualizan en tiempo real con los datos del sistema.'
+    },
+    {
+        target: 'dash-clients-row',
+        icon: '#FFF7ED', iconColor: '#F97316',
+        iconSvg: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>',
+        title: 'Selector de cliente activo',
+        desc: 'Si tenés <strong>más de un cliente asignado</strong>, podés cambiar de cliente haciendo clic en su nombre. El gráfico de performance y la lista de contenido del mes se actualizan automáticamente para mostrar los datos del cliente seleccionado.'
+    },
+    {
+        target: 'dash-chart-card',
+        icon: '#FFF7ED', iconColor: '#F97316',
+        iconSvg: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+        title: 'Gráfico de performance',
+        desc: 'Muestra la evolución del <strong>alcance en Instagram (naranja) y Facebook (azul)</strong> de las últimas publicaciones del cliente activo que tienen métricas cargadas. Te da una visión rápida de si el contenido está creciendo o bajando.'
+    },
+    {
+        target: 'dash-upcoming-card',
+        icon: '#EFF6FF', iconColor: '#3B82F6',
+        iconSvg: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+        title: 'Próximas publicaciones',
+        desc: 'Las publicaciones que salen en los próximos 14 días, de todos tus clientes. Cada fila muestra la <strong>fecha exacta, el título, el tipo y el cliente</strong> al que pertenece. Te permite anticipar qué contenido necesita atención o revisión.'
+    },
+    {
+        target: 'dash-content-card',
+        icon: '#EFF6FF', iconColor: '#3B82F6',
+        iconSvg: '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/>',
+        title: 'Contenido del mes',
+        desc: 'La lista completa del contenido planificado para el mes del cliente activo. Cada pieza muestra su <strong>estado de producción</strong>: Publicado, Programado, En diseño, Corrección o Pendiente. Los badges de color te permiten identificar el estado de un vistazo.'
+    },
+    {
+        target: 'tp-notif-btn',
+        icon: '#0C1220', iconColor: '#F97316',
+        iconSvg: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+        title: 'Notificaciones',
+        desc: 'Cuando el administrador realice cambios en tu cuenta (modificar permisos, asignar un nuevo cliente, activar o pausar tu acceso), vas a recibir una notificación acá. El <strong>punto rojo</strong> aparece cuando hay notificaciones no leídas.'
+    },
+    {
+        target: 'tour-toggle-btn',
+        icon: '#FFF7ED', iconColor: '#F97316',
+        iconSvg: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+        title: 'Volver a este tour',
+        desc: 'Podés relanzar este tour en cualquier momento haciendo clic en <strong>"Tour del panel"</strong> en el header. El botón funciona como toggle — si el tour está activo lo cierra, si está cerrado lo abre desde el primer paso.'
+    }
+];
+
+function updateTourBtn() {
+    var btn = document.getElementById('tour-toggle-btn');
+    var lbl = document.getElementById('tour-toggle-label');
+    if (!btn) return;
+    if (_tourActive) { btn.classList.add('active'); if (lbl) lbl.textContent = 'Cerrar tour'; }
+    else { btn.classList.remove('active'); if (lbl) lbl.textContent = 'Tour del panel'; }
+}
+function toggleTour() { _tourActive ? closeTour() : startTour(); }
+function startTour() {
+    _tourStep = 0; _tourActive = true;
+    document.getElementById('tour-spotlight').style.display = 'block';
+    document.getElementById('tour-tooltip').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    updateTourBtn(); renderTourStep();
+    sessionStorage.setItem('team-tour-seen','1');
+}
+function closeTour() {
+    _tourActive = false;
+    document.getElementById('tour-spotlight').style.display = 'none';
+    document.getElementById('tour-tooltip').style.display = 'none';
+    document.body.style.overflow = '';
+    updateTourBtn();
+}
+function tourStep(dir) {
+    var next = _tourStep + dir;
+    if (next < 0) return;
+    if (next >= TOUR_STEPS.length) { closeTour(); return; }
+    _tourStep = next; renderTourStep();
+}
+function renderTourStep() {
+    var step = TOUR_STEPS[_tourStep];
+    var total = TOUR_STEPS.length;
+    var isLast = _tourStep === total - 1;
+    var target = document.getElementById(step.target);
+    var spot   = document.getElementById('tour-spotlight');
+    var tip    = document.getElementById('tour-tooltip');
+    if (!target || !spot || !tip) return;
+
+    // Contenido
+    document.getElementById('tour-dots').innerHTML = TOUR_STEPS.map(function(s,i){
+        return '<div class="tour-dot' + (i===_tourStep?' active':'') + '"></div>';
+    }).join('');
+    document.getElementById('tour-icon').style.background = step.icon;
+    document.getElementById('tour-icon').innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="' + step.iconColor + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + step.iconSvg + '</svg>';
+    document.getElementById('tour-step-num').textContent  = 'Paso ' + (_tourStep+1) + ' de ' + total;
+    document.getElementById('tour-title').textContent     = step.title;
+    document.getElementById('tour-desc').innerHTML        = step.desc;
+    document.getElementById('tour-prev').disabled         = _tourStep === 0;
+    document.getElementById('tour-next-label').textContent = isLast ? 'Finalizar' : 'Siguiente';
+    document.getElementById('tour-next-icon').innerHTML   = isLast ? '<polyline points="20 6 9 17 4 12"/>' : '<polyline points="9 18 15 12 9 6"/>';
+
+    var isFixed = (function(el) {
+        while (el && el !== document.body) {
+            if (window.getComputedStyle(el).position === 'fixed') return true;
+            el = el.parentElement;
+        }
+        return false;
+    })(target);
+
+    if (!isFixed) target.scrollIntoView({ behavior:'smooth', block:'center' });
+
+    function pos() {
+        var r   = target.getBoundingClientRect();
+        var pad = 10; var tipW = 330; var margin = 14;
+        var vw  = window.innerWidth; var vh = window.innerHeight;
+        spot.style.top    = Math.max(0, r.top    - pad) + 'px';
+        spot.style.left   = Math.max(0, r.left   - pad) + 'px';
+        spot.style.width  = (r.width  + pad*2) + 'px';
+        spot.style.height = (r.height + pad*2) + 'px';
+        var tipH = Math.min(tip.scrollHeight, vh - margin*2);
+        var tLeft = r.left + r.width/2 - tipW/2;
+        tLeft = Math.max(margin, Math.min(tLeft, vw - tipW - margin));
+        var sTop = Math.max(0, r.top - pad); var sBottom = r.bottom + pad; var gap = 14; var tTop;
+        if (sBottom + gap + tipH <= vh - margin) tTop = sBottom + gap;
+        else if (sTop - gap - tipH >= margin) tTop = sTop - gap - tipH;
+        else if (r.right + pad + gap + tipW <= vw - margin) { tLeft = r.right + pad + gap; tTop = Math.max(margin, Math.min(r.top - pad, vh - tipH - margin)); }
+        else if (r.left - pad - gap - tipW >= margin) { tLeft = r.left - pad - gap - tipW; tTop = Math.max(margin, Math.min(r.top - pad, vh - tipH - margin)); }
+        else { tTop = Math.max(margin, (vh-tipH)/2); tLeft = Math.max(margin, (vw-tipW)/2); }
+        tTop  = Math.max(margin, Math.min(tTop,  vh - tipH - margin));
+        tLeft = Math.max(margin, Math.min(tLeft, vw - tipW - margin));
+        tip.style.top = tTop + 'px'; tip.style.left = tLeft + 'px';
+        tip.style.maxHeight = (vh - margin*2) + 'px';
+    }
+    if (isFixed) pos();
+    else { setTimeout(pos, 60); setTimeout(pos, 480); }
+}
+function checkAutoTour() {
+    if (!sessionStorage.getItem('team-tour-seen')) setTimeout(startTour, 800);
+}
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && _tourActive) closeTour();
+    if (e.key === 'ArrowRight' && _tourActive) tourStep(1);
+    if (e.key === 'ArrowLeft'  && _tourActive) tourStep(-1);
+});
+window.addEventListener('resize', function(){ if (_tourActive) renderTourStep(); });
+
+// ── AUTO-LOGIN ─────────────────────────────────
+(function() {
+    var s = sessionStorage.getItem('team-portal-session');
+    if (!s) return;
+    try {
+        var sess = JSON.parse(s);
+        if (Date.now() - sess.ts > 8*60*60*1000) { sessionStorage.removeItem('team-portal-session'); return; }
+        var members = getTeamMembers();
+        var m = members.find(function(x){ return x.id === sess.id; });
+        if (m && m.portalAccess === 'active') { teamMember = m; showPortal(m); }
+    } catch(e) { sessionStorage.removeItem('team-portal-session'); }
+})();
+
+function statCard(color, bg, icon, label, val, sub) {
+    return '<div class="stat-card"><div class="stat-icon" style="background:' + bg + ';">'
+        + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + icon + '</svg>'
+        + '</div><div class="stat-label">' + label + '</div><div class="stat-val">' + val + '</div>'
+        + (sub ? '<div class="stat-sub">' + sub + '</div>' : '') + '</div>';
+}
+</script>
+</body>
+</html>

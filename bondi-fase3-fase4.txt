@@ -1,0 +1,158 @@
+BONDI MEDIA
+Plan de Producto — Fase 3 & Fase 4
+Documento de referencia estratégico y técnico
+
+Este documento consolida la hoja de ruta completa para las siguientes dos fases de desarrollo del sistema de gestión de contenido de Bondi Media. Sirve como referencia permanente para el equipo, para nuevas sesiones de desarrollo y para futuras decisiones de producto.
+Estado al cierre de Fase 2:  Sistema operativo con IA integrada, generación de contenido batch, aprendizaje de hitos, benchmarking, asistente de tips dinámico y análisis multiplataforma.
+Próximo milestone:  Portal del cliente + reporte automatizado + conexión con APIs de redes sociales.
+
+
+Índice
+1.  Resumen del estado actual — Fase 2 completada
+2.  Fase 3 — Producto robusto listo para clientes
+  2.1  Capa 1 — Funcionalidades prioritarias de alto impacto
+  2.2  Capa 2 — IA más inteligente
+  2.3  Capa 3 — Robustez antes de escalar
+3.  Fase 4 — Arquitectura SaaS de producción
+  3.1  Stack tecnológico recomendado
+  3.2  Arquitectura de alta disponibilidad
+  3.3  Portal de gestión y licencias
+  3.4  Sistema de pagos y planes de suscripción
+  3.5  Seguridad de nivel producción
+  3.6  Plan de migración incremental
+4.  Deuda técnica consciente registrada
+5.  Orden de prioridades recomendado
+
+
+1. Resumen del estado actual — Fase 2 completada
+El sistema cerró la Fase 2 con los siguientes módulos operativos:
+ARCHIVOFUNCIÓNjs/modules/ai-content-generator.jsGeneración batch de contenido con IA por tipo (reel / carrusel / stories). Prompt Maestro adaptado al cliente activo. Fallback a templates.js/modules/hitos.jsSistema de aprendizaje de hitos positivos/negativos. Captura hook pattern, alcance, día y horario. Alimenta el prompt de generación.js/ai-modules/ai-assistant.jsTips dinámicos calculados desde métricas reales (mejor horario, mejor día, hook efectivo, retención). Generador de copy multi-plataforma simultáneo.js/ai-modules/platform-optimizer.jsHorarios desde métricas reales. Análisis de optimización por publicación (qué funcionó, qué no, cómo mejorar). Opciones de contenido sugeridas.js/ai-modules/benchmarking.jsTabla de semáforos con datos observables. Análisis diferencial (fortalezas propias vs competencia). Tips y consejos. Selector de cuenta.js/ai-modules/strategic-consultant.jsConsultor IA flotante con memoria contextual del cliente activo. Acciones rápidas de ideación y auditoría.js/ai-modules/content-scorer.jsPuntuador de contenido 1-10 integrado en el modal de edición. Feedback visual verde / amarillo / rojo.js/ai-modules/hook-library.jsBiblioteca de hooks virales con botón ? Gancho en todos los campos de guion y copy.js/ai-modules/ai-learning-engine.jsMotor de aprendizaje continuo. Recuerda qué horarios, formatos y hooks funcionan por cliente.js/modals/content-modal.jsGenerador de calendario mensual con IA. Selector de mes extendido a 12 meses. Indicador de API key activa/inactiva.css/design-upgrade.cssEstilos premium para todos los componentes de IA. Identidad visual Bondi Media.
+Deuda técnica consciente registrada:  Los tres principios arquitectónicos marcados como pendientes para Fase 4: (1) Gateway de IA agnóstico de proveedor, (2) Procesamiento asíncrono sin bloquear el hilo principal, (3) RAG con embeddings en lugar de contexto plano.
+
+
+2. Fase 3 — Producto robusto listo para clientes
+El objetivo de la Fase 3 es convertir el sistema en un producto que una agencia puede mostrar en una demo y que un cliente puede usar de forma autónoma, sin necesidad de que la agencia esté presente. Las funcionalidades están ordenadas por impacto real en ventas y retención.
+?? Objetivo de Fase 3
+Un cliente de la agencia puede entrar al sistema con su propio usuario, ver su calendario, aprobar publicaciones, ver sus reportes y entender sus resultados — sin necesidad de WhatsApp ni de exportar nada manualmente.
+2.1  Capa 1 — Funcionalidades prioritarias de alto impacto
+?? Portal del cliente (vista simplificada)    CRÍTICO
+Una vista separada donde el cliente entra con su propio usuario y ve únicamente su calendario, sus métricas y sus reportes. No tiene acceso a la configuración de la agencia ni a los datos de otros clientes.
+• ?  Login con email + contraseña del cliente (separado del admin)
+• ?  Vista de calendario del mes — solo lectura o con opción de comentarios
+• ?  Panel de métricas simplificado: alcance, engagement y DMs del mes
+• ?  Historial de publicaciones con estado (diseño / aprobado / publicado)
+• ?  Branding personalizado con logo del cliente
+
+? Flujo de aprobación de contenido    CRÍTICO
+El estado actual va de "no iniciado" a "publicado". Falta el paso de aprobación formal. Elimina las idas y vueltas por WhatsApp y da evidencia escrita de cada aprobación.
+• ?  Nuevo estado: "Esperando aprobación del cliente"
+• ?  Notificación automática al cliente cuando hay contenido para revisar
+• ?  El cliente puede aprobar con un click o rechazar con comentario
+• ?  Log de aprobaciones con fecha, hora y nombre del aprobador
+• ?  Reporte mensual incluye el historial de aprobaciones
+
+?? Reporte mensual automatizado con IA    ALTO
+El sistema ya tiene las métricas. Solo falta generar el PDF del reporte con un click. Incluye análisis redactado por IA basado en los números reales del mes.
+• ?  PDF generado automáticamente con logo del cliente y marca Bondi Media
+• ?  Alcance total, engagement, DMs y publicaciones del mes
+• ?  Comparativa vs mes anterior con variación porcentual
+• ?  Párrafo de análisis generado por IA: qué funcionó, qué mejorar
+• ?  Sección de hitos del mes: publicaciones virales y bajo rendimiento
+• ?  Firmado digitalmente con fecha de generación
+
+?? Calendario visual con drag & drop    ALTO
+El calendario actual es una lista. Un grilla visual donde podés ver el mes completo, arrastrar publicaciones entre días y detectar huecos o sobrecargas de un vistazo.
+• ?  Vista mensual en grilla (columnas = días, filas = semanas)
+• ?  Arrastrar publicaciones para cambiar fecha sin entrar al modal
+• ?  Color por tipo de contenido (reel, carrusel, stories)
+• ?  Indicador visual de huecos (días sin publicación)
+• ?  Mini preview del título al pasar el cursor
+
+?? Importación de métricas desde APIs    MEDIO
+Hoy las métricas se cargan manualmente. La conexión con Instagram Graph API y Facebook Business API permite sincronización automática y elimina el error humano en la carga.
+• ?  OAuth con Instagram Graph API para leer alcance, likes, comentarios y guardados
+• ?  Facebook Business API para las métricas de la Página
+• ?  Sincronización automática cada 24 horas
+• ?  Modo manual como fallback cuando la API no está disponible
+• ?  Alerta cuando una publicación publicada no tiene métricas después de 48hs
+
+
+2.2  Capa 2 — IA más inteligente
+FUNCIONALIDADDESCRIPCIÓN??? Generación de referencias visualesIntegrar DALL-E o Stable Diffusion para generar mockups de portadas de carruseles y miniaturas de reels directamente desde el sistema. No reemplaza al diseñador pero acelera el briefing visual.?? Análisis de sentimiento de comentariosSi se conecta la API de Instagram, leer y clasificar automáticamente los comentarios como positivos, negativos, preguntas u objeciones. Dashboard de percepción de marca que ninguna agencia pequeña ofrece hoy.?? Sugerencia de tendencias en tiempo realConectar con TikTok Creative Center API y Google Trends para sugerir temas trending relevantes al nicho del cliente cada semana. "Esta semana hay una tendencia sobre X que encaja con tu industria."?? Predicción de rendimientoCon suficiente historial de métricas, predecir antes de publicar el alcance estimado basándose en horario, tipo, tema e historial del cliente. Convierte al sistema en asesor proactivo.?? RAG con embeddings (deuda técnica)Reemplazar el envío de contexto plano al prompt por una base de datos vectorial. Solo se recupera el contexto estrictamente necesario antes de cada generación. Reduce tokens, reduce costo, reduce alucinaciones.
+
+2.3  Capa 3 — Robustez antes de escalar
+Estos puntos no agregan funcionalidades visibles para el usuario final pero son obligatorios antes de ofrecer el sistema como producto de suscripción. Sin ellos, el sistema puede fallar o perder datos de clientes que pagan.
+?  Multi-tenancy real
+Hoy los datos viven en localStorage del browser. Si el usuario cambia de dispositivo, pierde todo. Se necesita backend con base de datos donde cada cliente tiene su espacio aislado accesible desde cualquier dispositivo.
+?  Autenticación y roles
+El sistema de login actual es básico. Para SaaS se necesitan al menos tres roles: Admin (agencia), Cliente (solo lectura de su cuenta) y Colaborador (puede editar pero no borrar).
+?  Backup automático
+Exportación periódica automática de todos los datos. Si alguien limpia el localStorage o hay un error, los meses de métricas e historial no se pierden.
+?  Control de costos de IA
+Contador de tokens consumidos por cliente y por mes. Límite configurable por plan. Alerta antes de alcanzar el límite. Sin esto, un cliente que genera mucho contenido puede consumir el presupuesto de IA de toda la agencia.
+
+
+3. Fase 4 — Arquitectura SaaS de producción
+La Fase 4 es el salto de "herramienta interna" a "producto SaaS real". No se trata de optimizar el código JavaScript existente — es mover la lógica crítica al servidor para soportar múltiples usuarios simultáneos, garantizar disponibilidad y habilitar el modelo de suscripción con cobro automático.
+?? Punto de partida importante
+El sistema actual es una SPA con localStorage. Eso significa que toda la lógica, los datos y las llamadas de IA corren en el browser del usuario. Funciona perfecto para una agencia con 5-10 clientes. Para escalar a 100+ usuarios concurrentes, la lógica crítica debe vivir en el servidor.
+3.1  Stack tecnológico recomendado
+CAPATECNOLOGÍARAZÓNBackend principalNode.js + FastifyMismo lenguaje que el sistema actual (JS). Fastify maneja 30.000-50.000 req/s en un servidor modesto. Ecosistema enorme. Para escalar a 500k+ usuarios, migrar a Go.Base de datos principalPostgreSQLTransaccional, soporte nativo para JSON, escala muy bien con índices correctos. Ideal para usuarios, clientes, contenido, métricas, planes y pagos.Caché y colasRedisResultados de IA ya generados (evitar regenerar), tokens de sesión, métricas calculadas. Reduce el costo de IA a la mitad. También maneja la cola de jobs de generación.FrontendReact o SvelteEl HTML/CSS/JS vanilla actual migra gradualmente. Svelte produce bundles muy livianos — ideal para carga rápida. React tiene más ecosistema si luego se necesita colaboración externa.Infraestructura inicialRailway / RenderDeploy automático con cada commit. Sin configurar servidores manualmente. Cuando se superan los 500 usuarios activos, la migración a AWS / GCP es natural.CDN y seguridadCloudflareAssets estáticos servidos desde la red de Cloudflare (no desde el servidor). Certificado SSL automático. DDoS protection. Rate limiting de red.
+3.2  Arquitectura de alta disponibilidad
+Con esta arquitectura, el sistema no cae cuando falla una instancia y puede absorber picos de tráfico sin degradar la experiencia del usuario.
+Load balancer + múltiples instancias
+En lugar de un solo servidor, corren 3 o más instancias del backend detrás de un load balancer (Nginx o Caddy). Si una instancia falla, el tráfico se redirige automáticamente a las otras. El usuario nunca ve un error de servidor caído.
+Cola de generación de IA (BullMQ + Redis)
+En lugar de que cada usuario espere bloqueado mientras la IA responde, las peticiones de generación van a una cola. Un worker procesa en background y cuando termina notifica al usuario vía WebSocket. Esto resuelve los tres problemas de deuda técnica: no bloquea el hilo principal, permite streaming de respuesta y la cola absorbe picos de tráfico.
+Gateway de IA agnóstico de proveedor
+Una capa de abstracción única que redirige a OpenAI, Claude o Gemini según disponibilidad y precio. Si un proveedor cae o sube sus precios, el switch es en un solo archivo. El resto del sistema no sabe con quién habla.
+Capacidad estimada con esta arquitectura: 200-300 usuarios activos simultáneos en un servidor de $50/mes. Para 1.000 usuarios simultáneos: 3-4 instancias, costo de $150-200/mes de infraestructura — cubierto con 10-15 suscripciones del plan básico.
+
+3.3  Portal de gestión y licencias
+Sistema separado del producto principal, accesible solo para la agencia (admin). Desde acá se gestiona todo el negocio sin tocar el sistema de los clientes.
+MÓDULODESCRIPCIÓN?? Dashboard de negocioMRR (ingreso mensual recurrente), churn rate, usuarios activos últimas 24hs, llamadas de IA consumidas vs límite del plan, costo de infraestructura del mes.?? Gestión de clientes y licenciasCRUD completo de cuentas — crear, suspender, cambiar de plan, reactivar. Historial de uso por cliente: publicaciones generadas, métricas cargadas, última sesión. Licencias temporales para demos y trials.?? Gestión de planesCrear y editar planes con límites: clientes gestionados, llamadas de IA por mes, funcionalidades premium, precio mensual y anual. Descuentos individuales y códigos de promo.?? Pagos con StripeCobro recurrente, facturación automática, manejo de tarjetas fallidas con reintentos, facturas para clientes. Cuando Stripe confirma un pago, el sistema activa automáticamente el plan correspondiente.?? Soporte y ticketsMódulo básico para que los clientes abran tickets desde el producto. La agencia los gestiona desde el portal. Alternativa: integración con Intercom o Crisp para chat en vivo.
+3.4  Planes de suscripción sugeridos
+?? BÁSICO? PROFESIONAL?? AGENCIAARS $35.000/mes
+• 1 cliente gestionado
+• Generador de contenido con IA
+• Calendario y métricas manuales
+• 50 generaciones de IA/mes
+• Soporte por emailARS $80.000/mes
+• Hasta 5 clientes
+• Portal del cliente (vista simplificada)
+• Reporte mensual automatizado
+• 200 generaciones de IA/mes
+• Benchmarking completo
+• Soporte prioritarioARS $150.000/mes
+• Clientes ilimitados
+• White-label (nombre y logo propios)
+• Acceso API para integraciones
+• Generaciones ilimitadas de IA
+• Onboarding dedicado
+• SLA de disponibilidad garantizado
+3.5  Seguridad de nivel producción
+?  JWT con refresh tokens
+Las sesiones no se guardan en el servidor — se emiten tokens firmados con expiración corta (15 minutos) y refresh tokens de larga duración. Si un token es robado, expira solo.
+?  Encriptación de datos sensibles
+Las API keys de OpenAI/Claude de cada cliente se guardan encriptadas en la base de datos, no en texto plano. Nunca en el frontend.
+?  Audit log completo
+Cada acción relevante queda registrada: quién hizo qué y cuándo. Útil para resolver disputas y para cumplimiento normativo.
+?  Rate limiting por plan
+Cada plan tiene límite de llamadas a la IA por mes. Redis lleva el contador en tiempo real. Si un usuario del plan básico llega al límite, el sistema le muestra el mensaje de upgrade antes de hacer la llamada — no después de gastar el token.
+?  HTTPS obligatorio
+Cloudflare maneja el certificado SSL automáticamente. Sin excepción, nunca HTTP.
+
+3.6  Plan de migración incremental
+La migración de Fase 3 a Fase 4 no tiene que ser de golpe. La estrategia más segura es en 4 etapas sin romper lo que ya funciona:
+#ETAPAQUÉ SE HACE1Autenticación al backendLogin real con base de datos. El frontend sigue igual pero en lugar de guardar en localStorage, guarda en el servidor. Impacto en el usuario: ninguno visible.2Migración de datosEl calendario, las métricas y los clientes se mueven a PostgreSQL. El frontend hace fetch al backend en lugar de leer localStorage. Permite acceso multi-dispositivo.3IA al backend con colasLa generación de contenido se mueve al servidor con BullMQ. El frontend envía el job y escucha el resultado vía WebSocket. Elimina los timeouts y permite streaming.4Portal de gestiónAplicación separada que consume la misma API del backend. Dashboard de negocio, gestión de licencias y pagos con Stripe.
+
+4. Deuda técnica consciente registrada
+Los siguientes puntos fueron identificados durante el desarrollo de Fase 2 como deuda técnica deliberada — se priorizó entregar funcionalidad rápido con la arquitectura actual, sabiendo que estos puntos se resuelven en Fase 4.
+PROBLEMAIMPACTO ACTUALSOLUCIÓN EN FASE 4Acoplamiento al proveedor de IAcallClaudeAPI() está hardcodeada para OpenAI. Si cambian precios o cae el servicio, todo el sistema se rompe en un punto.Gateway agnóstico con fallback routing entre proveedores.Bloqueo del hilo principalLas llamadas de IA son await síncronos. Con 14 publicaciones + 3 llamadas, el usuario espera 30-60 segundos con spinner.BullMQ + WebSocket. El job se envía, el resultado llega cuando está listo.Contexto plano en el promptbuildClientContext() envía todos los datos relevantes en cada llamada. Aumenta tokens, aumenta costo y puede incluir datos no relevantes.RAG con base de datos vectorial. Solo se recupera el contexto estrictamente necesario.Datos en localStorageUn cambio de dispositivo o limpieza del browser borra meses de historial y métricas.PostgreSQL en backend con backups automáticos.Sin autenticación realEl login actual no tiene backend. Cualquiera que accede a la URL puede ver todos los datos.JWT + roles (admin, cliente, colaborador) con base de datos.
+
+5. Orden de prioridades recomendado
+Basado en impacto en ventas, retención de clientes y reducción de trabajo operativo de la agencia:
+#FASEENTREGABLEPOR QUÉ PRIMERO01F3Portal del cliente + flujo de aprobaciónEs lo que más diferencia en una demo. Un prospecto que ve al cliente aprobando desde su portal cierra más rápido que uno que ve una lista de publicaciones.02F3Reporte mensual automatizadoElimina 1-2 horas de trabajo manual por cliente cada mes. Con 5 clientes son 10 horas mensuales recuperadas.03F3Calendario visual con drag & dropLa experiencia visual del calendario es lo que más comentan los clientes en demos. Es la primera pantalla que ven y define la percepción del producto.04F4Autenticación y datos en backend (Etapa 1-2 de migración)Antes de lanzar el producto a clientes de pago, los datos deben estar en un servidor real. No se puede vender un SaaS que guarda datos en localStorage.05F3Importación de métricas desde APIs de RRSSElimina la carga manual de métricas — actualmente la tarea que más fricción genera en el flujo de trabajo diario.06F4Cola de IA + streaming (Etapa 3 de migración)Resuelve la deuda técnica más crítica y habilita que múltiples usuarios generen contenido simultáneamente sin degradar la experiencia.07F4Portal de gestión + pagos con StripeUna vez que el producto es vendible, se necesita el backend de negocio para gestionar suscripciones, licencias y facturación automática.08F4White-label + onboarding para otras agenciasEl paso final: que otras agencias puedan usar el sistema con su propio nombre y logo. Convierte el producto en una plataforma.
+
+BONDI MEDIA — Plan Fase 3 & Fase 4
+Documento generado automáticamente — 4 de abril de 2026

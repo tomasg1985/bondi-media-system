@@ -1,0 +1,33 @@
+{
+  "configuracion_sistema": {
+    "version_api": "anthropic-2023-06-01",
+    "modelo_principal": "claude-3-5-sonnet-20240620",
+    "modelo_correcciones": "claude-3-5-haiku-20241022"
+  },
+  "clientes": [
+    {
+      "id_cliente": "CLI-001",
+      "nombre_agencia": "Nombre Cliente",
+      "perfil_marca": {
+        "tono_voz": "Profesional pero cercano",
+        "audiencia_objetivo": "Emprendedores tech",
+        "hashtags_fijos": ["#marketing", "#ia", "#negocios"],
+        "limite_palabras": 150
+      },
+      "estadisticas_uso": {
+        "tokens_mes_actual": 45200,
+        "costo_acumulado_usd": 0.32,
+        "posts_generados": 12
+      },
+      "historial_reciente": [
+        {
+          "id_post": "POST-99",
+          "fecha": "2024-05-20",
+          "red_social": "Instagram",
+          "contenido_generado": "Texto del post aquí...",
+          "tokens_usados": 1850
+        }
+      ]
+    }
+  ]
+}

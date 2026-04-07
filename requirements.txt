@@ -1,0 +1,35 @@
+# Framework Web
+Flask==3.0.0
+flask-cors==4.0.0
+
+# Seguridad y Configuración
+python-dotenv==1.0.0
+
+# Conexión con Base de Datos SQL
+mysql-connector-python==8.2.0
+
+# Cliente para la API de Anthropic (Claude)
+anthropic==0.18.1
+
+# Utilidades de Red (necesarias para peticiones HTTP)
+requests==2.31.0
+urllib3==2.1.0
+
+# Procesamiento de Datos y Machine Learning
+numpy==1.26.4
+pandas==2.2.0
+scikit-learn==1.4.0
+
+# Procesamiento de Lenguaje Natural
+textblob==0.18.0
+nltk==3.8.1
+
+# Modelos de IA y Deep Learning
+transformers==4.40.0
+torch==2.3.0
+
+# Visualización de Datos
+matplotlib==3.8.0
+
+# Utilidades adicionales
+python-dateutil==2.9.0

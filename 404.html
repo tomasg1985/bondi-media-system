@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no encontrada · Bondi Media</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .error-card {
+            background: white;
+            border-radius: 32px;
+            padding: 60px 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .error-code {
+            font-size: 120px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff4d4d, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #0f172a;
+            margin-bottom: 16px;
+            font-size: 28px;
+        }
+        
+        p {
+            color: #64748b;
+            margin-bottom: 32px;
+            font-size: 16px;
+        }
+        
+        .btn-home {
+            background: linear-gradient(135deg, #ff4d4d, #2563eb);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 30px -10px rgba(255, 77, 77, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-card">
+        <div class="error-code">404</div>
+        <h1>Página no encontrada</h1>
+        <p>La página que buscas no existe o fue movida.</p>
+        <a href="index.html" class="btn-home">
+            <i class="fas fa-home"></i> Volver al inicio
+        </a>
+    </div>
+</body>
+</html>

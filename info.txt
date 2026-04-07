@@ -1,0 +1,7 @@
+Cuando el cliente haga clic en "Corregir", tu sistema debe enviar este prompt a Claude 3.5 Haiku:
+
+
+"Actúa como editor de contenido.
+TEXTO ACTUAL: [Contenido_Original]
+PEDIDO DE CAMBIO: [Instruccion_Cliente]
+REGLA DE ORO: Mantén la estructura original y solo modifica lo estrictamente necesario para cumplir el pedido. Devuelve solo el texto corregido, sin explicaciones."

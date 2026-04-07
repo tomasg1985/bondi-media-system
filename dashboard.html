@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bondi Media · Dashboard</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #0f172a;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .welcome-badge {
+            background: linear-gradient(135deg, #ff4d4d, #2563eb);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 60px;
+            display: inline-block;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .user-info {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 24px;
+            margin: 30px 0;
+            text-align: left;
+            border: 1px solid #e2e8f0;
+        }
+
+        .user-info p {
+            margin: 12px 0;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info i {
+            width: 24px;
+            color: #2563eb;
+        }
+        
+        .logout-btn {
+            background: linear-gradient(135deg, #ff4d4d, #2563eb);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 30px -10px rgba(255, 77, 77, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-card">
+        <div class="welcome-badge">
+            <i class="fas fa-bolt"></i> Bondi Media
+        </div>
+        
+        <h1>🎬 Dashboard</h1>
+        
+        <div class="user-info" id="userInfo">
+            <i class="fas fa-spinner fa-spin"></i> Verificando sesión...
+        </div>
+        
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = sessionStorage.getItem('bondi-current-user');
+            
+            if (!currentUser) {
+                window.location.href = 'login-final.html';
+                return;
+            }
+            
+            try {
+                const user = JSON.parse(currentUser);
+                document.getElementById('userInfo').innerHTML = `
+                    <p><i class="fas fa-envelope"></i> <strong>Email:</strong> ${user.email}</p>
+                    <p><i class="fas fa-user"></i> <strong>Usuario:</strong> ${user.name || 'Demo'}</p>
+                    <p><i class="fas fa-clock"></i> <strong>Inicio:</strong> ${new Date(user.loggedInAt).toLocaleString()}</p>
+                `;
+            } catch (e) {
+                sessionStorage.removeItem('bondi-current-user');
+                window.location.href = 'login-final.html';
+            }
+            
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                sessionStorage.removeItem('bondi-current-user');
+                window.location.href = 'login-final.html';
+            });
+        });
+    </script>
+</body>
+</html>

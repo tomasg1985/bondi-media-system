@@ -1,0 +1,17 @@
+{
+  "flujo_correccion": {
+    "paso_1_identificacion": {
+      "input_usuario": "feedback_del_cliente",
+      "contenido_actual": "texto_del_post_anterior",
+      "instrucciones_marca": "perfil_cliente_json"
+    },
+    "paso_2_procesamiento_ligero": {
+      "modelo_sugerido": "claude-3-5-haiku",
+      "instruccion_sistema": "Eres un editor de estilo. NO generes contenido nuevo. Solo aplica los cambios solicitados por el usuario sobre el texto base, manteniendo el tono de marca."
+    },
+    "paso_3_ahorro_tokens": {
+      "tecnica": "Differential Prompting",
+      "detalle": "Solo enviar a la API el párrafo específico a corregir, no el post entero si es muy largo."
+    }
+  }
+}

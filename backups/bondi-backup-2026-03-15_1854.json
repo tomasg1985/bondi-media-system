@@ -1,0 +1,937 @@
+{
+  "version": "2.0",
+  "exportDate": "2026-03-15T21:54:06.999Z",
+  "account": "bondi-media",
+  "config": {
+    "theme": "default",
+    "fontSize": "small",
+    "compactMode": false
+  },
+  "data": {
+    "calendar": [
+      {
+        "id": 2,
+        "date": "2026-03-02",
+        "time": "20:00",
+        "type": "reel",
+        "title": "No necesitás más tráfico - Var B (Pregunta Incómoda)",
+        "objective": "conversion",
+        "notes": "INVERSIÓN: 30% ads. CTA: AUDITORÍA",
+        "hasAds": true,
+        "adBudget": 30,
+        "status": "published",
+        "metrics": {
+          "instagram": {
+            "views": 135,
+            "reach": 114,
+            "likes": 3,
+            "comments": 2,
+            "saves": 0,
+            "shares": 0,
+            "dms": 0
+          },
+          "facebook": {
+            "views": 18,
+            "reach": 3,
+            "reactions": 0,
+            "comments": 0,
+            "shares": 0,
+            "clicks": 0,
+            "messages": 3
+          },
+          "tiktok": {
+            "views": 0,
+            "likes": 0,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0
+          },
+          "updatedAt": "2026-03-15T20:52:55.485Z",
+          "videoMetrics": {
+            "duration": 1002,
+            "avgWatchTime": 43,
+            "retentionPercent": 4,
+            "first3sPercent": 6,
+            "rating": "malo",
+            "first3sAnalysis": "El reel inicia desde el segundo 00:00 con la palabra \"Tu\" sobre un fondo oscuro animado para el segundo 00:01 pasa a verse la palabra \"perdiendo\", ya para el segundo 00:02 aparezco en pantalla con las manos adentro de los bolsillos del pantalon en un plano americano, en el segundo 00:03 la vista se acerca a un plano medio con un semblante en la cara serio."
+          }
+        },
+        "details": {
+          "scenes": 8,
+          "copy": "¿Tu web está perdiendo plata cada día?\n\nProbablemente sí.\n\n3 FUGAS DE DINERO:\n1. No se entiende qué hacés\n2. Sin recorrido claro\n3. Botón escondido\n\nEscribí AUDITORÍA",
+          "specs": "Duración: 35s\nFormato: 9:16",
+          "script": "ESCENA 1: \"¿Tu web está perdiendo plata?\"\nESCENA 2: Contador de dinero perdido\nESCENA 3: \"FUGA 1\" - Visitante abandonando\nESCENA 4: \"FUGA 2\" - Cursor perdido\nESCENA 5: \"FUGA 3\" - Botón invisible\nESCENA 6: \"Se arregla en días\"\nESCENA 7: CTA destacado\nESCENA 8: Final con palabra clave",
+          "hashtags": "#DiseñoWeb #Conversión #WebDesign",
+          "creative": "Hook agresivo con urgencia"
+        }
+      },
+      {
+        "id": 4,
+        "date": "2026-03-03",
+        "time": "09:30",
+        "type": "stories",
+        "title": "Diagnóstico Web Exprés",
+        "objective": "conversion",
+        "notes": "5 historias: Encuesta + Quiz + Slider + Preguntas + CTA",
+        "status": "published",
+        "metrics": {
+          "instagram": {
+            "views": 47,
+            "reach": 0,
+            "likes": 3,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0,
+            "dms": 0
+          },
+          "facebook": {
+            "views": 0,
+            "reach": 0,
+            "reactions": 0,
+            "comments": 0,
+            "shares": 0,
+            "clicks": 0,
+            "messages": 0
+          },
+          "tiktok": {
+            "views": 0,
+            "likes": 0,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0
+          },
+          "updatedAt": "2026-03-15T21:03:25.834Z"
+        },
+        "details": {
+          "slides": 5,
+          "designText": "H1: \"¿Tu web convierte?\"\nH2: Quiz \"¿Cuál es tu mayor problema?\"\nH3: Slider 1-10 claridad\nH4: \"¿Qué mejorarías?\"\nH5: CTA AUDITORÍA",
+          "stickers": "H1: Encuesta\nH2: Quiz\nH3: Slider\nH4: Caja preguntas\nH5: Link"
+        }
+      },
+      {
+        "id": 5,
+        "date": "2026-03-04",
+        "time": "20:00",
+        "type": "carousel",
+        "title": "Tu marca no está estancada por el logo",
+        "objective": "authority",
+        "notes": "7 slides. Problema: falta de claridad estratégica",
+        "status": "published",
+        "metrics": {
+          "instagram": {
+            "views": 19,
+            "reach": 9,
+            "likes": 2,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0,
+            "dms": 0
+          },
+          "facebook": {
+            "views": 0,
+            "reach": 0,
+            "reactions": 0,
+            "comments": 0,
+            "shares": 0,
+            "clicks": 0,
+            "messages": 0
+          },
+          "tiktok": {
+            "views": 0,
+            "likes": 0,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0
+          },
+          "updatedAt": "2026-03-15T21:04:17.692Z"
+        },
+        "details": {
+          "slides": 7,
+          "copy": "Tu marca no está estancada por el logo.\n\nEstá estancada porque no hay claridad.\n\nNo es el diseño. Es la estrategia.",
+          "designText": "SLIDE 1: Título + logo tachado\nSLIDE 2: \"El problema no es estético\"\nSLIDE 3: \"No comunica quién sos\"\nSLIDE 4: \"No comunica para quién sos\"\nSLIDE 5: \"No comunica por qué importa\"\nSLIDE 6: \"Confusión = 0 conexión\"\nSLIDE 7: CTA MARCA",
+          "hashtags": "#Branding #Marca #Estrategia",
+          "creative": "Diseño editorial limpio"
+        }
+      },
+      {
+        "id": 6,
+        "date": "2026-03-05",
+        "time": "20:30",
+        "type": "stories",
+        "title": "Test de Claridad de Marca",
+        "objective": "authority",
+        "notes": "4 historias interactivas",
+        "status": "published",
+        "metrics": {
+          "instagram": {
+            "views": 27,
+            "reach": 0,
+            "likes": 4,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0,
+            "dms": 0
+          },
+          "facebook": {
+            "views": 4,
+            "reach": 0,
+            "reactions": 2,
+            "comments": 0,
+            "shares": 0,
+            "clicks": 0,
+            "messages": 0
+          },
+          "tiktok": {
+            "views": 0,
+            "likes": 0,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0
+          },
+          "updatedAt": "2026-03-15T21:13:14.631Z"
+        },
+        "details": {
+          "slides": 4,
+          "designText": "H1: \"Test: ¿Tu marca es clara?\"\nH2: \"¿Entienden qué hacés en 5s?\"\nH3: \"¿Qué palabra describe tu marca?\"\nH4: \"Si dudaste, hay trabajo\"",
+          "stickers": "H1: Countdown\nH2: Encuesta\nH3: Caja preguntas\nH4: Link"
+        }
+      },
+      {
+        "id": 7,
+        "date": "2026-03-06",
+        "time": "12:30",
+        "type": "reel",
+        "title": "Manifiesto: No diseñamos para gustar",
+        "objective": "authority",
+        "notes": "Filtro premium. CTA: PROYECTO",
+        "status": "published",
+        "metrics": {
+          "instagram": {
+            "views": 215,
+            "reach": 183,
+            "likes": 4,
+            "comments": 0,
+            "saves": 1,
+            "shares": 0,
+            "dms": 0
+          },
+          "facebook": {
+            "views": 17,
+            "reach": 2,
+            "reactions": 0,
+            "comments": 0,
+            "shares": 0,
+            "clicks": 0,
+            "messages": 0
+          },
+          "tiktok": {
+            "views": 0,
+            "likes": 0,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0
+          },
+          "updatedAt": "2026-03-15T21:22:35.131Z",
+          "videoMetrics": {
+            "duration": 3989,
+            "avgWatchTime": 86,
+            "retentionPercent": 2,
+            "first3sPercent": 6,
+            "rating": "malo",
+            "first3sAnalysis": "A partir del segundo 00:00 aparecen mis manos en primer plano arrugando una hoja de papel, para el segundo 00:01 aparezcon en el plano de camara visualizando el cesto de basura para arrojar el papel arrugado, para el segundo 00:02 termino de arrugar el papel para arrojarlo al cesto. Finalmente en el segundo 00:03 aparece en un plano detalle el cesto de basura con papeles ya adentro de el."
+          }
+        },
+        "details": {
+          "scenes": 6,
+          "copy": "No diseñamos para gustar.\nDiseñamos para posicionar.\n\nNo hacemos \"lindo\".\nHacemos estratégico.\n\nSi buscás logo bonito, no somos para vos.\n\nEscribí PROYECTO",
+          "specs": "Blanco y negro, tipografía fuerte",
+          "script": "ESCENA 1: \"No diseñamos para gustar\"\nESCENA 2: \"Diseñamos para posicionar\"\nESCENA 3: Tachado \"lindo\"\nESCENA 4: Destacado \"estratégico\"\nESCENA 5: \"Logo bonito? No somos para vos\"\nESCENA 6: \"Marca que venda? Hablemos\"",
+          "hashtags": "#Branding #Diseño #Estrategia",
+          "creative": "Blanco y negro, polarizante"
+        }
+      },
+      {
+        "id": 9,
+        "date": "2026-03-09",
+        "time": "20:00",
+        "type": "reel",
+        "title": "Tu competencia comunica mejor - Var B (Tensión)",
+        "objective": "attraction",
+        "notes": "INVERSIÓN: 25% ads. CTA: ESTRATEGIA",
+        "hasAds": true,
+        "adBudget": 25,
+        "status": "published",
+        "metrics": {
+          "instagram": {
+            "views": 51,
+            "reach": 35,
+            "likes": 3,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0,
+            "dms": 0
+          },
+          "facebook": {
+            "views": 1,
+            "reach": 1,
+            "reactions": 0,
+            "comments": 0,
+            "shares": 0,
+            "clicks": 0,
+            "messages": 0
+          },
+          "tiktok": {
+            "views": 0,
+            "likes": 0,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0
+          },
+          "updatedAt": "2026-03-15T21:31:01.504Z",
+          "videoMetrics": {
+            "duration": 243,
+            "avgWatchTime": 8,
+            "retentionPercent": 3,
+            "first3sPercent": 0,
+            "rating": "malo",
+            "first3sAnalysis": "En el segundo 00:00 aparezco en camara con la palabra al centro \"Estás\" en un plano medio, ya para el segundo 00:01 la camara se acerca para mostrar un plano medio y con la palabra \"Perdiendo\" la palabra y el plano continua en el segundo 00:02, ya para el segundo 00:03 se muestra un primer plano de mi cara con la palabra \"Clientes\" en el centro de la pantalla."
+          }
+        },
+        "details": {
+          "scenes": 7,
+          "copy": "ESTÁS.\nPERDIENDO.\nCLIENTES.\n\nNo porque tu servicio sea malo.\nSino porque tu competencia comunica mejor.\n\nEscribí ESTRATEGIA",
+          "specs": "Tipografía Impact, rojo y negro",
+          "script": "ESCENA 1: \"ESTÁS\"\nESCENA 2: \"PERDIENDO\"\nESCENA 3: \"CLIENTES\"\nESCENA 4: \"No porque...\"\nESCENA 5-7: Las 3 cosas",
+          "hashtags": "#Marketing #Ventas #Estrategia",
+          "creative": "Dramático, urgente"
+        }
+      },
+      {
+        "id": 10,
+        "date": "2026-03-10",
+        "time": "09:30",
+        "type": "stories",
+        "title": "Auditoría Express: Comunicación",
+        "objective": "attraction",
+        "notes": "5 historias interactivas",
+        "status": "published",
+        "metrics": {
+          "instagram": {
+            "views": 43,
+            "reach": 0,
+            "likes": 1,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0,
+            "dms": 0
+          },
+          "facebook": {
+            "views": 0,
+            "reach": 0,
+            "reactions": 0,
+            "comments": 0,
+            "shares": 0,
+            "clicks": 0,
+            "messages": 0
+          },
+          "tiktok": {
+            "views": 0,
+            "likes": 0,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0
+          },
+          "updatedAt": "2026-03-15T21:36:12.365Z"
+        },
+        "details": {
+          "slides": 5,
+          "designText": "H1: \"Auditoría express\"\nH2: \"¿Tu competencia comunica mejor?\"\nH3: \"Claridad 1-10\"\nH4: \"¿Qué hace tu competencia?\"\nH5: CTA ESTRATEGIA",
+          "stickers": "H1: Countdown\nH2: Encuesta\nH3: Slider\nH4: Caja preguntas\nH5: Link"
+        }
+      },
+      {
+        "id": 11,
+        "date": "2026-03-11",
+        "time": "20:00",
+        "type": "carousel",
+        "title": "3 señales de que necesitás rediseño",
+        "objective": "authority",
+        "notes": "7 slides. Señales + soluciones",
+        "status": "published",
+        "metrics": {
+          "instagram": {
+            "views": 22,
+            "reach": 7,
+            "likes": 2,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0,
+            "dms": 0
+          },
+          "facebook": {
+            "views": 0,
+            "reach": 0,
+            "reactions": 0,
+            "comments": 0,
+            "shares": 0,
+            "clicks": 0,
+            "messages": 0
+          },
+          "tiktok": {
+            "views": 0,
+            "likes": 0,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0
+          },
+          "updatedAt": "2026-03-15T21:37:46.898Z"
+        },
+        "details": {
+          "slides": 7,
+          "copy": "3 señales de que tu marca necesita rediseño.\n\n(Y no tiene nada que ver con \"estar fea\")",
+          "designText": "SLIDE 1: Título\nSLIDE 2: \"SEÑAL 1: Confunden lo que hacés\"\nSLIDE 3: Ejemplos\nSLIDE 4: \"SEÑAL 2: Parece amateur\"\nSLIDE 5: \"SEÑAL 3: Te confunden con competencia\"\nSLIDE 6: \"No es estética. Es posicionamiento.\"\nSLIDE 7: CTA MARCA",
+          "hashtags": "#Branding #Rediseño",
+          "creative": "Checks y X, verde/rojo"
+        }
+      },
+      {
+        "id": 12,
+        "date": "2026-03-12",
+        "time": "20:00",
+        "type": "stories",
+        "title": "Antes/Después + Preguntas",
+        "objective": "authority",
+        "notes": "Comparación visual",
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "views": 35,
+            "reach": 0,
+            "likes": 2,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0,
+            "dms": 0
+          },
+          "facebook": {
+            "views": 0,
+            "reach": 0,
+            "reactions": 0,
+            "comments": 0,
+            "shares": 0,
+            "clicks": 0,
+            "messages": 0
+          },
+          "tiktok": {
+            "views": 0,
+            "likes": 0,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0
+          },
+          "updatedAt": "2026-03-15T21:40:42.783Z"
+        },
+        "details": {
+          "slides": 3,
+          "designText": "H1: Split \"Antes vs Después\"\nH2: \"¿Te identificás con el ANTES?\"\nH3: \"¿Qué cambiarías?\"",
+          "stickers": "H2: Encuesta\nH3: Caja preguntas"
+        }
+      },
+      {
+        "id": 13,
+        "date": "2026-03-13",
+        "time": "20:00",
+        "type": "reel",
+        "title": "Así trabajamos un proyecto",
+        "objective": "authority",
+        "notes": "Proceso metodológico. CTA: PROCESO",
+        "status": "published",
+        "metrics": {
+          "instagram": {
+            "views": 138,
+            "reach": 123,
+            "likes": 0,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0,
+            "dms": 0
+          },
+          "facebook": {
+            "views": 2,
+            "reach": 1,
+            "reactions": 0,
+            "comments": 0,
+            "shares": 0,
+            "clicks": 0,
+            "messages": 0
+          },
+          "tiktok": {
+            "views": 0,
+            "likes": 0,
+            "comments": 0,
+            "saves": 0,
+            "shares": 0
+          },
+          "updatedAt": "2026-03-15T21:47:47.590Z",
+          "videoMetrics": {
+            "duration": 355,
+            "avgWatchTime": 28,
+            "retentionPercent": 8,
+            "first3sPercent": 1,
+            "rating": "malo",
+            "first3sAnalysis": "A partir del segundo 00:00 aparece mi mano iniciando el boceto sobre el papel, ya para el segundo 00:01 aparece mi cara en detalle con la palabra en pantalla \"Esto no pasa en dos días\" en la parte de abajo, en el segundo 00:02 aparece la pantalla de la pc con el illustrator abierto e iniciando la digitalización del logotipo junto con la palabra \"Esto requiere\", para el segundo 00:03 aparece mi mano en detalle usando el mouse del pc.  "
+          }
+        },
+        "details": {
+          "scenes": 8,
+          "copy": "Así trabajamos un proyecto de marca.\n\n4 etapas. 0 improvisación.\n\n1. DIAGNÓSTICO\n2. ESTRATEGIA\n3. IDENTIDAD\n4. SISTEMA\n\nEscribí PROCESO",
+          "specs": "B-roll profesional + gráficos",
+          "script": "ESCENA 1: Intro\nESCENA 2-5: Cada etapa\nESCENA 6: Timeline\nESCENA 7: \"0 improvisación\"\nESCENA 8: CTA",
+          "hashtags": "#Branding #Proceso",
+          "creative": "Profesional, motion graphics"
+        }
+      },
+      {
+        "id": 14,
+        "date": "2026-03-16",
+        "time": "20:00",
+        "type": "carousel",
+        "title": "Qué es posicionamiento realmente",
+        "objective": "authority",
+        "notes": "8 slides educativo. CTA: POSICIONAMIENTO",
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "reach": 8100,
+            "saves": 423,
+            "shares": 112,
+            "comments": 31
+          },
+          "facebook": {
+            "reach": 3900,
+            "reactions": 212,
+            "comments": 19,
+            "shares": 42
+          }
+        },
+        "details": {
+          "slides": 8,
+          "copy": "Qué es posicionamiento (de verdad).\n\nNo es \"estar primero en Google\".\nNo es \"ser conocido\".\n\nEs lo que pensás cuando escuchás una marca.",
+          "designText": "SLIDE 1: Título\nSLIDE 2: Lo que NO es\nSLIDE 3: Lo que SÍ es\nSLIDE 4: Ejemplo Volvo\nSLIDE 5: Ejemplo Apple\nSLIDE 6: \"No SER el mejor\"\nSLIDE 7: \"SER el único\"\nSLIDE 8: CTA",
+          "hashtags": "#Posicionamiento #Branding",
+          "creative": "Educativo con ejemplos"
+        }
+      },
+      {
+        "id": 15,
+        "date": "2026-03-17",
+        "time": "09:30",
+        "type": "stories",
+        "title": "Mini Master: Posicionamiento",
+        "objective": "authority",
+        "notes": "4 historias interactivas",
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "reach": 2900,
+            "replies": 19,
+            "taps": 71,
+            "exits": 9
+          }
+        },
+        "details": {
+          "slides": 4,
+          "designText": "H1: \"Mini Master Posicionamiento\"\nH2: \"¿Tienes posicionamiento?\"\nH3: \"¿En qué eres único?\"\nH4: \"Te ayudamos. POSICIONAMIENTO\"",
+          "stickers": "H2: Encuesta\nH3: Caja preguntas\nH4: Link"
+        }
+      },
+      {
+        "id": 16,
+        "date": "2026-03-18",
+        "time": "20:00",
+        "type": "reel",
+        "title": "No trabajamos con todos",
+        "objective": "authority",
+        "notes": "INVERSIÓN: 20% ads. Filtro premium. CTA: PROYECTO",
+        "hasAds": true,
+        "adBudget": 20,
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "views": 12300,
+            "reach": 10500,
+            "likes": 987,
+            "comments": 56,
+            "saves": 289,
+            "shares": 78,
+            "dms": 11
+          },
+          "facebook": {
+            "views": 6100,
+            "reach": 5200,
+            "reactions": 289,
+            "comments": 28,
+            "shares": 56,
+            "clicks": 98,
+            "messages": 5
+          },
+          "tiktok": {
+            "views": 35600,
+            "likes": 3200,
+            "comments": 178,
+            "saves": 987,
+            "shares": 345
+          }
+        },
+        "details": {
+          "scenes": 6,
+          "copy": "No trabajamos con todos.\n\nY está bien.\n\nSi buscás rápido y barato → No somos para vos.\nSi buscás resultados y estrategia → Hablemos.\n\nEscribí PROYECTO",
+          "specs": "Minimalista B&N",
+          "script": "ESCENA 1: \"No trabajamos con todos\"\nESCENA 2: \"Y está bien\"\nESCENA 3-4: Rápido/barato vs estratégico\nESCENA 5: \"Filtro activo\"\nESCENA 6: CTA",
+          "hashtags": "#Branding #Premium",
+          "creative": "Blanco y negro, polarizante",
+          "literaryScript": "",
+          "cameraShots": ""
+        }
+      },
+      {
+        "id": 17,
+        "date": "2026-03-19",
+        "time": "20:30",
+        "type": "stories",
+        "title": "Precio vs Valor",
+        "objective": "authority",
+        "notes": "Encuesta + preguntas",
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "reach": 2700,
+            "replies": 17,
+            "taps": 63,
+            "exits": 8
+          }
+        },
+        "details": {
+          "slides": 3,
+          "designText": "H1: \"¿Pagaste barato y salió caro?\"\nH2: \"Cuéntanos\"\nH3: \"Diferencia precio vs valor\"",
+          "stickers": "H1: Encuesta\nH2: Caja preguntas\nH3: Link"
+        }
+      },
+      {
+        "id": 18,
+        "date": "2026-03-20",
+        "time": "12:30",
+        "type": "reel",
+        "title": "B-roll Proceso Profesional",
+        "objective": "authority",
+        "notes": "Percepción premium. CTA: PROYECTO",
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "views": 5600,
+            "reach": 4800,
+            "likes": 423,
+            "comments": 28,
+            "saves": 134,
+            "shares": 36,
+            "dms": 5
+          },
+          "facebook": {
+            "views": 2800,
+            "reach": 2400,
+            "reactions": 134,
+            "comments": 14,
+            "shares": 28,
+            "clicks": 47,
+            "messages": 2
+          },
+          "tiktok": {
+            "views": 15600,
+            "likes": 1400,
+            "comments": 78,
+            "saves": 423,
+            "shares": 134
+          }
+        },
+        "details": {
+          "scenes": 5,
+          "copy": "Diseñar no es decorar.\nEs estructurar.\n\nNo es hacer lindo.\nEs hacer funcionar.\n\nEste es nuestro proceso.\n\nEscribí PROYECTO",
+          "specs": "B-roll, timelapse",
+          "script": "ESCENA 1-3: B-roll proceso\nESCENA 4: Timelapse\nESCENA 5: Resultado + CTA",
+          "hashtags": "#Diseño #Proceso",
+          "creative": "Cinematic",
+          "literaryScript": "",
+          "cameraShots": ""
+        }
+      },
+      {
+        "id": 19,
+        "date": "2026-03-23",
+        "time": "20:00",
+        "type": "carousel",
+        "title": "Errores que frenan tu crecimiento",
+        "objective": "authority",
+        "notes": "8 slides. 5 errores + soluciones",
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "reach": 6800,
+            "saves": 356,
+            "shares": 92,
+            "comments": 26
+          },
+          "facebook": {
+            "reach": 3300,
+            "reactions": 178,
+            "comments": 16,
+            "shares": 35
+          }
+        },
+        "details": {
+          "slides": 8,
+          "copy": "5 errores que frenan el crecimiento de tu marca.\n\n(Y cómo solucionarlos)",
+          "designText": "SLIDE 1: Título\nSLIDE 2: ERROR 1: Mensaje genérico\nSLIDE 3: ERROR 2: Identidad inconsistente\nSLIDE 4: ERROR 3: Sin diferenciación\nSLIDE 5: ERROR 4: Diseño sin estrategia\nSLIDE 6: ERROR 5: No comunican valor\nSLIDE 7: Resumen soluciones\nSLIDE 8: CTA MARCA",
+          "hashtags": "#Branding #Errores",
+          "creative": "Rojo para errores, verde soluciones"
+        }
+      },
+      {
+        "id": 20,
+        "date": "2026-03-24",
+        "time": "09:30",
+        "type": "stories",
+        "title": "Mini Auditoría Interactiva",
+        "objective": "authority",
+        "notes": "6 historias sobre errores",
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "reach": 3000,
+            "replies": 20,
+            "taps": 75,
+            "exits": 9
+          }
+        },
+        "details": {
+          "slides": 6,
+          "designText": "H1: \"Mini Auditoría\"\nH2: \"¿Mensaje genérico?\"\nH3: \"¿Identidad inconsistente?\"\nH4: \"¿Diferenciación?\"\nH5: \"¿Diseño sin estrategia?\"\nH6: \"Corregí. MARCA\"",
+          "stickers": "Todas: Encuesta Sí/No"
+        }
+      },
+      {
+        "id": 21,
+        "date": "2026-03-25",
+        "time": "20:00",
+        "type": "reel",
+        "title": "Tu web no convierte por esto",
+        "objective": "conversion",
+        "notes": "INVERSIÓN: 15% ads. CTA: WEB",
+        "hasAds": true,
+        "adBudget": 15,
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "views": 7200,
+            "reach": 6100,
+            "likes": 534,
+            "comments": 32,
+            "saves": 167,
+            "shares": 43,
+            "dms": 6
+          },
+          "facebook": {
+            "views": 3600,
+            "reach": 3000,
+            "reactions": 167,
+            "comments": 16,
+            "shares": 32,
+            "clicks": 54,
+            "messages": 2
+          },
+          "tiktok": {
+            "views": 20100,
+            "likes": 1800,
+            "comments": 92,
+            "saves": 534,
+            "shares": 167
+          }
+        },
+        "details": {
+          "scenes": 7,
+          "copy": "Tu web no convierte por 3 razones.\n\n1. Mensaje no claro\n2. Diseño no guía\n3. CTA sin urgencia\n\nEscribí WEB",
+          "specs": "35s, ejemplos visuales",
+          "script": "ESCENA 1: Hook\nESCENA 2-4: 3 razones\nESCENA 5: Estadística\nESCENA 6: \"Diferencia = Estrategia\"\nESCENA 7: CTA",
+          "hashtags": "#DiseñoWeb #Conversión",
+          "creative": "Comparación buena vs mala web",
+          "literaryScript": "",
+          "cameraShots": ""
+        }
+      },
+      {
+        "id": 22,
+        "date": "2026-03-26",
+        "time": "20:00",
+        "type": "stories",
+        "title": "Diagnóstico Web Express",
+        "objective": "conversion",
+        "notes": "Test + Quiz + Caja con link",
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "reach": 2800,
+            "replies": 18,
+            "taps": 67,
+            "exits": 8
+          }
+        },
+        "details": {
+          "slides": 4,
+          "designText": "H1: \"Diagnóstico Web\"\nH2: \"¿Tu web convierte?\"\nH3: \"¿Problema principal?\"\nH4: \"Link de tu web\"",
+          "stickers": "H2: Encuesta\nH3: Quiz\nH4: Caja + Link"
+        }
+      },
+      {
+        "id": 23,
+        "date": "2026-03-27",
+        "time": "12:30",
+        "type": "reel",
+        "title": "El diseño no es gasto. Es posicionamiento.",
+        "objective": "conversion",
+        "notes": "ROI y valor. CTA: PROYECTO",
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "views": 8900,
+            "reach": 7600,
+            "likes": 678,
+            "comments": 41,
+            "saves": 223,
+            "shares": 58,
+            "dms": 8
+          },
+          "facebook": {
+            "views": 4400,
+            "reach": 3800,
+            "reactions": 223,
+            "comments": 20,
+            "shares": 41,
+            "clicks": 76,
+            "messages": 3
+          },
+          "tiktok": {
+            "views": 24500,
+            "likes": 2200,
+            "comments": 112,
+            "saves": 678,
+            "shares": 223
+          }
+        },
+        "details": {
+          "scenes": 6,
+          "copy": "El diseño no es gasto.\nEs posicionamiento.\n\nInversión: $500K\nResultado: +40% ventas\nROI: 340%\n\nEscribí PROYECTO",
+          "specs": "Caso con números",
+          "script": "ESCENA 1: \"Diseño ≠ Gasto\"\nESCENA 2: \"Diseño = Posicionamiento\"\nESCENA 3: Inversión\nESCENA 4-5: Resultados\nESCENA 6: ROI + CTA",
+          "hashtags": "#Branding #ROI",
+          "creative": "Gráficos de crecimiento",
+          "literaryScript": "",
+          "cameraShots": ""
+        }
+      },
+      {
+        "id": 24,
+        "date": "2026-03-07",
+        "time": "20:00",
+        "type": "stories",
+        "title": "Q&A: Tu marca",
+        "objective": "authority",
+        "notes": "Caja de preguntas abierta",
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "reach": 2200,
+            "replies": 14,
+            "taps": 52,
+            "exits": 6
+          }
+        },
+        "details": {
+          "slides": 2,
+          "designText": "H1: \"Q&A sobre branding\"\nH2: \"Tu pregunta\"",
+          "stickers": "H2: Caja preguntas"
+        }
+      },
+      {
+        "id": 25,
+        "date": "2026-03-14",
+        "time": "20:00",
+        "type": "stories",
+        "title": "Behind the scenes",
+        "objective": "authority",
+        "notes": "Proceso real",
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "reach": 2400,
+            "taps": 58,
+            "exits": 5
+          }
+        },
+        "details": {
+          "slides": 3,
+          "designText": "H1-3: Fotos proceso trabajo",
+          "stickers": "Sin stickers"
+        }
+      },
+      {
+        "id": 26,
+        "date": "2026-03-21",
+        "time": "20:00",
+        "type": "stories",
+        "title": "Testimonios clientes",
+        "objective": "conversion",
+        "notes": "Casos de éxito",
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "reach": 3200,
+            "taps": 89,
+            "exits": 11
+          }
+        },
+        "details": {
+          "slides": 4,
+          "designText": "H1: \"Lo que dicen\"\nH2-4: Testimonios",
+          "stickers": "Link a portfolio"
+        }
+      },
+      {
+        "id": 27,
+        "date": "2026-03-28",
+        "time": "20:00",
+        "type": "stories",
+        "title": "Recap Marzo",
+        "objective": "authority",
+        "notes": "Resumen del mes",
+        "status": "not-started",
+        "metrics": {
+          "instagram": {
+            "reach": 3500,
+            "taps": 95,
+            "exits": 13
+          }
+        },
+        "details": {
+          "slides": 5,
+          "designText": "H1: \"Recap Marzo\"\nH2: Mejores momentos\nH3: Estadísticas\nH4: Gracias\nH5: \"Abril viene con más\"",
+          "stickers": "H3: Estadísticas\nH5: Link"
+        }
+      }
+    ],
+    "leads": [],
+    "accounts": [],
+    "briefings": [],
+    "monthlyAnalysis": {},
+    "avatars": {},
+    "analysis": {}
+  }
+}
