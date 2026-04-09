@@ -494,6 +494,8 @@ function getStatusConfig(status) {
         'published': { icon: '✅', label: 'Publicado', bg: '#dcfce7', color: '#166534' },
         'scheduled': { icon: '📅', label: 'Programado', bg: '#dbeafe', color: '#1e40af' },
         'designed': { icon: '🎨', label: 'Diseñado', bg: '#fef3c7', color: '#92400e' },
+        'client-approved': { icon: '✅', label: 'Aprob. Cliente', bg: '#dcfce7', color: '#166534' },
+        'client-review': { icon: '👀', label: 'Esp. Aprob.', bg: '#ffedd5', color: '#9a3412' },
         'design': { icon: '⚡', label: 'En Diseño', bg: '#fee2e2', color: '#dc2626' },
         'correction': { icon: '🔧', label: 'Corrección', bg: '#fed7d7', color: '#b91c1c' },
         'no-status': { icon: '❓', label: 'Sin Estado', bg: '#f3f4f6', color: '#374151' }

@@ -172,6 +172,8 @@ function createCalendarItem(item) {
         'not-started': '#94a3b8',
         'design': '#f59e0b',
         'correction': '#3b82f6',
+        'client-review': '#f97316',
+        'client-approved': '#10b981',
         'designed': '#10b981',
         'scheduled': '#8b5cf6',
         'published': '#10b981'

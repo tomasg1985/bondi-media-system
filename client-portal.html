@@ -856,6 +856,110 @@ function getData(key) {
     catch(e) { return null; }
 }
 
+function setData(key, data) {
+    localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(data));
+}
+
+// ── FLUJO APROBACIÓN ───────────────────────────────
+window.approveContent = function(id) {
+    if (!portalClient) return;
+    var calendar = getData('calendar-' + portalClient.id) || [];
+    var content = calendar.find(function(c){ return c.id === id; });
+    if (!content) return;
+    content.status = 'client-approved';
+    setData('calendar-' + portalClient.id, calendar);
+    renderContent(calendar);
+    renderStats(calendar);
+};
+
+window.rejectContent = function(id) {
+    if (!portalClient) return;
+    var calendar = getData('calendar-' + portalClient.id) || [];
+    var content = calendar.find(function(c){ return c.id === id; });
+    if (!content) return;
+    var motivo = prompt('Por favor, indicanos qué corregimos detalladamente:');
+    if (motivo !== null && motivo.trim() !== '') {
+        content.status = 'correction';
+        content.notes = (content.notes ? content.notes + '\n\n' : '') + '⚠️ CORRECCIÓN CLIENTE: ' + motivo;
+        setData('calendar-' + portalClient.id, calendar);
+        renderContent(calendar);
+        renderStats(calendar);
+        // Cerramos el modal de detalles por si estaba abierto
+        if (typeof closeContentDetails === 'function') closeContentDetails();
+    }
+}
+
+// ── DETALLES DE CONTENIDO ──────────────────────────
+window.viewContentDetails = function(id) {
+    if (!portalClient) return;
+    var calendar = getData('calendar-' + portalClient.id) || [];
+    var content = calendar.find(function(c){ return String(c.id) === String(id); });
+    if (!content) return;
+    
+    var dateStr = content.date ? new Date(content.date + 'T00:00:00').toLocaleDateString('es-AR', { day:'2-digit', month:'long' }) : '';
+    
+    document.getElementById('cd-header').innerHTML = '<h3 style="margin:0 0 8px 0; font-size:18px; color:var(--navy);">' + (content.title || 'Sin título') + '</h3>'
+        + '<div style="font-size:12px; color:var(--text-2); display:flex; gap:10px;"><span>📅 ' + dateStr + (content.time ? ' ' + content.time : '') + '</span><span>📌 ' + (content.type || '') + '</span></div>';
+        
+    var bodyHtml = '';
+    
+    if (content.image) {
+        bodyHtml += '<div style="margin-bottom:16px; border-radius:8px; overflow:hidden; border:1px solid #E5E7EB; text-align:center; background:#F3F4F6;">'
+            + '<img src="' + content.image + '" style="max-width:100%; max-height:400px; display:block; margin:0 auto; object-fit:contain;" alt="Diseño Preview">'
+            + '</div>';
+    }
+    
+    if (content.copy) {
+        bodyHtml += '<div style="background:#F9FAFB; padding:12px; border-radius:8px; margin-bottom:16px; border:1px solid #E5E7EB;">'
+            + '<strong style="display:block; margin-bottom:8px; font-size:12px; color:var(--text-1);">✍️ Copy / Texto sugerido:</strong>'
+            + '<div style="white-space:pre-wrap; font-size:13px; line-height:1.5;">' + content.copy + '</div></div>';
+    }
+    
+    if (content.hashtags) {
+        bodyHtml += '<div style="margin-bottom:16px;">'
+            + '<strong style="display:block; margin-bottom:4px; font-size:12px; color:var(--text-2);">🏷️ Hashtags:</strong>'
+            + '<div style="color:#2563EB; font-size:13px;">' + content.hashtags + '</div></div>';
+    }
+    
+    if (content.notes) {
+        bodyHtml += '<div style="background:#FEF3C7; padding:12px; border-radius:8px; margin-bottom:16px; border:1px dashed #F59E0B;">'
+            + '<strong style="display:block; margin-bottom:8px; font-size:12px; color:#92400E;">⚠️ Notas y Feedback:</strong>'
+            + '<div style="white-space:pre-wrap; color:#92400E; font-size:13px;">' + content.notes + '</div></div>';
+    }
+    
+    if (!content.copy && !content.hashtags && !content.notes) {
+        bodyHtml += '<div style="text-align:center; padding:20px; color:var(--text-3);">Esta publicación aún no tiene descripción ni detalles adicionales cargados.</div>';
+    }
+    
+    // Si la publicacion esta en 'client-review', metemos botones en el pie de los detalles
+    if (content.status === 'client-review') {
+        bodyHtml += '<div style="margin-top:24px; padding-top:16px; border-top:1px solid #E5E7EB; display:flex; gap:8px;">'
+            + '<button onclick="approveContent(\'' + content.id + '\'); closeContentDetails();" style="flex:1; padding:10px; background:#10B981; color:#fff; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">✅ Aprobar Contenido</button>'
+            + '<button onclick="rejectContent(\'' + content.id + '\');" style="flex:1; padding:10px; background:#EF4444; color:#fff; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">❌ Solicitar Corrección</button>'
+            + '</div>';
+    }
+    
+    document.getElementById('cd-body').innerHTML = bodyHtml;
+    
+    var overlay = document.getElementById('content-details-overlay');
+    var modal = document.getElementById('content-details-modal');
+    overlay.style.display = 'flex';
+    setTimeout(function() {
+        overlay.style.opacity = '1';
+        modal.style.transform = 'translateY(0)';
+    }, 10);
+};
+
+window.closeContentDetails = function() {
+    var overlay = document.getElementById('content-details-overlay');
+    var modal = document.getElementById('content-details-modal');
+    overlay.style.opacity = '0';
+    modal.style.transform = 'translateY(20px)';
+    setTimeout(function() {
+        overlay.style.display = 'none';
+    }, 200);
+};
+
 // ── LOGIN ──────────────────────────────────────────
 function handleLogin(e) {
     e.preventDefault();
@@ -1147,6 +1251,8 @@ function renderContent(calendar) {
         'scheduled': { dot: 'dot-scheduled', label: 'Programado', color: '#1E40AF', bg: '#DBEAFE', border: '#BFDBFE' },
         'design':    { dot: 'dot-design',    label: 'En diseño', color: '#92400E', bg: '#FEF3C7', border: '#FDE68A' },
         'correction':{ dot: 'dot-design',    label: 'Corrección', color: '#92400E', bg: '#FEF3C7', border: '#FDE68A' },
+        'client-review':{ dot: 'dot-design', label: 'En revisión', color: '#C2410C', bg: '#FFEDD5', border: '#FED7AA' },
+        'client-approved':{ dot: 'dot-published', label: 'Aprobado', color: '#047857', bg: '#A7F3D0', border: '#6EE7B7' },
         'not-started':{ dot: 'dot-pending',  label: 'Pendiente', color: '#374151', bg: '#F3F4F6', border: '#E5E7EB' },
     };
     var typeMap = {
@@ -1159,7 +1265,17 @@ function renderContent(calendar) {
         var st = statusMap[c.status] || statusMap['not-started'];
         var tp = typeMap[c.type]   || { label: c.type, color: '#374151', bg: '#F3F4F6', border: '#E5E7EB' };
         var dateStr = c.date ? new Date(c.date + 'T00:00:00').toLocaleDateString('es-AR', { day:'2-digit', month:'short' }) : '';
-        return '<div class="content-item">'
+
+        var actionsHtml = '';
+        if (c.status === 'client-review') {
+            actionsHtml = '<div style="margin-top:10px; display:flex; gap:8px;">'
+                + '<button type="button" onclick="event.stopPropagation(); approveContent(\'' + c.id + '\')" style="padding:6px 14px; background:#10B981; color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; font-family:inherit; transition:opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">✅ Aprobar</button>'
+                + '<button type="button" onclick="event.stopPropagation(); rejectContent(\'' + c.id + '\')" style="padding:6px 14px; background:#EF4444; color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; font-family:inherit; transition:opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">❌ Rechazar / Corregir</button>'
+                + '</div>';
+        }
+
+        return '<div class="content-item" style="flex-direction:column; align-items:stretch; cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background=\'#F9FAFB\'" onmouseout="this.style.background=\'#fff\'" onclick="viewContentDetails(\'' + c.id + '\')">'
+            + '<div style="display:flex; align-items:flex-start; gap:14px;">'
             + '<div class="content-status-dot ' + st.dot + '" style="margin-top:5px;"></div>'
             + '<div class="content-info">'
             + '<div class="content-title">' + (c.title || 'Sin título') + '</div>'
@@ -1167,6 +1283,8 @@ function renderContent(calendar) {
             + '<span>' + dateStr + (c.time ? ' ' + c.time.substring(0,5) : '') + '</span>'
             + '<span class="content-badge" style="color:' + tp.color + ';background:' + tp.bg + ';border:1px solid ' + tp.border + ';">' + tp.label + '</span>'
             + '<span class="content-badge" style="color:' + st.color + ';background:' + st.bg + ';border:1px solid ' + st.border + ';">' + st.label + '</span>'
+            + '</div>'
+            + actionsHtml
             + '</div></div></div>';
     }).join('');
 
@@ -2036,6 +2154,15 @@ window._checkAutoTour = checkAutoTour;
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="tour-next-icon"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
         </div>
+    </div>
+</div>
+
+<!-- ══ MODAL DE DETALLES DE CONTENIDO ════════════════ -->
+<div id="content-details-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s;" onclick="if(event.target===this) closeContentDetails();">
+    <div id="content-details-modal" style="background:#fff; width:90%; max-width:550px; border-radius:12px; padding:24px; box-shadow:0 10px 25px rgba(0,0,0,0.2); max-height:85vh; overflow-y:auto; position:relative; transform:translateY(20px); transition:transform 0.2s;">
+        <button onclick="closeContentDetails()" style="position:absolute; top:16px; right:16px; border:none; background:none; font-size:24px; cursor:pointer; color:var(--text-3); line-height:1;">&times;</button>
+        <div id="cd-header" style="margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #E5E7EB;"></div>
+        <div id="cd-body" style="font-size:14px; color:var(--text-1); line-height:1.6;"></div>
     </div>
 </div>
 

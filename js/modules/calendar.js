@@ -127,6 +127,8 @@ function renderCalendarItems(containerId, itemsToRender) {
             'not-started': '⚪ No Iniciado',
             'design': '🎨 En Diseño',
             'correction': '✏️ En Corrección',
+            'client-review': '👀 Esp. Aprobación',
+            'client-approved': '✅ Aprobado (Cliente)',
             'designed': '✅ Diseñado',
             'scheduled': '⏰ Programado',
             'published': '🚀 Publicado'
@@ -136,6 +138,8 @@ function renderCalendarItems(containerId, itemsToRender) {
             'not-started': 'secondary',
             'design': 'warning',
             'correction': 'info',
+            'client-review': 'warning',
+            'client-approved': 'success',
             'designed': 'success',
             'scheduled': 'primary',
             'published': 'success'
@@ -444,14 +448,16 @@ function quickAssignStatus(contentId) {
     const content = appData.calendar.find(c => c.id === contentId);
     if (!content) return;
     
-    const status = prompt(`Asignar estado a "${content.title}":\n\n1. En Diseño\n2. En Corrección\n3. Diseñado\n4. Programado\n5. Publicado`, '1');
+    const status = prompt(`Asignar estado a "${content.title}":\n\n1. En Diseño\n2. En Corrección\n3. Esperando Aprobación\n4. Aprobado\n5. Diseñado\n6. Programado\n7. Publicado`, '1');
     
     const statusMap = {
         '1': 'design',
         '2': 'correction',
-        '3': 'designed',
-        '4': 'scheduled',
-        '5': 'published'
+        '3': 'client-review',
+        '4': 'client-approved',
+        '5': 'designed',
+        '6': 'scheduled',
+        '7': 'published'
     };
     
     if (statusMap[status]) {

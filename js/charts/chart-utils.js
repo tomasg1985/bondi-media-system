@@ -150,8 +150,15 @@ function groupByWeek(monthContent) {
     const weeks = {};
     
     monthContent.forEach(content => {
+        // Asegurarnos que la fecha sea válida para evitar NaN
+        if (!content.date) return;
+        
         const date = new Date(content.date);
-        const weekNum = Math.ceil(date.getDate() / 7);
+        let weekNum = Math.ceil(date.getDate() / 7);
+        
+        // Limitar la semana a un máximo de 4 (los días finales del mes se suman a la semana 4)
+        if (weekNum > 4) weekNum = 4;
+        
         const weekKey = `Semana ${weekNum}`;
         
         if (!weeks[weekKey]) {
@@ -169,6 +176,14 @@ function groupByWeek(monthContent) {
         weeks[weekKey].engagement += engagement;
         weeks[weekKey].count++;
     });
+    
+    // Rellenar exactamente 4 semanas para el historial, siempre de la 1 a la 4
+    for (let i = 1; i <= 4; i++) {
+        const weekKey = `Semana ${i}`;
+        if (!weeks[weekKey]) {
+            weeks[weekKey] = { reach: 0, engagement: 0, count: 0 };
+        }
+    }
     
     return weeks;
 }
