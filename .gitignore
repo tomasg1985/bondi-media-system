@@ -1,0 +1,21 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+*
+# Ignorar archivo de secretos (VITAL)
+.env
+
+# Ignorar entornos virtuales de Python
+venv/
+env/
+__pycache__/
+*.pyc
+
+# Ignorar archivos de base de datos local (si usas SQLite para pruebas)
+*.sqlite3
+*.db
+
+# Ignorar archivos temporales del sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos .txt
+*.txt
